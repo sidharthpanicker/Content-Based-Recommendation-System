@@ -1,0 +1,702 @@
+Keywords From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Comments Java Programming Keywords Coding conventions Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions Keywords are special tokens in the language which have reserved use in the language. Keywords may not be used as identifiers in Java — you cannot declare a field whose name is a keyword, for instance. Examples of keywords are the primitive types, int and boolean; the control flow statements for and if; access modifiers such as public, and special words which mark the declaration and definition of Java classes, packages, and interfaces: class, package, interface. Below are all the Java language keywords: abstract assert (since Java 1.4) boolean break byte case catch char class const (not used) continue default do double else enum (since Java 5.0) extends final finally float for goto (not used) if implements import instanceof int interface long native new package private protected public return short static strictfp (since Java 1.2) super switch synchronized this throw throws transient try void volatile while Contents 1 abstract 2 assert 3 boolean 4 break 5 byte 6 case 7 catch 8 char 9 class 10 const 11 continue 12 See also 13 default 14 do 15 double 16 else 17 enum 18 extends 19 final 20 For a variable 21 For a class 22 For a method 23 Interest 24 finally 25 float 26 for 27 goto 28 if 29 implements 30 import 31 instanceof 32 int 33 interface 34 long 35 native 36 See also 37 new 38 package 39 private 40 protected 41 public 42 return 43 short 44 static 45 Interest 46 strictfp 47 super 48 switch 49 synchronized 50 Singleton example 51 this 52 throw 53 See also 54 throws 55 transient 56 try 57 void 58 volatile 59 while In addition, the identifiers null, true, and false denote literal values and may not be used to create identifiers. abstract[edit] abstract is a Java keyword. It can be applied to a class and methods. An abstract class cannot be directly instantiated. It must be placed before the variable type or the method return type. It is recommended to place it after the access modifier and after the static keyword. A non-abstract class is a concrete class. An abstract class cannot be final. Only an abstract class can have abstract methods. An abstract method is only declared, not implemented: Code listing 1: AbstractClass.java 1 public abstract class AbstractClass {
+2     // This method does not have a body; it is abstract.
+3     public abstract void abstractMethod();
+4  
+5     // This method does have a body; it is implemented in the abstract class and gives a default behavior.
+6     public void concreteMethod() {
+7         System.out.println("Already coded.");
+8     }
+9 }
+ An abstract method cannot be final, static nor native. Either you instantiate a concrete sub-class, either you instantiate the abstract class by implementing its abstract methods alongside a new statement: Code section 1: Abstract class use. 1 AbstractClass myInstance = new AbstractClass() {
+2     public void abstractMethod() {
+3         System.out.println("Implementation.");
+4     }
+5 };
+ A private method cannot be abstract. assert[edit] assert is a Java keyword used to define an assert statement. An assert statement is used to declare an expected boolean condition in a program. If the program is running with assertions enabled, then the condition is checked at runtime. If the condition is false, the Java runtime system throws an AssertionError. Assertions may be declared using the following syntax: assert expression1 [: expression2];
+ expression1 is a boolean that will throw the assertion if it is false. When it is thrown, the assertion error exception is created with the parameter expression2 (if applicable). An example: assert list != null && list.size() > 0 : "list variable is null or empty";
+Object value = list.get(0);
+ Assertions are usually used as a debugging aid. They should not be used instead of validating arguments to public methods, or in place of a more precise runtime error exception. Assertions are enabled with the Java -ea or -enableassertions runtime option. See your Java environment documentation for additional options for controlling assertions. boolean[edit] boolean is a keyword which designates the boolean primitive type. There are only two possible boolean values: true and false. The default value for boolean fields is false. The following is a declaration of a private boolean field named initialized, and its use in a method named synchronizeConnection. Code section 1: Connection synchronization. 1 private boolean initialized = false;
+2 
+3 public void synchronizeConnection() {
+4    if (!initialized) {
+5       connection = connect();
+6       initialized = true;
+7    }
+8 }
+ The previous code only creates a connection once (at the first method call). Note that there is no automatic conversion between integer types (such as int) to boolean as is possible in some languages like C. Instead, one must use an equivalent expression such as (i != 0) which evaluates to true if i is not zero. break[edit] break is a Java keyword. Jumps (breaks) out from a loop. Also used at switch statement. For example: for ( int i=0; i < maxLoopIter; i++ ) {
+   System.out.println("Iter=" +i);
+   if ( i == 5 ) {
+      break;  // -- 5 iteration is enough --
+   }
+}
+ See also: Java Programming/Keywords/switch byte[edit] byte is a keyword which designates the 8 bit signed integer primitive type. The java.lang.Byte class is the nominal wrapper class when you need to store a byte value but an object reference is required. Syntax: byte <variable-name> = <integer-value>;
+ For example: byte b = 65;
+ or byte b = 'A'
+ The number 65 is the code for 'A' in ASCII. See also: Java Programming/Primitive Types case[edit] case is a Java keyword. This is part of the switch statement, to find if the value passed to the switch statement matches a value followed by case. For example: int i = 3;
+switch(i) {
+case 1:
+   System.out.println("The number is 1.");
+   break;
+case 2:
+   System.out.println("The number is 2.");
+   break;
+case 3:
+   System.out.println("The number is 3."); // this line will print
+   break;
+case 4:
+   System.out.println("The number is 4.");
+   break;
+case 5:
+   System.out.println("The number is 5.");
+   break;
+default:
+  System.out.println("The number is not 1, 2, 3, 4, or 5.");
+}
+ catch[edit] catch is a keyword. It's part of a try block. If an exception is thrown inside a try block, the exception will be compared to any of the catch part of the block. If the exception match with one of the exception in the catch part, the exception will be handled there. For example: try {
+   //...
+     throw new MyException_1();
+   //...
+} catch ( MyException_1 e ) {
+   // --- Handle the Exception_1 here --
+} catch ( MyException_2 e ) {
+   // --- Handle the Exception_2 here --
+}
+ See also: Java Programming/Keywords/try char[edit] char is a keyword. It defines a character primitive type. char can be created from character literals and numeric representation. Character literals consist of a single quote character (') (ASCII 39, hex 0x27), a single character, and a close quote ('), such as 'w'. Instead of a character, you can also use unicode escape sequences, but there must be exactly one. Syntax: char variable name1 = 'character1'; Code section 1: Three examples. 1 char oneChar1 = 'A';
+2 char oneChar2 = 65;
+3 char oneChar3 = '\u0041';
+4 System.out.println(oneChar1);
+5 System.out.println(oneChar2);
+6 System.out.println(oneChar3);
+ Output for Code section 1 A
+A
+A
+ 65 is the numeric representation of character 'A' , or its ASCII code. The nominal wrapper class is the java.lang.Character class when you need to store a char value but an object reference is required. Code section 2: char wrapping. 1 char aCharPrimitiveType = 'A';
+2 Character aCharacterObject = aCharPrimitiveType;
+ See also: Java Programming/Primitive Types class[edit] class is a Java keyword which begins the declaration and definition of a class. The general syntax of a class declaration, using Extended Backus-Naur Form, is class-declaration ::= [access-modifiers] class identifier
+                      [extends-clause] [implements-clause] 
+                      class-body
+
+extends-clause ::= extends class-name
+implements-clause ::= implements interface-names 
+interface-names ::= interface-name [, interface-names]
+class-body ::= { [member-declarations] }
+member-declarations = member-declaration [member-declarations]
+member-declaration = field-declaration 
+                     | initializer 
+                     | constructor 
+                     | method-declaration
+                     | class-declaration
+ The extends word is optional. If omitted, the class extends the Object class, as all Java classes inherit from it. See also: Java Programming/Keywords/new const[edit] const is a reserved keyword, presently not being used. In other programming languages, such as C, const is often used to declare a constant. However, in Java, final is used instead. continue[edit] continue is a Java keyword. It skips the remainder of the loop and continues with the next iteration. For example: int maxLoopIter = 7;
+
+for (int i = 0; i < maxLoopIter; i++ ) {
+   if (i == 5) {
+      continue;  // -- 5 iteration is skipped --
+   }
+   System.println("Iteration = " + i);
+}
+ results in 0
+1
+2
+3
+4
+6
+7
+ See also[edit] Java Programming/Statements default[edit] default is a Java keyword. This is an optional part of the switch statement, which only executes if none of the above cases are matched. See also: Java Programming/Keywords/switch do[edit] do is a Java keyword. It starts a do-while looping block. The do-while loop is functionally similar to the while loop, except the condition is evaluated after the statements execute Syntax: do {
+    //statements;
+} while (condition);
+ For example: do {
+    i++;
+} while ( i < maxLoopIter );
+ See also: Java Programming/Statements Java Programming/Keywords/for Java Programming/Keywords/while double[edit] double is a keyword which designates the 64 bit float primitive type. The java.lang.Double class is the nominal wrapper class when you need to store a double value but an object reference is required. Syntax: double <variable-name> = <float-value>;
+ For example: double d = 65.55;
+ See also: Java Programming/Primitive Types else[edit] else is a Java keyword. It is an optional part of a branching statement. It starts the 'false' statement block. The general syntax of a if, using Extended Backus-Naur Form, is branching-statement ::= if condition-clause 
+                                    single-statement | block-statement
+                       [ else 
+                                    single-statement | block-statement ]
+ 
+condition-clause    ::= ( Boolean Expression )
+single-statement    ::= Statement
+block-statement     ::= { Statement [ Statement ] }
+ For example: if ( expression ) {
+   System.out.println("'True' statement block");
+} else {
+   System.out.println("'False' statement block");
+}
+ See also: Java Programming/Keywords/if enum[edit] /** Grades of courses */
+  enum Grade { A, B, C, D, F };
+  // ...
+  private Grade gradeA = Grade.A;
+ This enumeration constant then can be passed in to methods: student.assignGrade(gradeA);
+  /**
+   * Assigns the grade for this course to the student
+   * @param GRADE  Grade to be assigned
+   */
+  public void assignGrade(final Grade GRADE) {
+    grade = GRADE;
+  }
+ An enumeration may also have parameters: public enum DayOfWeek {
+  /** Enumeration constants */
+  MONDAY(1), TUESDAY(2), WEDNESDAY(3), THURSDAY(4), FRIDAY(5), SATURDAY(6), SUNDAY(0);
+
+  /** Code for the days of the week */
+  private byte dayCode = 0;
+
+  /**
+   * Private constructor
+   * @param VALUE  Value that stands for a day of the week.
+   */
+  private DayOfWeek(final byte VALUE) {
+    dayCode = java.lang.Math.abs(VALUE%7);
+  }
+ 
+  /**
+   * Gets the day code
+   * @return  The day code
+   */
+  public byte getDayCode() {
+    return dayCode;
+  }
+}
+ It is also possible to let an enumeration implement interfaces other than java.lang.Comparable and java.io.Serializable, which are already implicitly implemented by each enumeration: public enum DayOfWeek implements Runnable {
+  MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+ 
+  /**
+   * Run method prints all elements
+   */
+  public void run() {
+    System.out.println("name() = " + name() +
+      ", toString() = \"" + toString() + "\"");
+  }
+}
+ extends[edit] extends is a Java keyword. Used in class and interface definition to declare the class or interface that is to be extended. Syntax: public class MyClass extends SuperClass 
+{
+  //...
+}
+ 
+public interface MyInterface extends SuperInterface
+{
+  //...
+}
+ In Java 1.5 and later, the "extends" keyword is also used to specify an upper bound on a type parameter in Generics. class Foo<T extends Number> { /*...*/ }
+ See also: Java Programming/Creating Objects Java Programming/Keywords/class final[edit] final is a keyword. Beware! It has distinct meanings depending whether it is used for a class, a method, or for a variable. It must be placed before the variable type or the method return type. It is recommended to place it after the access modifier and after the static keyword. Code section 1: Keyword order. 1 private static final long serialVersionUID = -5437975414336623381L;
+ For a variable[edit] The final keyword only allows a single assignment for the variable. That is to say, once the variable has been assigned, its value is in read-only. If the variable is a primitive type, its value will no longer change. If it is an object, only its reference will no longer change. Keep in mind that its value can still be changed. Code section 2: Forbidden double assignment. 1 final int a = 1;
+2 a = 2;
+ Code section 3: Only modify the value of the object. 1 final ArrayList list = new ArrayList();
+2 System.out.println(list.size());
+3 list.add("One item");
+4 System.out.println(list.size());
+ Console for Code section 3 0
+1
+ A final variable is often used for universal constants, such as pi: Code section 4: Pi constant. 1 static final double PI = 3.1415926;
+ The final keyword can also be used for method parameters: Code section 5: Final method parameter. 1 public int method(final int inputInteger) {
+2    int outputInteger = inputInteger + 1;
+3    return outputInteger;
+4 }
+ It is useful for methods that use side effects to update some objects. Such methods modify the content of an object passed in parameter. The method caller will receive the object update. This will fail if the object parameter has been reassigned in the method. Another object will be updated instead. Final method parameter can also be used to keep the code clean. The final keyword is similar to const in other languages and the readonly keyword in C#. A final variable cannot be volatile. For a class[edit] The final keyword forbids the creation of a subclass. It is the case of the Integer or String class. Code listing 1: SealedClass.java 1 public final class SealedClass {
+2   public static void main(String[] args) {
+3   }
+4 }
+ A final class cannot be abstract. The final keyword is similar to sealed keyword in C#. For a method[edit] The final keyword forbids to overwrite the method in a subclass. It is useless if the class is already final and a private method is implicitly final. A final method cannot be abstract. Code listing 2: NoOverwriting.java 1 public class NoOverwriting {
+2   public final void sealedMethod() {
+3   }
+4 }
+ Interest[edit] The final keyword is mostly used to guarantee a good usage of the code. For instance (non-static) methods, this allows the compiler to expand the method (similar to an inline function) if the method is small enough. Sometimes it is required to use it. For instance, a nested class can only access the members of the top-level class if they are final. See also Access Modifiers. finally[edit] finally is a keyword which is an optional ending part of the try block. Code section 1: try block. 1 try {
+2   // ...
+3 } catch (MyException1 e) {
+4   // Handle the Exception1 here
+5 } catch (MyException2 e) {
+6   // Handle the Exception2 here
+7 } finally {
+8   // This will always be executed no matter what happens
+9 }
+ The code inside the finally block will always be executed. This is also true for cases when there is an exception or even executed return statement in the try block. Three things can happen in a try block. First, no exception is thrown: Code section 2: No exception is thrown.  1 System.out.println("Before the try block");
+ 2 try {
+ 3   System.out.println("Inside the try block");
+ 4 } catch (MyException1 e) {
+ 5   System.out.println("Handle the Exception1");
+ 6 } catch (MyException2 e) {
+ 7   System.out.println("Handle the Exception2");
+ 8 } finally {
+ 9   System.out.println("Execute the finally block");
+10 }
+11 System.out.println("Continue");
+ Console for Code section 2 Before the try block
+Inside the try block
+Execute the finally block
+Continue
+ You can see that we have passed in the try block, then we have executed the finally block and we have continued the execution. Now, a caught exception is thrown: Code section 3: A caught exception is thrown.  1 System.out.println("Before the try block");
+ 2 try {
+ 3   System.out.println("Enter inside the try block");
+ 4   throw new MyException1();
+ 5   System.out.println("Terminate the try block");
+ 6 } catch (MyException1 e) {
+ 7   System.out.println("Handle the Exception1");
+ 8 } catch (MyException2 e) {
+ 9   System.out.println("Handle the Exception2");
+10 } finally {
+11   System.out.println("Execute the finally block");
+12 }
+13 System.out.println("Continue");
+ Console for Code section 3 Before the try block
+Enter inside the try block
+Handle the Exception1
+Execute the finally block
+Continue
+ We have passed in the try block until where the exception occurred, then we have executed the matching catch block, the finally block and we have continued the execution. Now, an uncaught exception is thrown: Code section 4: An uncaught exception is thrown.  1 System.out.println("Before the try block");
+ 2 try {
+ 3   System.out.println("Enter inside the try block");
+ 4   throw new Exception();
+ 5   System.out.println("Terminate the try block");
+ 6 } catch (MyException1 e) {
+ 7   System.out.println("Handle the Exception1");
+ 8 } catch (MyException2 e) {
+ 9   System.out.println("Handle the Exception2");
+10 } finally {
+11   System.out.println("Execute the finally block");
+12 }
+13 System.out.println("Continue");
+ Console for Code section 4 Before the try block
+Enter inside the try block
+Execute the finally block
+ We have passed in the try block until where the exception occurred and we have executed the finally block. NO CODE after the try-catch block has been executed. If there is an exception that happens before the try-catch block, the finally block is not executed. If return statement is used inside finally, it overrides the return statement in the try-catch block. For instance, the construct Code section 5: Return statement. 1  try {
+2    return 11;
+3  }  finally {
+4    return 12;
+5  }
+ will return 12, not 11. Professional code almost never contains statements that alter execution order (like return, break, continue) inside the finally block, as such code is more difficult to read and maintain. float[edit] float is a keyword which designates the 32 bit float primitive type. The java.lang.Float class is the nominal wrapper class when you need to store a float value but an object reference is required. Syntax: float <variable-name> = <float-value>;
+ For example: float price = 49.95;
+ See also: Java Programming/Primitive Types for[edit] for is a Java keyword. It starts a looping block. The general syntax of a for, using Extended Backus-Naur Form, is for-looping-statement ::= for condition-clause 
+                                    single-statement | block-statement
+ 
+condition-clause    ::= ( before-statement;  Boolean Expression ; after-statement )
+single-statement    ::= Statement
+block-statement     ::= { Statement [ Statement ] }
+ For example: for ( int i=0; i < maxLoopIter; i++ ) {
+    System.println("Iter: " +i);
+}
+ See also: Java Programming/Keywords/while Java Programming/Keywords/do goto[edit] goto is a reserved keyword, presently not being used. if[edit] if is a Java keyword. It starts a branching statement. The general syntax of a if, using Extended Backus-Naur Form, is branching-statement ::= if condition-clause 
+                                    single-statement | block-statement
+                       [ else 
+                                    single-statement | block-statement ]
+ 
+condition-clause    ::= ( Boolean Expression )
+single-statement    ::= Statement
+block-statement     ::= { Statement [ Statements ] }
+ For example: if ( boolean Expression )
+{
+   System.out.println("'True' statement block");
+}
+else
+{
+   System.out.println("'False' statement block");
+}
+ See also: Java Programming/Keywords/else implements[edit] implements is a Java keyword. Used in class definition to declare the Interfaces that are to be implemented by the class. Syntax: public class MyClass implements MyInterface1, MyInterface2
+ {
+   ...
+ }
+ See also: Java Programming/Creating Objects Java Programming/Keywords/class Java Programming/Keywords/interface import[edit] import is a Java keyword. It declares a Java class to use in the code below the import statement. Once a Java class is declared, then the class name can be used in the code without specifying the package the class belongs to. Use the '*' character to declare all the classes belonging to the package. Syntax: import package.JavaClass;
+import package.*;
+ The static import construct allows unqualified access to static members without inheriting from the type containing the static members:    import static java.lang.Math.PI;
+ Once the static members have been imported, they may be used without qualification:    double r = cos(PI * theta);
+ Caveat: use static import very sparingly to avoid polluting the program's namespace! See also: Java Programming/Packages instanceof[edit] instanceof is a keyword. It checks if an object reference is an instance of a type, and returns a boolean value; The <object-reference> instanceof Object will return true for all non-null object references, since all Java objects are inherited from Object. instanceof will always return false if <object-reference> is null. Syntax: <object-reference> instanceof TypeName
+ For example: class Fruit
+ {
+  //...	
+ } 
+ class Apple extends Fruit
+ {
+  //...
+ }
+ class Orange extends Fruit
+ {
+  //...
+ }
+ public class Test 
+ {
+    public static void main(String[] args) 
+    {
+       Collection<Object> coll = new ArrayList<Object>();
+ 
+       Apple app1 = new Apple();
+       Apple app2 = new Apple();
+       coll.add(app1);
+       coll.add(app2);
+ 
+       Orange or1 = new Orange();
+       Orange or2 = new Orange();
+       coll.add(or1);
+       coll.add(or2);
+ 
+       printColl(coll);
+    }
+ 
+    private static String printColl( Collection<?> coll )
+    {
+       for (Object obj : coll)
+       {
+          if ( obj instanceof Object )
+          {
+             System.out.print("It is a Java Object and");
+          }
+          if ( obj instanceof Fruit )
+          {
+             System.out.print("It is a Fruit and");
+          }
+          if ( obj instanceof Apple )
+          {
+             System.out.println("it is an Apple");
+          } 
+          if ( obj instanceof Orange )
+          {
+             System.out.println("it is an Orange");
+          }
+       }
+    }
+ }
+ Run the program: java Test
+ The output: "It is a Java Object and It is a Fruit and it is an Apple"
+"It is a Java Object and It is a Fruit and it is an Apple"
+"It is a Java Object and It is a Fruit and it is an Orange"
+"It is a Java Object and It is a Fruit and it is an Orange"
+ Note that the instanceof operator can also be applied to interfaces. For example, if the example above was enhanced with the interface interface Edible 
+{
+ //...
+}
+ and the classes modified such that they implemented this interface class Orange extends Fruit implements Edible
+ {
+  ...
+ }
+ we could ask if our object were edible. if ( obj instanceof Edible )
+ {
+   System.out.println("it is edible");
+ }
+ int[edit] int is a keyword which designates the 32 bit signed integer primitive type. The java.lang.Integer class is the nominal wrapper class when you need to store an int value but an object reference is required. Syntax: int <variable-name> = <integer-value>;
+ For example: int i = 65;
+ See also: Java Programming/Primitive Types interface[edit] interface is a Java keyword. It starts the declaration of a Java Interface. For example: public interface SampleInterface
+{
+   public void method1();
+   //...
+}
+ See also: Java Programming/Keywords/new long[edit] long is a keyword which designates the 64 bit signed integer primitive type. The java.lang.Long class is the nominal wrapper class when you need to store a long value but an object reference is required. Syntax: long <variable-name> = <integer-value>;
+ For example: long timestamp = 1269898201;
+ See also: Java Programming/Primitive Types native[edit] native is a java keyword. It marks a method, that it will be implemented in other languages, not in Java. The method is declared without a body and cannot be abstract. It works together with JNI (Java Native Interface). Syntax: [public|protected|private] native method();
+ Native methods were used in the past to write performance critical sections but with java getting faster this is now less common. Native methods are currently needed when You need to call from java a library, written in another language. You need to access system or hardware resources that are only reachable from the other language (typically C). Actually, many system functions that interact with real computer (disk and network IO, for instance) can only do this because they call native code. To complete writing native method, you need to process your class with javah tool that will generate a header code in C. You then need to provide implementation of the header code, produce dynamically loadable library (.so under Linux, .dll under Windows) and load it (in the simplest case with System.load(library_file_name) . The code completion is trivial if only primitive types like integers are passed but gets more complex if it is needed to exchange strings or objects from the C code. In general, everything can be on C level, including creation of the new objects and calling back methods, written in java. To call the code in some other language (including C++), you need to write a bridge from C to that language. This is usually trivial as most of languages are callable from C. See also[edit] [1] - JNI programming tutorial. [2] - JNI specification. new[edit] new is a Java keyword. It creates a Java object and allocates memory for it on the heap. new is also used for array creation, as arrays are also objects. Syntax: <JavaType> <variable> = new <JavaObject>();
+ For example: LinkedList list = new LinkedList();
+int[] intArray = new int[10];
+String[][] stringMatrix = new String[5][10];
+ See also: Java Programming/Creating Objects package[edit] package is a Java keyword. It declares a 'name space' for the Java class. It must be put at the top of the Java file, it should be the first Java statement line. To ensure that the package name will be unique across vendors, usually the company url is used starting in backword. Syntax: package package;
+ For example: package com.mycompany.myapplication.mymodule;
+ See also: Java Programming/Packages Java Programming/Keywords/import private[edit] private is a Java keyword which declares a member's access as private. That is, the member is only visible within the class, not from any other class (including subclasses). The visibility of private members extends to nested classes. Please note: Because access modifiers are not handled at instance level but at class level, private members of an object are visible from other instances of the same class! Syntax: private void method();
+ See also: Java Programming/Access Modifiers protected[edit] protected is a Java keyword. This keyword is an access modifier, used before a method or other class member to signify that the method or variable can only be accessed by elements residing in its own class or classes in the same package (as it would be for the default visibility level) but moreover from subclasses of its own class, including subclasses in foreign packages (if the access is made on an expression, whose type is the type of this subclass). Syntax: protected <returnType> <methodName>(<parameters>);
+ For example: protected int getAge();
+
+protected void setYearOfBirth(int year);
+ See also: Java Programming/Scope#Access modifiers public[edit] public is a Java keyword which declares a member's access as public. Public members are visible to all other classes. This means that any other class can access a public field or method. Further, other classes can modify public fields unless the field is declared as final. A best practice is to give fields private access and reserve public access to only the set of methods and final fields that define the class' public constants. This helps with encapsulation and information hiding, since it allows you to change the implementation of a class without affecting the consumers who use only the public API of the class. Below is an example of an immutable public class named Length which maintains private instance fields named units and magnitude but provides a public constructor and two public accessor methods. Code listing: Length.java  1 package org.wikibooks.java;
+ 2 
+ 3 public class Length {
+ 4    private double magnitude;
+ 5    private String units;
+ 6 
+ 7    public Length(double magnitude, String units) {
+ 8       if ((units == null) || (units.trim().length() == 0)) {
+ 9           throw new IllegalArgumentException("non-null, non-empty units required.");
+10       }
+11 
+12       this.magnitude = magnitude;
+13       this.units = units;
+14    }
+15 
+16    public double getMagnitude() {
+17       return magnitude;
+18    }
+19 
+20    public String getUnits() {
+21       return units;
+22    }
+23 }
+ return[edit] return is a Java keyword. Returns a primitive value, or an object reference, or nothing(void). It does not return object values, only object references. Syntax: return variable;  // --- Returns variable
+or
+return;           // --- Returns nothing
+ short[edit] short is a keyword. It defines a 16 bit signed integer primitive type. Syntax: short <variable-name> = <integer-value>;
+ For example: short age = 65;
+ See also: Java Programming/Primitive Types static[edit] static is a Java keyword. It can be applied to a field, a method or an inner class. A static field, method or class has a single instance for the whole class that defines it, even if there is no instance of this class in the program. For instance, a Java entry point (main()) has to be static. A static method cannot be abstract. It must be placed before the variable type or the method return type. It is recommended to place it after the access modifier and before the final keyword: Code section 1: Static field and method. 1 public static final double PI = 3.1415926535;
+2 
+3 public static void main(final String[] arguments) {
+4    //…
+5 }
+ The static items can be called on an instantiated object or directly on the class: Code section 2: Static item calls. 1 double aNumber = MyClass.PI;
+2 MyClass.main(new String[0]);
+ Static methods cannot call nonstatic methods. The this current object reference is also not available in static methods. Interest[edit] Static variables can be used as data sharing amongst objects of the same class. For example to implement a counter that stores the number of objects created at a given time can be defined as so: Code listing 1: CountedObject.java  1 public CountedObject {
+ 2    private static int counter;
+ 3    …
+ 4    public AClass() {
+ 5       …
+ 6       counter++;
+ 7    }
+ 8    …
+ 9    public int getNumberOfObjectsCreated() {
+10       return counter;
+11    }
+12 }
+ The counter variable is incremented each time an object is created. Public static variable should not be used, as these become global variables that can be accessed from everywhere in the program. Global constants can be used, however. See below: Code section 3: Constant definition. 1 public static final String CONSTANT_VAR = "Const";
+ Static methods can be used for utility functions or for functions that do not belong to any particular object. For example: Code listing 2: ArithmeticToolbox.java 1 public ArithmeticToolbox {
+2    …
+3    public static int addTwoNumbers(final int firstNumber, final int secondNumber) {
+4         return firstNumber + secondNumber;
+5    }
+6 }
+ See also Static methods strictfp[edit] strictfp is a java keyword, since Java 1.2 . It makes sure that floating point calculations result precisely the same regardless of the underlying operating system and hardware platform, even if more precision could be obtained. This is compatible with the earlier version of Java 1.1 . If you need that use it. Syntax for classes: public strictfp class MyClass 
+{ 
+  //...
+}
+ Syntax for methods: public strictfp void method() 
+{ 
+  ...
+}
+
+ See also: http://en.wikipedia.org/wiki/Strictfp super[edit] super is a keyword. It is used inside a sub-class method definition to call a method defined in the super class. Private methods of the super-class cannot be called. Only public and protected methods can be called by the super keyword. It is also used by class constructors to invoke constructors of its parent class. Super keyword are not used in static Method. Syntax: super.<method-name>([zero or more arguments]);
+ or: super([zero or more arguments]);
+ For example: Code listing 1: SuperClass.java 1 public class SuperClass {
+2    public void printHello() {
+3       System.out.println("Hello from SuperClass");
+4       return;
+5    }
+6 }
+ Code listing 2: SubClass.java  1 public class SubClass extends SuperClass {
+ 2    public void printHello() {
+ 3       super.printHello();
+ 4       System.out.println("Hello from SubClass");
+ 5       return;
+ 6    }
+ 7    public static main(String[] args) {
+ 8       SubClass obj = new SubClass();
+ 9       obj.printHello();
+10    }
+11 }
+ Running the above program: Command for Code listing 2 $Java SubClass
+ Output of Code listing 2 Hello from SuperClass
+Hello from SubClass
+ In Java 1.5 and later, the "super" keyword is also used to specify a lower bound on a wildcard type parameter in Generics. Code section 1: A lower bound on a wildcard type parameter. 1 public void sort(Comparator<? super T> comp) {
+2   ...
+3 }
+ See also: extends switch[edit] switch is a Java keyword. It is a branching operation, based on a number. The 'number' must be either char, byte, short, or int primitive type. Syntax: switch ( <integer-var> )
+{
+   case <label1>: <statements>;
+   case <label2>: <statements>;
+   ...
+   case <labeln>: <statements>;
+   default: <statements>;
+}
+ When the <integer-var> value match one of the <label>, then: The statements after the matched label will be executed including the following label's statements, until the end of the switch block, or until a break keyword is reached. For example: int var = 3;
+switch ( var )
+{
+   case 1: 
+      System.out.println( "Case: 1" );
+      System.out.println( "Execute until break" );
+      break;		  	
+   case 2: 
+      System.out.println( "Case: 2" );
+      System.out.println( "Execute until break" );
+      break;
+   case 3:
+      System.out.println( "Case: 3" );
+      System.out.println( "Execute until break" );
+      break;  	
+   case 4:
+      System.out.println( "Case: 4" );
+      System.out.println( "Execute until break" );
+      break;      
+   default:
+      System.out.println( "Case: default" );
+      System.out.println( "Execute until break" );
+      break;	      
+}
+ The output from the above code is: Case: 3
+Execute until break
+ The same code can be written with if-else blocks": int var = 3;
+if ( var == 1 ) {
+   System.out.println( "Case: 1" );
+   System.out.println( "Execute until break" );
+} else if ( var == 2 ) {
+   System.out.println( "Case: 2" );
+   System.out.println( "Execute until break" );
+} else if ( var == 3 ) {
+   System.out.println( "Case: 3" );
+   System.out.println( "Execute until break" );
+} else if ( var == 4 ) {
+   System.out.println( "Case: 4" );
+   System.out.println( "Execute until break" );
+} else {
+   // -- This is the default part -- 
+   System.out.println( "Case: default" );
+   System.out.println( "Execute until break" );
+}
+ See also: Java Programming/Keywords/if synchronized[edit] synchronized is a keyword. It marks a critical section. A critical section is where one and only one thread is executing. So to enter into the marked code the threads are synchronized, only one can enter, the others have to wait. For more information see Synchronizing Threads Methods or [3]. The synchronized keyword can be used in two ways: Create a synchronized block Mark a method synchronized A synchronized block is marked as: Code section 1: Synchronized block. 1 synchronized(<object_reference>) {
+2    // Thread.currentThread() has a lock on object_reference. All other threads trying to access it will
+3    // be blocked until the current thread releases the lock.
+4 }
+ The syntax to mark a method synchronized is: Code section 2: Synchronized method. 1 public synchronized void method() {
+2    // Thread.currentThread() has a lock on this object, i.e. a synchronized method is the same as
+3    // calling { synchronized(this) {…} }.
+4 }
+ The synchronization is always associated to an object. If the method is static, the associated object is the class. If the method is non-static, the associated object is the instance. While it is allowed to declare an abstract method as synchronized, it is meaningless to do so since synchronization is an aspect of the implementation, not the declaration, and abstract methods do not have an implementation. Singleton example[edit] As an example, we can show a thread-safe version of a singleton: Code listing 1: Singleton.java  1 /**
+ 2  * The singleton class that can be instantiated only once with lazy instantiation
+ 3  */
+ 4 public class Singleton {
+ 5     /** Static class instance */
+ 6     private volatile static Singleton instance = null;
+ 7 
+ 8     /**
+ 9      * Standard private constructor
+10      */
+11     private Singleton() {
+12         // Some initialisation
+13     }
+14    
+15     /**
+16      * Getter of the singleton instance
+17      * @return The only instance
+18      */
+19     public static Singleton getInstance() {
+20         if (instance == null) {
+21             // If the instance does not exist, go in time-consuming
+22             // section:
+23             synchronized (Singleton.class) {
+24                 if (instance == null) {
+25                     instance = new Singleton();
+26                 }
+27             }
+28         }
+29 
+30         return instance;
+31     }
+32  }
+ this[edit] this is a Java keyword. It contains the current object reference. Solves ambiguity between instance variables and parameters . Used to pass current object as a parameter to another method . Syntax: this.method();
+or
+this.variable;
+
+ Example #1 for case 1: public class MyClass
+ { 
+    //...
+    private String value;
+    //...
+    public void setMemberVar( String value )
+    {
+        this.value= value;
+    }
+ }
+ Example #2 for case 1: public class MyClass
+ { 
+    MyClass(int a, int b) {
+        System.out.println("int a: " + a);
+        System.out.println("int b: " + b);
+    }
+    MyClass(int a) {
+        this(a, 0);
+    }
+    //...
+    public static void main(String[] args) {
+        new MyClass(1, 2);
+        new MyClass(5);
+    }
+ }
+ throw[edit] throw is a keyword; it 'throws' an exception. In a throw statement, the three types of objects that can be thrown are: Exception, java:Throwable, and java:Error Syntax: throw <Exception Ref>;
+ For example: public Customer findCustomer( String name ) throws '''CustomerNotFoundException'''
+ {
+    Customer custRet = null;
+ 
+    Iterator iter = _customerList.iterator();
+    while ( iter.hasNext() )
+    {
+        Customer cust = (Customer) iter.next();
+        if ( cust.getName().equals( name ) )
+        {
+           // --- Customer find --
+           custRet = cust;
+           break;
+        }
+     }
+     if ( custRet == null )
+     {
+        // --- Customer not found ---
+        throw new '''CustomerNotFoundException'''( "Customer "+ name + " was not found" );
+     }
+ 
+    return custRet
+  }
+ See also[edit] Java Programming/Keywords/throws throws[edit] throws is a Java keyword. It is used in a method definition to declare the Exceptions to be thrown by the method. Syntax: public myMethod() throws MyException1, MyException2
+{MyException1
+  ...
+}
+ Example: class MyDefinedException extends Exception
+ {
+  public MyDefinedException(String str) 
+  {
+     super(str);
+  }   
+ }
+
+ public class MyClass
+ {
+    public static void showMyName(String str) throws MyDefinedException
+    {
+          if(str.equals("What is your Name?"))
+                throw new MyDefinedException("My name is Blah Blah");
+    }
+    public static void main(String a[])
+    {
+       try
+       {
+          showMyName("What is your Name?");
+       }
+       catch(MyDefinedException mde)
+       {
+          mde.printStackTrace();
+       }
+     }
+ }
+ transient[edit] transient is a Java keyword which marks a member variable not to be serialized when it is persisted to streams of bytes. When an object is transferred through the network, the object needs to be 'serialized'. Serialization converts the object state to serial bytes. Those bytes are sent over the network and the object is recreated from those bytes. Member variables marked by the java transient keyword are not transferred; they are lost intentionally. Syntax: private transient <member-variable>;
+or 
+transient private <member-variable>;
+ For example: public class Foo implements Serializable
+ {
+   private String saveMe;
+   private transient String dontSaveMe;
+   private transient String password;
+   //...
+ }
+ See also: Java language specification reference: jls Serializable Interface. Serializable try[edit] try is a keyword. It starts a try block. If an Exception is thrown inside a try block, the Exception will be compared to any of the catch part of the block. If the Exception matches with one of the Exceptions in the catch part, the exception will be handled there. Three things can happen in a try block: No exception is thrown: the code in the try block plus the code in the finally block will be executed plus the code after the try-catch block is executed An exception is thrown and a match is found among the catch blocks: the code in the try block until the exception occurred is executed plus the matched catch block is executed plus the finally block is executed plus the code after the try-catch block is executed An exception is thrown and no match found among the catch blocks: the code in the try block until the exception occurred is executed plus the finally block is executed NO CODE after the try-catch block is executed For example: public void method() throws NoMatchedException
+ {
+   try {
+     //...
+     throw new '''MyException_1'''();
+     //...
+   } catch ( MyException_1 e ) {
+     // --- '''Handle the Exception_1 here''' --
+   } catch ( MyException_2 e ) {
+     // --- Handle the Exception_2 here --
+   } finally {
+     // --- This will always be executed no matter what --
+   }
+   // --- Code after the try-catch block
+ }
+ How the catch-blocks are evaluated see Catching Rule See also: Java Programming/Keywords/catch Java Programming/Keywords/finally Java Programming/Throwing and Catching Exceptions#Catching Rule void[edit] void is a Java keyword. Used at method declaration and definition to specify that the method does not return any type, the method returns void. It is not a type and there is no void references/pointers as in C/C++. For example: public void method()
+ {
+   //...
+   return;   // -- In this case the return is optional
+ }
+ See also: Java Programming/Keywords/return volatile[edit] volatile is a keyword. When member variables are marked with this keyword, it changes the runtime behavior in a way that is noticeable when multiple threads access these variables. Without the volatile keyword, one thread could observe another thread update member variables in an order that is not consistent with what is specified in sourcecode. Unlike the synchronized keyword, concurrent access to a volatile field is allowed. Syntax: private volatile <member-variable>;
+or 
+volatile private <member-variable>;
+ For example: private volatile changingVar;
+ See also: Java Programming/Keywords/synchronized while[edit] while is a Java keyword. It starts a looping block. The general syntax of a while, using Extended Backus-Naur Form, is while-looping-statement ::= while condition-clause 
+                                    single-statement | block-statement
+ 
+condition-clause    ::= ( Boolean Expression )
+single-statement    ::= Statement
+block-statement     ::= { Statement [ Statements ] }
+ For example: while ( i < maxLoopIter )
+ {
+    System.println("Iter=" +i++);
+ }
+ See also: Java Programming/Statements Java Programming/Keywords/for Java Programming/Keywords/do Comments Java Programming Keywords Coding conventions Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Keywords&oldid=3295223" Categories: Book:Java Programming Book:Java Programming/Keywords Hidden category: Pages with deep filing Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Čeština Français Português Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:42. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

@@ -1,0 +1,133 @@
+String From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 4 July 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Methods Java Programming String Classes, Objects and Types Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions String is a class built into the Java language defined in the java.lang package. It represents character strings. Strings are ubiquitous in Java. Study the String class and its methods carefully. It will serve you well to know how to manipulate them skillfully. String literals in Java programs, such as "abc", are implemented as instances of this class like this: Code section 3.81: String example. 1 String str = "This is string literal";
+ On the right hand side a String object is created represented by the string literal. Its object reference is assigned to the str variable. Immutability[edit] Strings are immutable; that is, they cannot be modified once created. Whenever it looks as if a String object was modified actually a new String object was created. For instance, the String.trim() method returns the string with leading and trailing whitespace removed. Actually, it creates a new trimmed string and then returns it. Pay attention on what happens in Code section 3.82: Code section 3.82: Immutability. 1 String badlyCutText = "     Java is great.     ";
+2 System.out.println(badlyCutText);
+3 
+4 badlyCutText.trim();
+5 System.out.println(badlyCutText);
+ Output for Code section 3.82      Java is great.    
+     Java is great.    
+ The trim() method call does not modify the object so nothing happens. It creates a new trimmed string and then throws it away. Code section 3.83: Assignment. 1 String badlyCutText = "     Java is great.     ";
+2 System.out.println(badlyCutText);
+3 
+4 badlyCutText = badlyCutText.trim();
+5 System.out.println(badlyCutText);
+ Output for Code section 3.83      Java is great.    
+Java is great.
+ The returned string is assigned to the variable. It does the job as the trim() method has created a new String instance. Concatenation[edit] The Java language provides special support for the string concatenation with operator +: Code section 3.84: Examples of concatenation. 1 System.out.println("First part");
+2 System.out.println(" second part");
+3 String str = "First part" + " second part";
+4 System.out.println(str);
+ Output for Code section 3.84 First part
+ second part
+First part second part
+ The concatenation is not always processed at the same time. Raw string literals concatenation is done at compile time, hence there is a single string literal in the byte code of the class. Concatenation with at least one object is done at runtime. + operator can concatenate other objects with strings. For instance, integers will be converted to strings before the concatenation: Code section 3.85: Concatenation of integers. 1 System.out.println("Age=" + 25);
+ Output for Code section 3.85 Age=25
+ Each Java object has the String toString() inherited from the Object class. This method provides a way to convert objects into Strings. Most classes override the default behavior to provide more specific (and more useful) data in the returned String: Code section 3.86: Concatenation of objects. 1 System.out.println("Age=" + new Integer(31));
+ Output for Code section 3.86 Age=31
+ Using StringBuilder/StringBuffer to concatenate strings[edit] Remember that String objects are immutable objects. Once a String is created, it can not be modified, takes up memory until garbage collected. Be careful of writing a method like this: Code section 3.87: Raw concatenation. 1 public String convertToString(Collection<String> words) {
+2   String str = "";
+3   // Loops through every element in words collection
+4   for (String word : words) {
+5     str = str + word + " ";
+6   }
+7   return str;
+8 }
+ On the + operation a new String object is created at each iteration. Suppose words contains the elements ["Foo", "Bar", "Bam", "Baz"]. At runtime, the method creates thirteen Strings: "" "Foo" " " "Foo " "Foo Bar" " " "Foo Bar " "Foo Bar Bam" " " "Foo Bar Bam " "Foo Bar Bam Baz" " " "Foo Bar Bam Baz " Even though only the last one is actually useful. To avoid unnecessary memory use like this, use the StringBuilder class. It provides similar functionality to Strings, but stores its data in a mutable way. Only one StringBuilder object is created. Also because object creation is time consuming, using StringBuilder produces much faster code. Code section 3.88: Concatenation with StringBuilder. 1 public String convertToString(Collection<String> words) {
+2   StringBuilder buf = new StringBuilder();
+3   // Loops through every element in words collection
+4   for (String word : words) {
+5     buf.append(word);
+6     buf.append(" ");
+7   }
+8   return buf.toString();
+9 }
+ As StringBuilder isn't thread safe (see the chapter on Concurrency) you can't use it in more than one thread. For a multi-thread environment, use StringBuffer instead which does the same and is thread safe. However, StringBuffer is slower so only use it when it is required. Moreover, before Java 5 only StringBuffer existed. Comparing Strings[edit] Comparing strings is not as easy as it may first seem. Be aware of what you are doing when comparing String's using ==: Code section 3.89: Dangerous comparison. 1 String greeting = "Hello World!";
+2 if (greeting == "Hello World!") {
+3     System.out.println("Match found.");
+4 }
+ Output for Code section 3.89 Match found.
+ The difference between the above and below code is that the above code checks to see if the String's are the same objects in memory which they are. This is as a result of the fact that String's are stored in a place in memory called the String Constant Pool. If the new keyword is not explicitly used when creating the String it checks to see if it already exists in the Pool and uses the existing one. If it does not exist, a new Object is created. This is what allows Strings to be immutable in Java. To test for equality, use the equals(Object) method inherited by every class and defined by String to return true if and only if the object passed in is a String contains the exact same data: Code section 3.90: Right comparison. 1 String greeting = "Hello World!";
+2 if (greeting.equals("Hello World!")) {
+3     System.out.println("Match found.");
+4 }
+ Output for Code section 3.90 Match found.
+ Remember that the comparison is case sensitive. Code section 3.91: Comparison with lowercase. 1 String greeting = "Hello World!";
+2 if (greeting.equals("hello world!")) {
+3     System.out.println("Match found.");
+4 }
+ Output for Code section 3.91 To order String objects, use the compareTo() method, which can be accessed wherever we use a String datatype. The compareTo() method returns a negative, zero, or positive number if the parameter is less than, equal to, or greater than the object on which it is called. Let's take a look at an example: Code section 3.92: Order. 1 String person1 = "Peter";
+2 String person2 = "John";
+3 if (person1.compareTo(person2) > 0) {
+4     // Badly ordered
+5     String temp = person1;
+6     person1 = person2;
+7     person2 = temp;
+8 }
+ The code section 3.92 is comparing the String variable person1 to person2. If person1 is different even in the slightest manner, we will get a value above or below 0 depending on the exact difference. The result is negative if this String object lexicographically precedes the argument string. The result is positive if this String object lexicographically follows the argument string. Take a look at the Java API for more details. Splitting a String[edit] Sometimes it is useful to split a string into separate strings, based on a regular expressions. The String class has a split() method, since Java 1.4, that will return a String array: Code section 3.93: Order. 1 String person = "Brown, John:100 Yonge Street, Toronto:(416)777-9999";
+2 ...
+3 String[] personData = person.split(":");
+4 ...
+5 String name    = personData[0];
+6 String address = personData[1];
+7 String phone   = personData[2];
+ Another useful application could be to split the String text based on the new line character, so you could process the text line by line. Substrings[edit] It may also be sometimes useful to create substrings, or strings using the order of letters from an existing string. This can be done in two methods. The first method involves creating a substring out of the characters of a string from a given index to the end: Code section 3.94: Truncating string. 1 String str = "coffee";
+2 System.out.println(str.substring(3));
+ Output for Code section 3.94 fee
+ The index of the first character in a string is 0. c o f f e e 0 1 2 3 4 5 By counting from there, it is apparent that the character in index 3 is the second "f" in "coffee". This is known as the beginIndex. All characters from the beginIndex until the end of the string will be copied into the new substring. The second method involves a user-defined beginIndex and endIndex: Code section 3.95: Extraction of string. 1 String str = "supporting";
+2 System.out.println(str.substring(3, 7));
+ Output for Code section 3.95 port
+ The string returned by substring() would be "port". s u p p o r t i n g 0 1 2 3 4 5 6 7 8 9 Please note that the endIndex is not inclusive. This means that the last character will be of the index endIndex-1. Therefore, in this example, every character from index 3 to index 6, inclusive, was copied into the substring. It is easy to mistake the method substring() for subString() (which does not exist and would return with a syntax error on compilation). Substring is considered to be one word. This is why the method name does not seem to follow the common syntax of Java. Just remember that this style only applies to methods or other elements that are made up of more than one word. String cases[edit] The String class also allows for the modification of cases. The two methods that make this possible are toLowerCase() and toUpperCase(). Code section 3.96: Case modification. 1 String str = "wIkIbOoKs";
+2 System.out.println(str.toLowerCase());
+3 System.out.println(str.toUpperCase());
+ Output for Code section 3.96 wikibooks
+WIKIBOOKS
+ These methods are useful to do a search which is not case sensitive: Code section 3.97: Text search.  1 String word = "Integer";
+ 2 String text = "A number without a decimal part is an integer."
+ 3   + " Integers are a list of digits.";
+ 4 
+ 5 ...
+ 6 
+ 7 // Remove the case
+ 8 String lowerCaseWord = word.toLowerCase();
+ 9 String lowerCaseText = text.toLowerCase();
+10 
+11 // Search
+12 int index = lowerCaseText.indexOf(lowerCaseWord);
+13 while (index != -1) {
+14   System.out.println(word
+15     + " appears at column "
+16     + (index + 1)
+17     + ".");
+18   index = lowerCaseText.indexOf(lowerCaseWord, index + 1);
+19 }
+ Output for Code section 3.97 Integer appears at column 38.
+Integer appears at column 47.
+ Test your knowledge Question 3.12: You have mail addresses in the following form: <firstName>.<lastName>@<companyName>.org Write the String getDisplayName(String) method that receives the mail string as parameter and returns the readable person name like this: LASTNAME Firstname Answer Answer 3.12: getDisplayName()  1 public static String getDisplayName(String mail) {
+ 2   String displayName = null;
+ 3  
+ 4   if (mail != null) {
+ 5     String[] mailParts = mail.split("@");
+ 6     String namePart = mailParts[0];
+ 7     String[] namesParts = namePart.split("\\.");
+ 8    
+ 9     // The last name
+10     String lastName = namesParts[1];
+11     lastName = lastName.toUpperCase();
+12    
+13     // The first name
+14     String firstName = namesParts[0];
+15    
+16     String firstNameInitial = firstName.substring(0, 1);
+17     firstNameInitial = firstNameInitial.toUpperCase();
+18    
+19     String firstNameEnd = firstName.substring(1);
+20     firstNameEnd = firstNameEnd.toLowerCase();
+21    
+22     // Concatenation
+23     StringBuilder displayNameBuilder = new StringBuilder(lastName).append(" ").append(firstNameInitial).append(firstNameEnd);
+24     displayName = displayNameBuilder.toString();
+25   }
+26  
+27   return displayName;
+28 }
+ We only process non null strings, We first split the mail into two parts to separate the personal information from the company information and we keep the name data, Then we split the name information to separate the first name from the last name. As the split() method use regular expression and . is a wildcard character, we have to escape it (\.). However, in a string, the \ is also a special character, so we need to escape it too (\\.), The last name is just capitalized, As the case of all the first name characters will not be the same, we have to cut the first name. Only the first name initial will be capitalized, Now we can concatenate all the fragments. We prefer to use a StringBuilder to do that. See also[edit] Java API: java.lang.String Java API: java.lang.StringBuffer Java API: java.lang.StringBuilder Methods Java Programming String Classes, Objects and Types Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/API/java.lang.String&oldid=3241519" Categories: Book:Java Programming Book:Java Programming/API Hidden category: Pages with deep filing Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 4 July 2017, at 18:00. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

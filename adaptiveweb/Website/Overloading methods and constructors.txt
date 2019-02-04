@@ -1,0 +1,184 @@
+Overloading and Overriding From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Interfaces Java Programming Overloading Methods and Constructors Object Lifecycle Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics Method overloading[edit] In a class, there can be several methods with the same name. However they must have a different signature. The signature of a method is comprised of its name, its parameter types and the order of its parameters. The signature of a method is not comprised of its return type nor its visibility nor the exceptions it may throw. The practice of defining two or more methods within the same class that share the same name but have different parameters is called overloading methods. Methods with the same name in a class are called overloaded methods. Overloading methods offers no specific benefit to the JVM but it is useful to the programmer to have several methods do the same things but with different parameters. For example, we may have the operation runAroundThe represented as two methods with the same name, but different input parameter types: Code section 4.22: Method overloading. 1 public void runAroundThe(Building block) {
+2   ...
+3 }
+4 
+5 public void runAroundThe(Park park) {
+6   ...
+7 }
+ One type can be the subclass of the other: Code listing 4.11: ClassName.java  1 public class ClassName {
+ 2 
+ 3   public static void sayClassName(Object aObject) {
+ 4     System.out.println("Object");
+ 5   }
+ 6 
+ 7   public static void sayClassName(String aString) {
+ 8     System.out.println("String");
+ 9   }
+10 
+11   public static void main(String[] args) {
+12     String aString = new String();
+13     sayClassName(aString);
+14 
+15     Object aObject = new String();
+16     sayClassName(aObject);
+17   }
+18 }
+ Console for Code listing 4.11 String
+Object
+ Although both methods would be fit to call the method with the String parameter, it is the method with the nearest type that will be called instead. To be more accurate, it will call the method whose parameter type is a subclass of the parameter type of the other method. So, aObject will output Object. Beware! The parameter type is defined by the declared type of an object, not its instantiated type! The following two method definitions are valid Code section 4.23: Method overloading with the type order. 1 public void logIt(String param, Error err) {
+2   ...
+3 }
+4 
+5 public void logIt(Error err, String param) {
+6   ...
+7 }
+ because the type order is different. If both input parameters were type String, that would be a problem since the compiler would not be able to distinguish between the two: Code section 4.24: Bad method overloading. 1 public void logIt(String param, String err) {
+2   ...
+3 }
+4 
+5 public void logIt(String err, String param) {
+6   ...
+7 }
+ The compiler would give an error for the following method definitions as well: Code section 4.25: Another bad method overloading. 1 public void logIt(String param) {
+2   ...
+3 }
+4 
+5 public String logIt(String param) {
+6   String retValue;
+7   ...
+8   return retValue;
+9 }
+ Note, the return type is not part of the unique signature. Why not? The reason is that a method can be called without assigning its return value to a variable. This feature came from C and C++. So for the call: Code section 4.26: Ambiguous method call. 1 logIt(msg);
+ the compiler would not know which method to call. It is also the case for the thrown exceptions. Test your knowledge Question 4.6: Which methods of the Question6 class will cause compile errors? Question6.java  1 public class Question6 {
+ 2  
+ 3   public void example1() {
+ 4   }
+ 5 
+ 6   public int example1() {
+ 7   }
+ 8 
+ 9   public void example2(int x) {
+10   }
+11 
+12   public void example2(int y) {
+13   }
+14 
+15   private void example3() {
+16   }
+17 
+18   public void example3() {
+19   }
+20 
+21   public String example4(int x) {
+22     return null;
+23   }
+24 
+25   public String example4() {
+26     return null;
+27   }
+28 }
+ Answer Question6.java  1 public class Question6 {
+ 2  
+ 3   public void example1() {
+ 4   }
+ 5 
+ 6   public int example1() {
+ 7   }
+ 8 
+ 9   public void example2(int x) {
+10   }
+11 
+12   public void example2(int y) {
+13   }
+14 
+15   private void example3() {
+16   }
+17 
+18   public void example3() {
+19   }
+20 
+21   public String example4(int x) {
+22     return null;
+23   }
+24 
+25   public String example4() {
+26     return null;
+27   }
+28 }
+ The example1, example2 and example3 methods will cause compile errors. The example1 methods cannot co-exist because they have the same signature (remember, return type is not part of the signature). The example2 methods cannot co-exist because the names of the parameters are not part of the signature. The example3 methods cannot co-exist because the visibility of the methods are not part of the signature. The example4 methods can co-exist, because they have different method signatures. Variable Argument[edit] Instead of overloading, you can use a dynamic number of arguments. After the last parameter, you can pass optional unlimited parameters of the same type. These parameters are defined by adding a last parameter and adding ... after its type. The dynamic arguments will be received as an array: Code section 4.27: Variable argument.  1   public void registerPersonInAgenda(String firstName, String lastName, Date... meeting) {
+ 2     String[] person = {firstName, lastName};
+ 3     lastPosition = lastPosition + 1;
+ 4     contactArray[lastPosition] = person;
+ 5 
+ 6     if (meeting.length > 0) {
+ 7       Date[] temporaryMeetings = registeredMeetings.length + meeting.length;
+ 8       for (i = 0; i < registeredMeetings.length; i++) {
+ 9         temporaryMeetings[i] = registeredMeetings[i];
+10       }
+11       for (i = 0; i < meeting.length; i++) {
+12         temporaryMeetings[registeredMeetings.length + i] = meeting[i];
+13       }
+14       registeredMeetings = temporaryMeetings;
+15     }
+16   }
+ The above method can be called with a dynamic number of arguments, for example: Code section 4.27: Constructor calls. 1 registerPersonInAgenda("John", "Doe");
+2 registerPersonInAgenda("Mark", "Lee", new Date(), new Date());
+ This feature was not available before Java 1.5 . Constructor overloading[edit] The constructor can be overloaded. You can define more than one constructor with different parameters. For example: Code listing 4.12: Constructors.  1 public class MyClass {
+ 2 
+ 3   private String memberField;
+ 4  
+ 5   /**
+ 6    * MyClass Constructor, there is no input parameter
+ 7    */
+ 8   public MyClass() {
+ 9      ...
+10   }
+11  
+12   /**
+13    * MyClass Constructor, there is one input parameter
+14    */
+15    public MyClass(String param1) {
+16      memberField = param1;
+17      ...
+18   }
+19 }
+ In the code listing 4.12, we defined two constructors, one with no input parameter, and one with one input parameter. You may ask which constructor will be called. Its depends how the object is created with the new keyword. See below: Code section 4.29: Constructor calls. 1 // The constructor with no input parameter will be called
+2 MyClass obj1 = new MyClass();
+3 
+4 // The constructor with one input param. will be called
+5 MyClass obj2 = new MyClass("Init Value");
+ In the code section 4.29, we created two objects from the same class, or we can also say that obj1 and obj2 both have the same type. The difference between the two is that in the first one the memberField field is not initialized, in the second one that is initialized to "Init Value". A constructor may also be called from another constructor, see below: Code listing 4.13: Constructor pooling.  1 public class MyClass {
+ 2 
+ 3   private String memberField;
+ 4  
+ 5   /**
+ 6    * MyClass Constructor, there is no input parameter
+ 7    */
+ 8   public MyClass() {
+ 9     MyClass("Default Value");
+10   }
+11  
+12   /**
+13    * MyClass Constructor, there is one input parameter
+14    */
+15   public MyClass(String param1) {
+16     memberField = param1;
+17     ...
+18   }
+19 }
+ In the code listing 4.13, the constructor with no input parameter calls the other constructor with the default initial value. This call must be the first instruction of a constructor or else a compiler error will occur. The code gives an option to the user, to create the object with the default value or create the object with a specified value. The first constructor could have been written using the this keyword as well: Code section 4.30: Another constructor pooling. 1   public MyClass() {
+2     this("Default Value");
+3   }
+ Such a call reduces the code repetition. Method overriding[edit] To easily remember what can be done in method overriding, keep in mind that all you can do in an object of a class, you can also do in an object of a subclass, only the behavior can change. A subclass should be covariant. Although a method signature has to be unique inside a class, the same method signature can be defined in different classes. If we define a method that exists in the super class then we override the super class method. It is called method overriding. This is different from method overloading. Method overloading happens with methods with the same name but different signature. Method overriding happens with methods with the same name and same signature between inherited classes. The return type can cause the same problem we saw above. When we override a super class method the return type also must be the same. If that is not the same, the compiler will give you an error. Beware! If a class declares two public methods with the same name, and a subclass overrides one of them, the subclass still inherits the other method. In this respect, the Java programming language differs from C++. Method overriding is related to dynamic linking, or runtime binding. In order for the Method Overriding to work, the method call that is going to be called can not be determined at compilation time. It will be decided at runtime, and will be looked up in a table. Code section 4.31: Runtime binding.  1 MyClass obj;
+ 2 
+ 3 if (new java.util.Calendar().get(java.util.Calendar.AM_PM) == java.util.Calendar.AM) {
+ 4   // Executed during a morning
+ 5   obj = new SubOfMyClass();
+ 6 } else {
+ 7   // Executed during an afternoon
+ 8   obj = new MyClass();
+ 9 }
+10  
+11 obj.myMethod();
+ In the code section 4.31, the expression at line 3 is true if it is executed during a morning and false if it is executed during an afternoon. Thus, the instance of obj will be a MyClass or a SubOfMyClass depending on the execution time. So it is impossible to determine the method address at compile time. Because the obj reference can point to an object and all its sub objects, and that will be known only at runtime, a table is kept with all the possible method addresses to be called. Do not confuse: Code section 4.32: Declared type and instantiated type. 1 obj.myMethod(myParameter);
+ The implementation of this method is searched using the instantiated type of the called object (obj) and the declared type of the parameter object (myParameter). Also another rule is that when you do an override, the visibility of the new method that overrides the super class method can not be reduced. The visibility can be increased, however. So if the super class method visibility is public, the override method can not be package, or private. An override method must throw the same exceptions as the super class, or their subexceptions. super references to the parent class (i.e. super.someMethod()). It can be used in a subclass to access inherited methods that the subclass has overridden or inherited fields that the subclass has hidden. A common mistake is to think that if we can override methods, we could also override member variables. This is not the case, as it is useless. You can not redefine a variable that is private in the super class as such a variable is not visible. To do: Add some exercises like the ones in Variables Interfaces Java Programming Overloading Methods and Constructors Object Lifecycle Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Overloading_Methods_and_Constructors&oldid=3360336" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 10 January 2018, at 19:14. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

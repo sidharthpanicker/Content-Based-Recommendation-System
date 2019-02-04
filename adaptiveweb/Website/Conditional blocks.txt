@@ -1,0 +1,117 @@
+Conditional blocks From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Statements Java Programming Conditional blocks Loop blocks Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions Conditional blocks allow a program to take a different path depending on some condition(s). These allow a program to perform a test and then take action based on the result of that test. In the code sections, the actually executed code lines will be highlighted. If[edit] The if block executes only if the boolean expression associated with it is true. The structure of an if block is as follows: if (boolean expression1) { statement1 statement2 ... statementn } Here is a double example to illustrate what happens if the condition is true and if the condition is false: Code section 3.22: Two if blocks.  1 int age = 6;
+ 2 System.out.println("Hello!");
+ 3 
+ 4 if (age < 13) {
+ 5   System.out.println("I'm a child.");
+ 6 }
+ 7 
+ 8 if (age > 20) {
+ 9   System.out.println("I'm an adult.");
+10 }
+11 
+12 System.out.println("Bye!");
+ Output for Code section 3.22 Hello!
+I'm a child
+Bye!
+ If only one statement is to be executed after an if block, it does not have to be enclosed in curly braces. For example, if (i == 0) i = 1; is a perfectly valid portion of Java code. This works for most control structures, such as else and while. However Oracle's Java Code Conventions explicitly state that the braces should always be used. If/else[edit] The if block may optionally be followed by an else block which will execute if that boolean expression is false. The structure of an if block is as follows: if (boolean expression1) { statement1 statement2 ... statementn } else { statement1bis statement2bis ... statementnbis } If/else-if/else[edit] An else-if block may be used when multiple conditions need to be checked. else-if statements come after the if block, but before the else block. The structure of an if block is as follows: if (boolean expression1) { statement1.1 statement1.2 ... statementn } else if (boolean expression2) { statement2.1 statement2.2 ... statement2.n } else { statement3.1 statement3.2 ... statement3.n } Here is an example to illustrate: Code listing 3.3: MyConditionalProgram.java  1 public class MyConditionalProgram {
+ 2     public static void main (String[] args) {
+ 3       int a = 5;
+ 4       if (a > 0) {
+ 5           // a is greater than 0, so this statement will execute
+ 6           System.out.println("a is positive");
+ 7       } else if (a >= 0) {
+ 8           // a case has already executed, so this statement will NOT execute
+ 9           System.out.println("a is positive or zero");
+10       } else {
+11           // a case has already executed, so this statement will NOT execute
+12           System.out.println("a is negative");
+13       }
+14     }
+15 }
+ Output for code listing 3.3 a is positive
+ Keep in mind that only a single block will execute, and it will be the first true condition. All the conditions are evaluated when if is reached, no matter what the result of the condition is, after the execution of the if block: Code section 3.23: A new value for the variable a.  1 int a = 5;
+ 2 if (a > 0) {
+ 3     // a is greater than 0, so this statement will execute
+ 4     System.out.println("a is positive");
+ 5     a = -5;
+ 6 } else if (a < 0) {
+ 7     // a WAS greater than 0, so this statement will not execute
+ 8     System.out.println("a is negative");
+ 9 } else {
+10     // a does not equal 0, so this statement will not execute
+11     System.out.println("a is zero");
+12 }
+ Output for code section 3.23 a is positive
+ Conditional expressions[edit] Conditional expressions use the compound ?: operator. Syntax: boolean expression1 ? expression1 : expression2 This evaluates boolean expression1, and if it is true then the conditional expression has the value of expression1; otherwise the conditional expression has the value of expression2. Example: Code section 3.24: Conditional expressions. 1 String answer = (p < 0.05)? "reject" : "keep";
+ This is equivalent to the following code fragment: Code section 3.25: Equivalent code. 1 String answer;
+2 if (p < 0.05) {
+3     answer = "reject";
+4 } else {
+5     answer = "keep";
+6 }
+ Switch[edit] The switch conditional statement is basically a shorthand version of writing many if...else statements. The switch block evaluates a char, byte, short, or int (or enum, starting in J2SE 5.0; or String, starting in J2SE 7.0), and, based on the value provided, jumps to a specific case within the switch block and executes code until the break command is encountered or the end of the block. If the switch value does not match any of the case values, execution will jump to the optional default case. The structure of a switch statement is as follows: switch (int1 or char1 or short1 or byte1 or enum1 or String value1) { case case value1: statement1.1 ... statement1.n break; case case value2: statement2.1 ... statement2.n break; default: statementn.1 ... statementn.n } Here is an example to illustrate: Code section 3.26: A switch block.  1 int i = 3;
+ 2 switch(i) {
+ 3     case 1:
+ 4         // i doesn't equal 1, so this code won't execute
+ 5         System.out.println("i equals 1");
+ 6         break;
+ 7     case 2:
+ 8         // i doesn't equal 2, so this code won't execute
+ 9         System.out.println("i equals 2");
+10         break;
+11     default:
+12         // i has not been handled so far, so this code will execute
+13         System.out.println("i equals something other than 1 or 2");
+14 }
+ Output for code section 3.26 i equals something other than 1 or 2
+ If a case does not end with the break statement, then the next case will be checked, otherwise the execution will jump to the end of the switch statement. Look at this example to see how it's done: Code section 3.27: A switch block containing a case without break.  1 int i = -1;
+ 2 switch(i) {
+ 3     case -1:
+ 4     case 1:
+ 5         // i is -1, so it will fall through to this case and execute this code
+ 6         System.out.println("i is 1 or -1");
+ 7         break;
+ 8     case 0:
+ 9         // The break command is used before this case, so if i is 1 or -1, this will not execute
+10         System.out.println("i is 0");
+11 }
+ Output for code section 3.27 i is 1 or -1
+ Starting in J2SE 5.0, the switch statement can also be used with an enum value instead of an integer. Though enums have not been covered yet, here is an example so you can see how it's done (note that the enum constants in the cases do not need to be qualified with the type: Code section 3.28: A switch block with an enum type.  1 Day day = Day.MONDAY; // Day is a fictional enum type containing the days of the week
+ 2 switch(day) {
+ 3     case MONDAY:
+ 4         // Since day == Day.MONDAY, this statement will execute
+ 5         System.out.println("Mondays are the worst!");
+ 6         break;
+ 7     case TUESDAY:
+ 8     case WEDNESDAY:
+ 9     case THURSDAY:
+10         System.out.println("Weekdays are so-so.");
+11         break;
+12     case FRIDAY:
+13     case SATURDAY:
+14     case SUNDAY:
+15         System.out.println("Weekends are the best!");
+16         break;
+17 }
+ Output for code section 3.28 Mondays are the worst!
+ Starting in J2SE 7.0, the switch statement can also be used with an String value instead of an integer. Code section 3.29: A switch block with a String type.  1 String day = "Monday";
+ 2 switch(day) {
+ 3     case "Monday":
+ 4         // Since day == "Monday", this statement will execute
+ 5         System.out.println("Mondays are the worst!");
+ 6         break;
+ 7     case "Tuesday":
+ 8     case "Wednesday":
+ 9     case "Thursday":
+10         System.out.println("Weekdays are so-so.");
+11         break;
+12     case "Friday":
+13     case "Saturday":
+14     case "Sunday":
+15         System.out.println("Weekends are the best!");
+16         break;
+17     default:
+18         throw new IllegalArgumentException("Invalid day of the week: " + day);
+19 }
+ Output for code section 3.29 Mondays are the worst!
+ Statements Java Programming Conditional blocks Loop blocks Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Conditional_blocks&oldid=3295193" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

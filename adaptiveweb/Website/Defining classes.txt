@@ -1,0 +1,107 @@
+Defining Classes From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Classes and Objects Java Programming Defining Classes Inheritance Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics Fundamentals[edit] Every class in Java can be composed of the following elements: fields, member variables or instance variables — Fields are variables that hold data specific to each object. For example, an employee might have an ID number. There is one field for each object of a class. member methods or instance methods — Member methods perform operations on an object. For example, an employee might have a method to issue his paycheck or to access his name. static fields or class fields — Static fields are common to any object of the same class. For example, a static field within the Employee class could keep track of the last ID number issued. Each static field exists only once in the class, regardless of how many objects are created for that class. static methods or class methods — Static methods are methods that do not affect a specific object. inner classes — Sometimes it is useful to contain a class within another one if it is useless outside of the class or should not be accessed outside the class. Constructors — A special method that generates a new object. Parameterized types — Since 1.5, parameterized types can be assigned to a class during definition. The parameterized types will be substituted with the types specified at the class's instantiation. It is done by the compiler. It is similar to the C language macro '#define' statement, where a preprocessor evaluates the macros. Code listing 4.1: Employee.java  1 public class Employee {              // This defines the Employee class.
+ 2                                      // The public modifier indicates that
+ 3                                      // it can be accessed by any other class
+ 4 
+ 5     private static int nextID;       // Define a static field. Only one copy of this will exist,
+ 6                                      // no matter how many Employees are created.
+ 7 
+ 8     private int myID;                // Define fields that will be stored  
+ 9     private String myName;           // for each Employee. The private modifier indicates that
+10                                      // only code inside the Employee class can access it.
+11  
+12     public Employee(String name) {   // This is a constructor. You can pass a name to the constructor
+13                                      // and it will give you a newly created Employee object.
+14         myName = name;
+15         myID = nextID;               // Automatically assign an ID to the object
+16         nextID++;                    // Increment the ID counter
+17     }
+18  
+19     public String getName() {        // This is a member method that returns the
+20                                      // Employee object's name.
+21         return myName;               // Note how it can access the private field myName.
+22     }
+23  
+24     public int getID() {             // This is another member method.
+25    
+26         return myID;  
+27     }
+28  
+29     public static int getNextID() {  // This is a static method that returns the next ID
+30                                      // that will be assigned if another Employee is created.
+31         return nextID;
+32     }
+33 }
+ The following Java code would produce this output: Code listing 4.2: EmployeeList.java  1 public class EmployeeList {
+ 2     public static void main(String[] args) {
+ 3 
+ 4         System.out.println(Employee.getNextID());
+ 5  
+ 6         Employee a = new Employee("John Doe");
+ 7         Employee b = new Employee("Jane Smith");
+ 8         Employee c = new Employee("Sally Brown");
+ 9  
+10         System.out.println(Employee.getNextID());
+11  
+12         System.out.println(a.getID() + ": " + a.getName());
+13         System.out.println(b.getID() + ": " + b.getName());
+14         System.out.println(c.getID() + ": " + c.getName());
+15     }
+16 }
+ Console for Code listing 4.2 0
+3
+0: John Doe
+1: Jane Smith
+2: Sally Brown
+ Constructors[edit] A constructor is called to initialize an object immediately after the object has been allocated: Code listing 4.3: Cheese.java 1 public class Cheese {
+2   // This is a constructor
+3   public Cheese() {
+4     System.out.println("Construct an instance");
+5   }
+6 }
+ Typically, a constructor is invoked using the new keyword: Code section 4.1: A constructor call. 1 Cheese cheese = new Cheese();
+ The constructor syntax is close to the method syntax. However, the constructor has the same name as the name of the class (with the same case) and the constructor has no return type. The second point is the most important difference as a method can also have the same name as the class, which is not recommended: Code listing 4.4: Cheese.java 1 public class Cheese {
+2   // This is a method with the same name as the class
+3   public void Cheese() {
+4     System.out.println("A method execution.");
+5   }
+6 }
+ The returned object is always a valid, meaningful object, as opposed to relying on a separate initialization method. A constructor cannot be abstract, final, native, static, strictfp nor synchronized. However, a constructor, like methods, can be overloaded and take parameters. Code listing 4.5: Cheese.java  1 public class Cheese {
+ 2      // This is a constructor
+ 3      public Cheese() {
+ 4           doStuff();
+ 5      }
+ 6 
+ 7      // This is another constructor
+ 8      public Cheese(int weight) {
+ 9           doStuff();
+10      }
+11 
+12      // This is yet another constructor
+13      public Cheese(String type, int weight) {
+14           doStuff();
+15      }
+16 }
+ By convention, a constructor that accepts an object of its own type as a parameter and copies the data members is called a copy constructor. One interesting feature of constructors is that if and only if you do not specify a constructor in your class, the compiler will create one for you. This default constructor, if written out would look like: Code listing 4.6: Cheese.java 1 public class Cheese {
+2      public Cheese() {
+3            super();
+4      }
+5 }
+ The super() command calls the constructor of the superclass. If there is no explicit call to super(...) or this(...), then the default superclass constructor super(); is called before the body of the constructor is executed. That said, there are instances where you need to add in the call manually. For example, if you write even one constructor, no matter what parameters it takes, the compiler will not add a default constructor. The code listing 4.8 results in a runtime error: Code listing 4.7: Cheese.java 1 public class Cheese {
+2      public Cheese(int weight, String type) {
+3           doStuff();
+4      }
+5 }
+ Code listing 4.8: Mouse.java 1 public class Mouse {
+2      public void eatCheese() {
+3              Cheese c = new Cheese(); // Oops, compile time error!
+4      }
+5 }
+ This is something to keep in mind when extending existing classes. Either make a default constructor, or make sure every class that inherits your class uses the correct constructor. Initializers[edit] Initializers are blocks of code that are executed at the same time as initializers for fields. Static initializers[edit] Static initializers are blocks of code that are executed at the same time as initializers for static fields. Static field initializers and static initializers are executed in the order declared. The static initialization is executed after the class is loaded. Code section 4.2: Static initializer. 1 static int count = 20;
+2 static int[] squares;
+3 static {  // a static initializer
+4     squares = new int[count];
+5     for (int i = 0; i < count; i++)
+6         squares[i] = i * i;
+7 }
+8 static int x = squares[5];  // x is assigned the value 25
+ Instance initializers[edit] Instance initializers are blocks of code that are executed at the same time as initializers for instance (non-static) fields. Instance field initializers and instance initializers are executed in the order declared. Both instance initializers and instance field initializers are executed during the invocation of a constructor. The initializers are executed immediately after the superclass constructor and before the body of the constructor. Classes and Objects Java Programming Defining Classes Inheritance Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Defining_Classes&oldid=3295197" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

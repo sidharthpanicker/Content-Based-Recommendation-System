@@ -1,0 +1,42 @@
+Conventions From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Navigate Project Page topic: ( v • d • e ) Recent changes If you have questions related to Java If you are interested in editing this book How to format the content Who is contributing Traffic These conventions are aimed to increase the readability and the comprehension of the Java Programming Wikibook. It completes the Wikibooks Manual of Style. However exceptions can be made if needed. If you find it too complex to follow, add the content rawly. It will be formatted by someone. Page formatting[edit] Most of the time a page from the Java Programming Wikibook has a structure that looks like this: You write You get <noinclude>{{Displaytitle|title=The title of the page}}
+{{Programming/Navigation}}
+{{Java Programming/LanguageFundamentalsTopic/Nav}}
+__NOTOC__</noinclude>
+
+This is the introduction.
+
+==First section==
+
+This is a section.
+
+<noinclude>
+{{Programming/Navigation}}
+{{Status|50%}}</noinclude> Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions This is the introduction. First section[edit] This is a section. Samples[edit] Java file[edit] Sometimes we wish to convey an entire java file, this can be done as follows: You write You get {{XCode|1='''Code listing 1.1: The <code>MyClass</code> class'''
+<source lang="java">
+class MyClass{}
+</source>}} Code listing 1.1: The MyClass class class MyClass{}
+ "1.1" means that it is the first code of the first chapter. Using <source/> is better than using a template as || is a part of the Java syntax. Snippets[edit] When just a small section of code is shown, the code template may be used as follows: You write You get {{XExample|1='''Code section 1.1: The <code>MyClass</code> class'''
+<source lang="java">
+for (int i=0; i<10; i++) {
+    System.out.println("Hello!");
+}
+</source>}} Code section 1.1: The MyClass class for (int i=0; i<10; i++) {
+    System.out.println("Hello!");
+}
+ Screen print[edit] To represent what is shown on the screen, use the following syntax: You write You get {{XConsole|1='''Output for the application'''
+<pre style="background-color:#000; color:#fff;">
+Hello World!
+</pre>}}
+ Output for the application Hello World!
+ Notes[edit] Notes grant readers additional information about a certain topic. You can enter additional or side notes by using the following template: You write You get {{XNote|This is an additional note.}} This is an additional note. Use notes only when it is necessary. A note is less readable than paragraphs. Warning[edit] To warn the user of things like common pitfalls, the XWarning template should be used as demonstrated: You write You get {{XWarning|This is a warning.}} This is a warning. To-do items[edit] If there are sections of the book that require attention at a later time, you can add a to-do note by including the following template: You write You get {{TODO|To-do items for pages should be kept in their respective comment boxes.|Java Programming}} To do: To-do items for pages should be kept in their respective comment boxes. Hidden section[edit] If a section is optional, it can be hidden like this: You write You get {{Java/Hidden begin|title=Hidden section}}
+This section is not mandatory.
+{{Hidden end}} Hidden section This section is not mandatory. Illustrations and diagrams[edit] This book uses various illustrations and diagrams to convey its message, e.g., flow-chart or UML diagrams, etc. Due to the nature of diagrams, they need to be designed in a scalable vector format. It is highly recommended that you use the SVG format for your diagrams. Please, do not use JPG or PNG for diagrams that could otherwise be done in SVG. Ask a regular contributor for his/her help in this matter. A regular feature for diagrams used in this book is the overall color scheme. The most notable color used for illustrations in this book is #2a7fff (as is shown for the diagrams below, for instance). In order to include illustrations into your content, you need to use the {{Java/Illustration}} template. Given below is an example of how this template ought to be used. You write You get {{Java/Illustration
+|number=1
+|caption=A sample illustration from the book
+|image=[[File:Java Compilation Basics.svg|center]]
+}} Figure 1: A sample illustration from the book Text formatting[edit] Use italic when you use a term for the first time. Use the <code/> markup when you refer to a class, a field or a method. Preferred English[edit] This book uses United States English, purely for the sake of consistency. Most programming languages have words represented in the United States English, e.g., color, etc. You should use the US English wherever possible. Code conventions[edit] The book follows the official Java code conventions. Here is an example: Code section 0.1: The official Java code conventions if (foo == bar) {
+    // do stuff
+} else {
+    // do other stuff
+}
+ Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Conventions&oldid=3295195" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

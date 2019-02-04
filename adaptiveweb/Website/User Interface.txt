@@ -1,0 +1,181 @@
+User Interface From Wikibooks, open books for an open world < Java Programming‎ | Applets Jump to navigation Jump to search Navigate User Interface topic:( v • d • e ) Basic I/O Streams Event handling JavaBeans Canvas Graphics Drawing basic shapes Drawing complex shapes Drawing text Understanding gradients Applets Overview User Interface Event Listeners Graphics and Media The main difference between an applet and a regular command-line executed program is that applets allow for extensible Graphical User Interfaces (GUI). Since applets provide for the ability to create complex GUI, it is important for developers to know how to create such programs. Applying styles and adding content[edit] In Java applets, graphical portions are initialized and added in two different areas. While objects are initialized in the main class, they are added to the layout of the applet in the init() method. This is done using the syntax of add(<object>). A typical init() method looks something like this: Code section 9.8: A typical init() method  1 ...
+ 2 
+ 3 public void init() {
+ 4     setFont(new Font("Times New Roman", Font.PLAIN, 24));
+ 5     setForeground(Color.white);
+ 6     setBackground(Color.black);
+ 7     setLayout(new GridLayout);
+ 8    
+ 9     ...
+10    
+11     add(label);
+12     add(button);
+13 }
+ The different aspects of this method will be covered below. Button[edit] Lots of applets use buttons. There are only a few ways to have contact between the applet and the user, and the use of buttons is one of those ways. Buttons are created the same way as most other Java applet objects: Code section 9.9: Button creation 1 Button submitButton = new Button("Submit");
+ When initializing a button, it is necessary to define what text will appear on that button in the given parameter. In this example, the button is initialized with the word "Submit" printed on it. Adding the button to the actual layout is done in the init() method, as described above. Code section 9.10: Button display 1 public void init() {
+2    
+3     ...
+4    
+5     add(submitButton);
+6 }
+ Allowing buttons to carry out tasks or utilize a user's input is a bit more complicated. These functions require an ActionListener, and will be discussed in ActionListener section. Label[edit] Labels are areas in applets that contain text which can not be edited by the user. This is usually ideal for descriptions (i.e. "Insert name:"). Labels are initialized and added to applet layouts in the same way as buttons. Also, like buttons, the text inside labels must be identified at initialization. If, however, the label will receive its text as the cause of a later function and should start off blank, no text should be placed between the quotation marks. Code section 9.11: Label display 1 Label nameLabel = new Label("Name: ");
+2 
+3 ...
+4 
+5 public void init() {
+6     add(nameLabel);
+7 }
+ TextField[edit] TextFields are areas in applets that allow users to insert text. The two parameters, which are optional, for TextFields can set predefined text in the field or set the number of columns allowed in the TextField. Here are a few examples: Code section 9.12: Text field creation  1     TextField t1 = new TextField();                // Blank
+ 2     TextField t2 = new TextField(5);               // Blank in 5 columns
+ 3     TextField t3 = new TextField("Input here");    // Predefined text
+ 4     TextField t4 = new TextField("Input here", 5); // Predefined text in 5 columns
+ 5 
+ 6     ...
+ 7 
+ 8     public void init() {
+ 9         add(t1);
+10         add(t2);
+11         add(t3);
+12         add(t4);
+13         ...
+14     }
+ Font[edit] Using stylish fonts in your Java applets may be necessary to help keep your Java applets attractive. The setFont() allows for either the font used throughout the applet to be defined or for one element's font to be set at a time. The syntax for setting a font is setFont(<fontName>, <fontStyle>, <fontSize>). To make every font in the applet plain, size 24 Times New Roman, the following code should be used: Code section 9.13: Font setting 1 Font f = new Font("Times New Roman", Font.PLAIN, 24);
+2 setFont(f);
+ It is not necessary to initialize the font and set the font through two different lines of code. Code section 9.14: Direct font setting 1 setFont(new Font("Times New Roman", Font.PLAIN, 24));
+ However, to make the font of element a plain, size 24 Times New Roman, and element b italicized, size 28 Times New Roman, the following code should be used: Code section 9.15: Object font setting 1 a.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+2 b.setFont(new Font("Times New Roman", Font.ITALIC, 28));
+ To set the color of the fonts used in an applet, the setForeground(<color>) method is used. This method already includes some predefined colors which can be used by calling, for example, setForeground(Color.white). Here are all of the predefined colors: Color.black Color.blue Color.cyan Color.darkGray Color.gray Color.green Color.red Color.white Color.yellow To create a custom color, the RGB values of the color can be passed in as the color parameter. For example, if red were not a predefined color, one could use setForeground(new Color(255, 0, 0)) to define red. Just as font styles, font colors can be applied to separate elements. The syntax follows the same pattern: a.setForeground(Color.white). Layout[edit] Layouts are what make applets visible. Without a layout, nothing would display. There are five different types of layouts to choose from — some are very simple while others are complex. Flow Layout[edit] This layout places components left to right, using as much space as is needed. The Flow Layout is the default layout for applets and, therefore, does not need to be set. However, for clarity, one can specify the applet layout as a Flow Layout by placing this line of code at the top of the init() method: Code section 9.16: Flow Layout 1 setLayout(new FlowLayout());
+ The added components to the layout that follow will be placed on screen in order of which they are added. Code section 9.17: Component display 1 public void init() {
+2     setLayout(new FlowLayout());
+3     add(nameLabel);
+4     add(t1);
+5     add(submitButton);
+6 }
+ Assuming that these variables are defined the same as above, these lines of code will create the layout of an applet that is composed of a label, a text field, and a button. They will all appear on one line if the window permits. By changing the width of window, the Flow Layout will contract and expand the components accordingly. Grid Layout[edit] This layout arranges components in the form of the table (grid). The number of rows and columns in the grid is specified in the constructor. The other two parameters, if present, specify vertical and horizontal padding between components. Code listing 9.4: GridLayoutApplet.java  1 import java.applet.Applet;
+ 2 import java.awt.Button;
+ 3 import java.awt.GridLayout;
+ 4 import java.awt.Label;
+ 5 import java.awt.TextField;
+ 6 
+ 7 public class GridLayoutApplet extends Applet {
+ 8 
+ 9     Button submitButton = new Button("Submit");
+10     TextField t1 = new TextField();                // Blank
+11     TextField t2 = new TextField(5);               // Blank in 5 columns
+12     TextField t3 = new TextField("Input here");    // Predefined text
+13     TextField t4 = new TextField("Input here", 5); // Predefined text in 5 columns
+14     Label nameLabel = new Label("Name: ");
+15 
+16     /**
+17      * Init.
+18      */
+19     public void init() {
+20         // 3 rows, 4 columns, 2 pixel spacing
+21         setLayout(new GridLayout(3, 4, 2, 2));
+22         add(nameLabel);
+23         add(t1);
+24         add(t2);
+25         add(t3);
+26         add(t4);
+27         add(submitButton);
+28     }
+29 }
+ The items have been displayed in this order: 1st 2nd 3th 4th 5th 6th We see that the layout has been configured to fill the grid left-to-right and then top-to-bottom and that the two last columns have been ignored (they don't even exist). They have been ignored because there are not enough items to fill them and the number of rows is prior to the number of columns. This means that when you specify a number of rows that is not zero, the number of columns is simply ignored. You should specify zero rows in order that the number of columns is taken into account. A grid layout creates cells with equal sizes. So it can be used not only to display items as a grid but also to display two items with the same width or height. Border Layout[edit] This layout places one big component in the center and up till four components at the edges. When adding to the container with this layout, you need to specify the location as the second parameter like BorderLayout.CENTER for the center or one of the world directions for the edge (BorderLayout.NORTH points to the top edge). Code section 9.19: Border layout 1 import java.awt.*;
+2 
+3 Container container = getContentPane();
+4 container.setLayout(new BorderLayout());
+5 
+6 JButton b2 = new JButton("two");
+7 // Add the button to the right edge.
+8 container.add(b2, BorderLayout.EAST);
+9 ...
+ If you have two components, it is not the same to put the first in the north and the second to the center as to put the first in the center and the second to the south. In the first case, the layout will calculate the size of the component and the second component will have all the space left. In the second case, it is the opposite. Card Layout[edit] A card stack The card layout displays only one item at a time and is only interesting with interactivity. The other items are stored in a stack and the displayed item is one of the items of the stack. The name of the card layout is a reference to a playing card deck where you can see the card at the top of the stack and you can put a card on the top. The difference in the card layout is that the items in the stack keeps their order. When you use this layout, you must use this method to add items to the container, i.e. the applet: void add(String itemId, Component item) Adds an item to the container and associate the item to the id. The card layout has several methods to change the currently displayed item: void first(Container container) Display the first item of the stack. void next(Container container) Display the item of the stack that is located after the displayed item. void previous(Container container) Display the item of the stack that is located before the displayed item. void last(Container container) Display the last item of the stack. void show(Container container, String itemId) Display an item by its id. Code listing 9.5: CardLayoutApplet.java  1 import java.applet.Applet;
+ 2 import java.awt.CardLayout;
+ 3 import java.awt.Label;
+ 4 
+ 5 public class CardLayoutApplet extends Applet {
+ 6 
+ 7     static final String COMPONENT_POSITION_TOP = "TOP";
+ 8     static final String COMPONENT_POSITION_MIDDLE = "MIDDLE";
+ 9     static final String COMPONENT_POSITION_BOTTOM = "BOTTOM";
+10 
+11     Label topLabel = new Label("At the top");
+12     Label middleLabel = new Label("In the middle");
+13     Label bottomLabel = new Label("At the bottom");
+14 
+15     /**
+16      * Init.
+17      */
+18     public void init() {
+19         setLayout(new CardLayout());
+20         add(COMPONENT_POSITION_TOP, topLabel);
+21         add(COMPONENT_POSITION_MIDDLE, middleLabel);
+22         add(COMPONENT_POSITION_BOTTOM, bottomLabel);
+23         ((CardLayout)getLayout()).show(this, COMPONENT_POSITION_MIDDLE);
+24     }
+25 }
+ Panel[edit] The main benefit of the layouts is that you can combine them one into another and you can do that with a panel. A panel is a component that has other components inside. A panel can then be added to the top component (frame or applet) or to another panel and be placed itself as defined by layout and constraints of this parent component. It has its own layout and is normally used to place a group of related components like buttons, for instance: Figure 9.16: Java applet example. Test your knowledge Question 9.5: We want to create a basic FTP (File Transfer Protocol) software which looks like this: Application name Tool Tool Tool Tool Tool Tool Tool Tool Tool Local folder Remote folder Status bar On the top, it should display the name of the software. Under the name, it should display tool buttons that are displayed from the left to the right and the sequence of buttons is wrapped if it reaches the right border. Under the buttons, it should display two lists of files. The widths of these two lists should be the same and they should use all the width of the application. Under these two lists, it should display a status bar. Create this display on an applet. Answer First, we have to analyze the display. We have four separate areas of components: The name area The tool area The folder area The status area So we have to first separate these areas and then we will split these areas into components. Answer 9.5: Answer5.java  1 import java.applet.Applet;
+ 2 import java.awt.BorderLayout;
+ 3 import java.awt.Button;
+ 4 import java.awt.FlowLayout;
+ 5 import java.awt.GridLayout;
+ 6 import java.awt.Label;
+ 7 import java.awt.Panel;
+ 8 
+ 9 public class Answer5 extends Applet {
+10 
+11     Label applicationNameLabel = new Label("Wikibooks FTP");
+12     Button tool1Button = new Button("Tool");
+13     Button tool2Button = new Button("Tool");
+14     Button tool3Button = new Button("Tool");
+15     Button tool4Button = new Button("Tool");
+16     Button tool5Button = new Button("Tool");
+17     Button tool6Button = new Button("Tool");
+18     Button tool7Button = new Button("Tool");
+19     Button tool8Button = new Button("Tool");
+20     Button tool9Button = new Button("Tool");
+21     Label localFolderLabel = new Label("5 files");
+22     Label remoteFolderLabel = new Label("3 files");
+23     Label statusBarLabel = new Label("Available");
+24 
+25     /**
+26      * Init.
+27      */
+28     public void init() {
+29         setLayout(new BorderLayout());
+30 
+31         // The application name
+32         add(applicationNameLabel, BorderLayout.NORTH);
+33 
+34         // The center
+35         Panel centerPanel = new Panel();
+36         centerPanel.setLayout(new BorderLayout());
+37 
+38         // The buttons
+39         Panel buttonPanel = new Panel();
+40         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+41         buttonPanel.add(tool1Button);
+42         buttonPanel.add(tool2Button);
+43         buttonPanel.add(tool3Button);
+44         buttonPanel.add(tool4Button);
+45         buttonPanel.add(tool5Button);
+46         buttonPanel.add(tool6Button);
+47         buttonPanel.add(tool7Button);
+48         buttonPanel.add(tool8Button);
+49         buttonPanel.add(tool9Button);
+50         centerPanel.add(buttonPanel, BorderLayout.CENTER);
+51 
+52         // The local and remote folders
+53         Panel folderPanel = new Panel();
+54         folderPanel.setLayout(new GridLayout(0, 2, 2, 2));
+55         folderPanel.add(localFolderLabel);
+56         folderPanel.add(remoteFolderLabel);
+57         centerPanel.add(folderPanel, BorderLayout.SOUTH);
+58 
+59         add(centerPanel, BorderLayout.CENTER);
+60 
+61         // The status bar
+62         add(statusBarLabel, BorderLayout.SOUTH);
+63     }
+64 }
+ The totality of the components is put in a border layout so that we have three vertical areas of elements. The area in the north is the area of the title. The area in the center contains the buttons and the folders and will be split later. The area in the south is the area of the status bar. The area in the center is now split with a border layout into a button area in the center and a folder area in the south. The button area is then split with a flow layout. The folder area is now split with a grid layout. We use a grid layout to display the folders to have the same width between the two components. We can't use a grid layout to separate the name, the buttons, the folders and the status bar as these areas have not the same height. The buttons must be at the center of the border layout as the number of row of buttons would be badly calculated and the last rows of buttons would not appear. Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Applets/User_Interface&oldid=3295174" Categories: Book:Java Programming Book:Java Programming/Applets Hidden category: Pages with deep filing Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:40. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

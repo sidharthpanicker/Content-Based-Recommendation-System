@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/SID/Documents/Masters/Fall 2018/Adaptive Web/lucene-7.5.0/core/lucene-core-7.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/SID/Documents/Masters/Fall 2018/Adaptive Web/lucene-7.5.0/analysis/common/lucene-analyzers-common-7.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/SID/Documents/Masters/Fall 2018/Adaptive Web/Assignment2/jsoup-1.11.3.jar"/>
+	<classpathentry kind="lib" path="/Users/SID/Documents/Masters/Fall 2018/Adaptive Web/lucene-7.5.0/queryparser/lucene-queryparser-7.5.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

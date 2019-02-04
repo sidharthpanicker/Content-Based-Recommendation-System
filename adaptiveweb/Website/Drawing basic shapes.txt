@@ -1,0 +1,89 @@
+Drawing shapes From Wikibooks, open books for an open world < Java Programming‎ | Graphics The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search TOC Java Programming Drawing shapes Drawing complex shapes Navigate User Interface topic:( v • d • e ) Basic I/O Streams Event handling JavaBeans Canvas Graphics Drawing basic shapes Drawing complex shapes Drawing text Understanding gradients Applets Overview User Interface Event Listeners Graphics and Media Introduction to Graphics[edit] Throughout this chapter, we will refer to the process of creating Graphical content with code as either drawing or painting. However, Java officially recognizes the latter as the proper word for the process, but we will differentiate between the two later on. Now, the main class that you would be needing would, without doubt, be the Graphics class. If you take a closer look at the method that we used in theIdentifying the acquisition of the Graphics class in our code Code listing 9.3: A basic canvas import java.awt.*;
+import javax.swing.*;
+public class MyCanvas extends Canvas {
+    public MyCanvas() {
+    }
+
+    public void paint(Graphics graphics) {
+        /* We would be using this method only for the sake
+         * of brevity throughout the current section. Note
+         * that the Graphics class has been acquired along
+         * with the method that we overrode. */
+    }
+
+    public static void main(String[] args) {
+        MyCanvas canvas = new MyCanvas();
+        JFrame frame = new JFrame();
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(canvas);
+        frame.setVisible(true);
+    }
+}
+ To view the contents of the Graphics class, please check the external links at the bottom of the page for links to the online API. Etching a line on the canvas[edit] Understanding coordinates[edit] To start off your drawing experience, consider drawing the most basic shape — a line. A canvas when viewed upon with regards to drawing routines can be expressed as an inverted Cartesian coordinate system. A plane expressed by an x- and a y-axis. The origin point or ( 0 , 0 ) {\displaystyle (0,0)} being the top-left corner of a canvas and the visible area of the canvas being the Cartesian quadrant I or the positive-positive (+,+) quadrant. The further you go down from the top, the greater the value of y-coordinate on the y-axis, vice-versa for the x-axis as you move toward the right from the left. And unlike the values on a normal graph, the values appear to be positive. So a point at ( 10 , 20 ) {\displaystyle (10,20)} would be 10 pixels away from the left and 20 pixels away from the top, hence the format ( x , y ) {\displaystyle (x,y)} . Figure 9.2: A simple line form displayed across the canvas from Code section 9.4 Drawing a simple line across the screen[edit] Now, we already know that a line is a connection of two discreet points atop a canvas. So, if one point is at ( x 1 , y 1 ) {\displaystyle (x1,y1)} and the other is at ( x 2 , y 2 ) {\displaystyle (x2,y2)} , drawing a line would require you to write a syntax like code below. For the sake of brevity, we will skim out the rest of the method unused in the example. Code section 9.4: Drawing a simple line form ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.setColor(Color.black);
+        graphics.drawLine(40, 30, 330, 380);
+        
+    }
+    ...
+}
+ In the above example, a simple method is used to define precisely where to place the line on the Cartesian scale of the canvas. The drawLine(int,int,int,int) asks you to put four arguments, appearing in order, the x1 coordinate, the y1 coordinate, the x2 coordinate and the y2 coordinate. Running the program will show a simple black line diagonally going across the canvas. Figure 9.3: A simple black-outlined rectangle drawn Drawing a simple rectangle[edit] We now proceed on to our second drawing. A simple rectangle would do it justice, see below for code. Code section 9.5: Drawing a simple rectangle ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.drawRect(10, 10, 100, 100);
+    }
+    ...
+}
+ In the above example, you see how easy it is to draw a simple rectangle using the drawRect(int, int, int, int) method in the Graphics instance that we obtained. Run the program and you will see a simple black outline of a rectangle appearing where once a blank canvas was. The four arguments that are being passed into the method are, in order of appearance, the x-coordinate, the y-coordinate, width and the height. Hence, the resultant rectangle would start painting at the point on the screen 10 pixels from the left and 10 from the top and would be a 100 pixel wide and a 100 pixel in height. To save the argument here, the above drawing is that of a square with equal sides but squares are drawn using the same method and there is no such method as drawSquare(int, int, int) Figure 9.4: Same rectangle drawn with a red outline Playing around with colors[edit] You can change the color of the outline by telling the Graphics instance the color you desire. This can be done as follows: Code section 9.6: Changing the outline color of the rectangle ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.setColor(Color.red);
+        graphics.drawRect(100, 100, 500, 500);
+    }
+    ...
+}
+ Running the program would render the same rectangle but with a red colored outline. For the purposes of bringing color to our drawing, we used a method namely the setColor(Color) method. This method comes into force for all the drawing made after its call until another color is set. It asks for an argument of type Color. Now because you have no idea of how to actually instantiate a Color class, the class itself has a few built-in colors. Some built-in colors that you can use are mentioned below. Color.red Color.blue Color.green Color.yellow Color.pink Color.black Color.white Try running the program while coding changes to colors for a different colored outline each time. Play around a bit with more colors. Look for the Color class API documentation in the external links at the bottom of the page. Figure 9.5: Same rectangle drawn with a red outline and a yellow fill Filling up the area of the rectangle[edit] Up until now, you have been able to draw a simple rectangle for yourself while asking a question silently, "why is the outline of the rectangle being painted rather the area as a whole?" The answer is simple. Any method that starts with drawXxxx(...) only draws the outline. To paint the area within the outline, we use the fillXxxx(...) methods. For instance, the code below would fill a rectangle with yellow color while having a red outline. Notice that the arguments remain the same. Code section 9.7: Drawing a yellow rectangle with a red outline ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.setColor(Color.yellow);
+        graphics.fillRect(10, 10, 100, 100);
+        graphics.setColor(Color.red);
+        graphics.drawRect(10, 10, 100, 100);
+    }
+    ...
+}
+ Figure 9.6: A white circle drawn with a blue outline What about a circle?[edit] Drawing a circle is ever so easy? It is the same process as the syntax above only that the word Rect is changed to the word Oval. And don't ask me why oval? You simply don't have the method drawCircle(int, int, int) as you don't have drawSquare(int, int, int). Following is the application of Graphics code to draw a circle just to whet your appetite. Code section 9.8: Drawing a white circle with a blue outline ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.setColor(new Color(0,0,255));
+        graphics.drawOval(50, 50, 100, 100);
+    }
+    ...
+}
+ A new form of a rectangle[edit] Figure 9.7: A pink rounded rectangle with a red outline. Amazing! Simple so far, isn't it? Of all the shapes out there, these two are the only shapes that you'd need to build for the moment. Complex graphics routines are required to build shapes like a rhombus, triangle, trapezium or a parallelogram. We would be tackling them later on in another section. However, on a last note I would leave you with another interesting shape - a combination of both ovals and rectangle. Think a rectangle with rounded corners, a Rounded Rectangle (RoundRect). Code section 9.9: Drawing a pink rounded rectangle with a red outline ...
+public class MyCanvas extends Canvas {
+    ...
+    public void paint(Graphics graphics) {
+        graphics.setColor(Color.pink);
+        graphics.fillRoundRect(10, 10, 100, 100, 5, 5);
+        graphics.setColor(Color.red);
+        graphics.drawRoundRect(10, 10, 100, 100, 5, 5);
+    }
+    ...
+}
+ Notice that the syntax of the drawRoundRect(int, int, int, int, int, int) method is a bit different than the syntax for the simple rectangle drawing routine drawRect(int, int, int, int). The two new arguments added at the end are the width of the arc in pixels and the height of the arc in pixels. The result is pretty amazing when you run the program. You don't need to squint your eyes to tell that the corners of the rectangle are slightly rounded. The more the values of the width and height of the arcs, the more roundness appears to form around the corner. Hmm, everything's perfect, but...[edit] Sometimes people ask, after creating simple programs like the ones above, questions like: Why did I have to tell the Graphics instance the color before each drawing routine? Why can't it remember my choice for the outlines and for the fill colors? The answer is simpler than it seems. But, to fully understand it, we need to focus on one little thing called the Graphics Context. The graphics context is the information that adheres to a single instance of the Graphics class. Such an instance remembers only one color at a time and that is why we need to make sure the context knows of the color we need to use by using the setColor(Color) method. Can I manipulate the shapes, like tilt them and crop them? Hold your horses, cowboy! Everything is possible in Java, even tilting and cropping drawings. We will be focusing on these issues in a later section. Is making shapes like triangles, rhombuses and other complex ones tedious? Well, to be honest here, you need to go back to your dusty book cabinet and take out that High School Geometry book because we would be covering some geometry basics while dealing with such shapes. Why not read a wikibook on Geometry? Test your knowledge Question 9.3: Throughout the exercise listings above, we have been filling the shapes first and then drawing their outlines. What happens if we do it the other way around? Consider the code below. ...
+public void paint(Graphics graphics) {
+    graphics.setColor(Color.red);
+    graphics.drawRect(10, 10, 100, 100);
+    graphics.setColor(Color.yellow);
+    graphics.fillRect(10, 10, 100, 100);
+}
+...
+ The left and the top outlines disappear. The right and the bottom outlines disappear. The color for the outline becomes the color for the fill area. All the outlines disappear. Answer All the outlines disappear. Question 9.4: What would drawLine(10, 100, 100, 100) give you? A horizontal line. A vertical line. A diagonal line. Answer A horizontal line. If you have any questions regarding the content provided here, please feel free to comment in this page's discussion. External Links[edit] Locate the Graphics class in the online Java API documentation Locate the Color class in the online Java API documentation TOC Java Programming Drawing shapes Drawing complex shapes Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Graphics/Drawing_shapes&oldid=3295208" Categories: Book:Java Programming Book:Java Programming/Graphics Hidden category: Pages with deep filing Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

@@ -1,0 +1,681 @@
+Mathematical functions From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Arrays Java Programming Mathematical functions Large numbers Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions The java.lang.Math class allows the use of many common mathematical functions that can be used while creating programs. Since it is in the java.lang package, the Math class does not need to be imported. However, in programs extensively utilizing these functions, a static import can be used. Math constants[edit] There are two constants in the Math class that are fairly accurate approximations of irrational mathematical numbers. Math.E[edit] The Math.E constant represents the value of Euler's number (e), the base of the natural logarithm. Code section 3.20: Math.E 1 public static final double E = 2.718281828459045;
+ Math.PI[edit] The Math.PI constant represents the value of pi, the ratio of a circle's circumference to its diameter. Code section 3.21: Math.PI 1 public static final double PI = 3.141592653589793;
+ Math methods[edit] Exponential methods[edit] There are several methods in the Math class that deal with exponential functions. Exponentiation[edit] The power method, double Math.pow(double, double), returns the first parameter to the power of the second parameter. For example, a call to Math.pow(2, 10) will return a value of 1024 (210). The Math.exp(double) method, a special case of pow, returns e to the power of the parameter. In addition, double Math.expm1(double) returns (ex - 1). Both of these methods are more accurate and convenient in these special cases. Java also provides special cases of the pow function for square roots and cube roots of doubles, double Math.sqrt(double) and double Math.cbrt(double). Logarithms[edit] Java has no general logarithm function; when needed this can be simulated using the change-of-base theorem. double Math.log(double) returns the natural logarithm of the parameter (not the common logarithm, as its name suggests!). double Math.log10(double) returns the common (base-10) logarithm of the parameter. double Math.log1p(double) returns ln(parameter+1). It is recommended for small values. Trigonometric and hyperbolic methods[edit] The trigonometric methods of the Math class allow users to easily deal with trigonometric functions in programs. All accept only doubles. Please note that all values using these methods are initially passed and returned in radians, not degrees. However, conversions are possible. Trigonometric functions[edit] The three main trigonometric methods are Math.sin(x), Math.cos(x), and Math.tan(x), which are used to find the sine, cosine, and tangent, respectively, of any given number. So, for example, a call to Math.sin(Math.PI/2) would return a value of about 1. Although methods for finding the cosecant, secant, and cotangent are not available, these values can be found by taking the reciprocal of the sine, cosine, and tangent, respectively. For example, the cosecant of pi/2 could be found using 1/Math.sin(Math.PI/2). Inverse trigonometric functions[edit] Java provides inverse counterparts to the trigonometric functions: Math.asin(x), and Math.acos(x), Math.atan(x). Hyperbolic functions[edit] In addition, hyperbolic functions are available: Math.sinh(x), Math.cosh(x), and Math.tanh(x). Radian/degree conversion[edit] To convert between degree and radian measures of angles, two methods are available, Math.toRadians(x) and Math.toDegrees(x). While using Math.toRadians(x), a degrees value must be passed in, and that value in radians (the degree value multiplied by pi/180) will be returned. The Math.toDegrees(x) method takes in a value in radians and the value in degrees (the radian value multiplied by 180/pi) is returned. Absolute value: Math.abs[edit] The absolute value method of the Math class is compatible with the int, long, float, and double types. The data returned is the absolute value of parameter (how far away it is from zero) in the same data type. For example: Code section 3.22: Math.abs 1 int result = Math.abs(-3);
+ In this example, result will contain a value of 3. Maximum and minimum values[edit] These methods are very simple comparing functions. Instead of using if...else statements, one can use the Math.max(x1, x2) and Math.min(x1, x2) methods. The Math.max(x1, x2) simply returns the greater of the two values, while the Math.min(x1, x2) returns the lesser of the two. Acceptable types for these methods include int, long, float, and double. Functions dealing with floating-point representation[edit] Java 1.5 and 1.6 introduced several non-mathematical functions specific to the computer floating-point representation of numbers. Math.ulp(double) and Math.ulp(float) return an ulp, the smallest value which, when added to the argument, would be recognized as larger than the argument. Math.copySign returns the value of the first argument with the sign of the second argument. It can be used to determine the sign of a zero value. Math.getExponent returns (as an int) the exponent used to scale the floating-point argument in computer representation. Rounding number example[edit] Sometimes, we are not only interested in mathematically correct rounded numbers, but we want that a fixed number of significant digits are always displayed, regardless of the number used. Here is an example program that returns always the correct string. You are invited to modify it such that it does the same and is simpler! The constant class contains repeating constants that should exist only once in the code so that to avoid inadvertent changes. (If the one constant is changed inadvertently, it is most likely to be seen, as it is used at several locations.) Code listing 3.20: StringUtils.java  1 /**
+ 2  * Class that comprises of constant values & string utilities.
+ 3  *
+ 4  * @since 2013-09-05
+ 5  * @version 2014-10-14
+ 6  */
+ 7 public class StringUtils {
+ 8 	/** Dash or minus constant */
+ 9 	public static final char DASH = '-'; 
+10 	/** The exponent sign in a scientific number, or the capital letter E */
+11 	public static final char EXPONENT = 'E';
+12 	/** The full stop or period */
+13 	public static final char PERIOD = '.';
+14 	/** The zero string constant used at several places */
+15 	public static final String ZERO = "0";
+16 
+17 	/**
+18 	 * Removes all occurrences of the filter character in the text.
+19 	 *
+20 	 * @param text Text to be filtered
+21 	 * @param filter The character to be removed.
+22 	 * @return the string
+23 	 */
+24 	public static String filter(final String text, final String filter) {
+25 		final String[] words = text.split("[" + filter + "]");
+26 
+27 		switch (words.length) {
+28 			case 0: return text;
+29 			case 1: return words[0];
+30 			default:
+31 				final StringBuilder filteredText = new StringBuilder();
+32 
+33 				for (final String word : words) {
+34 					filteredText.append(word);
+35 				}
+36 
+37 				return filteredText.toString();
+38 		}
+39 	}
+40 }
+ The MathsUtils class is like an addition to the java.lang.Math class and contains the rounding calculations. Code listing 3.21: MathsUtils.java   1 package string;
+  2 
+  3 /**
+  4  * Class for special mathematical calculations.<br/>
+  5  * ATTENTION:<br/>Should depend only on standard Java libraries!
+  6  *
+  7  * @since 2013-09-05
+  8  * @version 2014-10-14
+  9 */
+ 10 public class MathsUtils {
+ 11 
+ 12 	// CONSTANTS
+ 13 	// ------------------------------------------
+ 14 
+ 15 	/** The exponent sign in a scientific number, or the capital letter E. */
+ 16 	public static final char EXPONENT = 'E';
+ 17 
+ 18 	/** Value after which the language switches from scientific to double */
+ 19 	private static final double E_TO_DOUBLE = 1E-3;
+ 20 
+ 21 	/** The zero string constant used at several places. */
+ 22 	public static final String ZERO = "0";
+ 23 
+ 24 	/** The string of zeros */
+ 25 	private static final String ZEROS = "000000000000000000000000000000000";
+ 26 
+ 27 	// METHODS
+ 28 	// ------------------------------------------
+ 29 
+ 30 	/**
+ 31 	 * Determines, if the number uses a scientific representation.
+ 32 	 *
+ 33 	 * @param number the number
+ 34 	 * @return true, if it is a scientific number, false otherwise
+ 35 	 */
+ 36 	private static boolean isScientific(final double number) {
+ 37 		return ((new Double(number)).toString().indexOf(EXPONENT) > 0);
+ 38 	}
+ 39 
+ 40 	/**
+ 41 	 * Determines how many zeros are to be appended after the decimal digits.
+ 42 	 *
+ 43 	 * @param significantsAfter Requested significant digits after decimal
+ 44 	 * @param separator Language-specific decimal separator
+ 45 	 * @param number Rounded number
+ 46 	 * @return Requested value
+ 47 	 */
+ 48 	private static byte calculateMissingSignificantZeros(
+ 49 			final byte significantsAfter,
+ 50 			final char separator,
+ 51 			final double number) {
+ 52 
+ 53 		final byte after = findSignificantsAfterDecimal(separator, number);
+ 54 
+ 55 		final byte zeros =
+ 56 				(byte) (significantsAfter - ((after == 0) ? 1 : after));
+ 57 
+ 58 		return ((zeros >= 0) ? zeros : 0);
+ 59 	}
+ 60 
+ 61 	/**
+ 62 	 * Finds the insignificant zeros after the decimal separator.
+ 63 	 *
+ 64 	 * @param separator Language-specific decimal separator
+ 65 	 * @param number the number
+ 66 	 * @return the byte
+ 67 	 */
+ 68 	private static byte findInsignificantZerosAfterDecimal(
+ 69 			final char separator,
+ 70 			final double number) {
+ 71 
+ 72 		if ((Math.abs(number) >= 1) || isScientific(number)) {
+ 73 			return 0;
+ 74 		} else {
+ 75 			final StringBuilder string = new StringBuilder();
+ 76 
+ 77 			string.append(number);
+ 78 			string.delete(0,
+ 79 					string.indexOf(new Character(separator).toString()) + 1);
+ 80 
+ 81 			// Determine what to match:
+ 82 			final String regularExpression = "[1-9]";
+ 83 
+ 84 			final String[] split = string.toString().split(regularExpression);
+ 85 
+ 86 			return (split.length > 0) ? (byte) split[0].length() : 0;
+ 87 		}
+ 88 	}
+ 89 
+ 90 	/**
+ 91 	 * Calculates the number of all significant digits (without the sign and
+ 92 	 * the decimal separator).
+ 93 	 *
+ 94 	 * @param significantsAfter Requested significant digits after decimal
+ 95 	 * @param separator Language-specific decimal separator
+ 96 	 * @param number Value where the digits are to be counted
+ 97 	 * @return Number of significant digits
+ 98 	 */
+ 99 	private static byte findSignificantDigits(final byte significantsAfter,
+100 			final char separator,
+101 			final double number) {
+102 
+103 		if (number == 0) { return 0; }
+104 		else {
+105 			String mantissa =
+106 					findMantissa(separator, new Double(number).toString());
+107 
+108 			if (number == (long)number) {
+109 				mantissa = mantissa.substring(0, mantissa.length() - 1);
+110 			}
+111 
+112 			mantissa = retrieveDigits(separator, mantissa);
+113 			// Find the position of the first non-zero digit:
+114 			short nonZeroAt = 0;
+115 
+116 			for (; (nonZeroAt < mantissa.length())
+117 					&& (mantissa.charAt(nonZeroAt) == '0'); nonZeroAt++) ;
+118 
+119 			return (byte)mantissa.substring(nonZeroAt).length();
+120 		}
+121 	}
+122 	
+123 	/**
+124 	 * Determines the number of significant digits after the decimal separator
+125 	 * knowing the total number of significant digits and the number before the
+126 	 * decimal separator.
+127 	 *
+128 	 * @param significantsBefore Number of significant digits before separator
+129 	 * @param significantDigits Number of all significant digits
+130 	 * @return Number of significant decimals after the separator
+131 	 */
+132 	private static byte findSignificantsAfterDecimal(
+133 			final byte significantsBefore,
+134 			final byte significantDigits) {
+135 
+136 		final byte afterDecimal =
+137 				(byte) (significantDigits - significantsBefore);
+138 
+139 		return (byte) ((afterDecimal > 0) ? afterDecimal : 0);
+140 	}
+141 
+142 	/**
+143 	 * Determines the number of digits before the decimal point.
+144 	 *
+145 	 * @param separator Language-specific decimal separator
+146 	 * @param number Value to be scrutinised
+147 	 * @return Number of digits before the decimal separator
+148 	 */
+149 	private static byte findSignificantsBeforeDecimal(final char separator,
+150 													final double number) {
+151 
+152 		final String value = new Double(number).toString();
+153 
+154 		// Return immediately, if result is clear: Special handling at
+155 		// crossroads of floating point and exponential numbers:
+156 		if ((number == 0) || (Math.abs(number) >= E_TO_DOUBLE)
+157 				&& (Math.abs(number) < 1)) {
+158 
+159 			return 0;
+160 		} else if ((Math.abs(number) > 0) && (Math.abs(number) < E_TO_DOUBLE)) {
+161 			return 1;
+162 		} else {
+163 			byte significants = 0;
+164 			// Significant digits to the right of decimal separator:
+165 			for (byte b = 0; b < value.length(); b++) {
+166 				if (value.charAt(b) == separator) {
+167 					break;
+168 				} else if (value.charAt(b) != StringUtils.DASH) {
+169 					significants++;
+170 				}
+171 			}
+172 
+173 			return significants;
+174 		}
+175 	}
+176 
+177 	/**
+178 	 * Returns the exponent part of the double number.
+179 	 *
+180 	 * @param number Value of which the exponent is of interest
+181 	 * @return Exponent of the number or zero.
+182 	 */
+183 	private static short findExponent(final double number) {
+184 		return new Short(findExponent((new Double(number)).toString()));
+185 	}
+186 
+187 	/**
+188 	 * Finds the exponent of a number.
+189 	 *
+190 	 * @param value Value where an exponent is to be searched
+191 	 * @return Exponent, if it exists, or "0".
+192 	 */
+193 	private static String findExponent(final String value) {
+194 		final short exponentAt = (short) value.indexOf(EXPONENT);
+195 
+196 		if (exponentAt < 0) { return ZERO; }
+197 		else {
+198 			return value.substring(exponentAt + 1);
+199 		}
+200 	}
+201 
+202 	/**
+203 	 * Finds the mantissa of a number.
+204 	 *
+205 	 * @param separator Language-specific decimal separator
+206 	 * @param value Value where the mantissa is to be found
+207 	 * @return Mantissa of the number
+208 	 */
+209 	private static String findMantissa(final char separator,
+210 										final String value) {
+211 
+212 		String strValue = value;
+213 
+214 		final short exponentAt = (short) strValue.indexOf(EXPONENT);
+215 
+216 		if (exponentAt > -1) {
+217 			strValue = strValue.substring(0, exponentAt);
+218 		}
+219 		return strValue;
+220 	}
+221 
+222 	/**
+223 	 * Retrieves the digits of the value without decimal separator or sign.
+224 	 *
+225 	 * @param separator
+226 	 * @param number Mantissa to be scrutinised
+227 	 * @return The digits only
+228 	 */
+229 	private static String retrieveDigits(final char separator, String number) {
+230 		// Strip off exponent part, if it exists:
+231 		short eAt = (short)number.indexOf(EXPONENT);
+232 
+233 		if (eAt > -1) {
+234 			number = number.substring(0, eAt);
+235 		}
+236 
+237 		return number.replace((new Character(StringUtils.DASH)).toString(), "").
+238 				replace((new Character(separator)).toString(), "");
+239 	}
+240 
+241 
+242 	// ---- Public methods ----------------------
+243 
+244 	/**
+245 	 * Returns the number of digits in the long value.
+246 	 *
+247 	 * @param value the value
+248 	 * @return the byte
+249 	 */
+250 	public static byte digits(final long value) {
+251 		return (byte) StringUtils.filter(Long.toString(value), ".,").length();
+252 	}
+253 
+254 	/**
+255 	 * Finds the significant digits after the decimal separator of a mantissa.
+256 	 *
+257 	 * @param separator Language-specific decimal separator
+258 	 * @param number Value to be scrutinised
+259 	 * @return Number of significant zeros after decimal separator.
+260 	 */
+261 	public static byte findSignificantsAfterDecimal(final char separator,
+262 													final double number) {
+263 
+264 		if (number == 0) { return 1; }
+265 		else {
+266 			String value = (new Double(number)).toString();
+267 
+268 			final short separatorAt = (short) value.indexOf(separator);
+269 
+270 			if (separatorAt > -1) {
+271 				value = value.substring(separatorAt + 1);
+272 			}
+273 
+274 			final short exponentAt = (short) value.indexOf(EXPONENT);
+275 
+276 			if (exponentAt > 0) {
+277 				value = value.substring(0, exponentAt);
+278 			}
+279 
+280 			final Long longValue = new Long(value).longValue();
+281 
+282 			if (Math.abs(number) < 1) {
+283 				return (byte) longValue.toString().length();
+284 			} else if (longValue == 0) {
+285 				return 0;
+286 			} else {
+287 				return (byte) (("0." + value).length() - 2);
+288 			}
+289 		}
+290 	}
+291 
+292 	/**
+293 	 * Calculates the power of the base to the exponent without changing the
+294 	 * least-significant digits of a number.
+295 	 *
+296 	 * @param basis
+297 	 * @param exponent
+298 	 * @return basis to power of exponent
+299 	 */
+300 	public static double power(final int basis, final short exponent) {
+301 		return power((short) basis, exponent);
+302 	}
+303 
+304 	/**
+305 	 * Calculates the power of the base to the exponent without changing the
+306 	 * least-significant digits of a number.
+307 	 *
+308 	 * @param basis the basis
+309 	 * @param exponent the exponent
+310 	 * @return basis to power of exponent
+311 	 */
+312 	public static double power(final short basis, final short exponent) {
+313 		if (basis == 0) {
+314 			return (exponent != 0) ? 1 : 0;
+315 		} else {
+316 			if (exponent == 0) {
+317 				return 1;
+318 			} else {
+319 				// The Math method power does change the least significant
+320 				// digits after the decimal separator and is therefore useless.
+321 				double result = 1;
+322 				short s = 0;
+323 
+324 				if (exponent > 0) {
+325 					for (; s < exponent; s++) {
+326 						result *= basis;
+327 					}
+328 				} else if (exponent < 0) {
+329 					for (s = exponent; s < 0; s++) {
+330 						result /= basis;
+331 					}
+332 				}
+333 
+334 				return result;
+335 			}
+336 		}
+337 	}
+338 
+339 	/**
+340 	 * Rounds a number to the decimal places.
+341 	 *
+342 	 * @param significantsAfter Requested significant digits after decimal
+343 	 * @param separator Language-specific decimal separator
+344 	 * @param number Number to be rounded
+345 	 * @return Rounded number to the requested decimal places
+346 	 */
+347 	public static double round(final byte significantsAfter,
+348 								final char separator,
+349 								final double number) {
+350 
+351 		if (number == 0) { return 0; }
+352 		else {
+353 			final double constant = power(10, (short)
+354 					(findInsignificantZerosAfterDecimal(separator, number)
+355 							+ significantsAfter));
+356 			final short dExponent = findExponent(number);
+357 
+358 			short exponent = dExponent;
+359 
+360 			double value = number*constant*Math.pow(10, -exponent);
+361 			final String exponentSign =
+362 					(exponent < 0) ? String.valueOf(StringUtils.DASH) : "";
+363 
+364 			if (exponent != 0) {
+365 				exponent = (short) Math.abs(exponent);
+366 
+367 				value = round(value);
+368 			} else {
+369 				value = round(value)/constant;
+370 			}
+371 
+372 			// Power method cannot be used, as the exponentiated number may
+373 			// exceed the maximal long value.
+374 			exponent -= Math.signum(dExponent)*(findSignificantDigits
+375 					(significantsAfter, separator, value) - 1);
+376 
+377 			if (dExponent != 0) {
+378 				String strValue = Double.toString(value);
+379 
+380 				strValue = strValue.substring(0, strValue.indexOf(separator))
+381 						+ EXPONENT + exponentSign + Short.toString(exponent);
+382 
+383 				value = new Double(strValue);
+384 			}
+385 
+386 			return value;
+387 		}
+388 	}
+389 
+390 	/**
+391 	 * Rounds a number according to mathematical rules.
+392 	 *
+393 	 * @param value the value
+394 	 * @return the double
+395 	 */
+396 	public static double round(final double value) {
+397 		return (long) (value + .5);
+398 	}
+399 
+400 	/**
+401 	 * Rounds to a fixed number of significant digits.
+402 	 *
+403 	 * @param significantDigits Requested number of significant digits
+404 	 * @param separator Language-specific decimal separator
+405 	 * @param dNumber Number to be rounded
+406 	 * @return Rounded number
+407 	 */
+408 	public static String roundToString(final byte significantDigits,
+409 										final char separator,
+410 										double dNumber) {
+411 										
+412 		// Number of significants that *are* before the decimal separator:
+413 		final byte significantsBefore =
+414 			findSignificantsBeforeDecimal(separator, dNumber);
+415 		// Number of decimals that *should* be after the decimal separator:
+416 		final byte significantsAfter = findSignificantsAfterDecimal(
+417 				significantsBefore, significantDigits);
+418 		// Round to the specified number of digits after decimal separator:
+419 		final double rounded = MathsUtils.round(significantsAfter, separator, dNumber);
+420 
+421 		final String exponent = findExponent((new Double(rounded)).toString());
+422 		final String mantissa = findMantissa(separator,
+423 						(new Double(rounded)).toString());
+424 
+425 		final double dMantissa = new Double(mantissa).doubleValue();
+426 		final StringBuilder result = new StringBuilder(mantissa);
+427 		// Determine the significant digits in this number:
+428 		final byte significants = findSignificantDigits(significantsAfter,
+429 				separator, dMantissa);
+430 		// Add lagging zeros, if necessary:
+431 		if (significants <= significantDigits) {
+432 			if (significantsAfter != 0) {
+433 				result.append(ZEROS.substring(0,
+434 						calculateMissingSignificantZeros(significantsAfter,
+435 								separator, dMantissa)));
+436 			} else {
+437 				// Cut off the decimal separator & after decimal digits:
+438 				final short decimal = (short) result.indexOf(
+439 						new Character(separator).toString());
+440 
+441 				if (decimal > -1) {
+442 					result.setLength(decimal);
+443 				}
+444 			}
+445 		} else if (significantsBefore > significantDigits) {
+446 			dNumber /= power(10, (short) (significantsBefore - significantDigits));
+447 
+448 			dNumber = round(dNumber);
+449 
+450 			final short digits =
+451 					(short) (significantDigits + ((dNumber < 0) ? 1 : 0));
+452 
+453 			final String strDouble = (new Double(dNumber)).toString().substring(0, digits);
+454 
+455 			result.setLength(0);
+456 			result.append(strDouble + ZEROS.substring(0,
+457 					significantsBefore - significantDigits));
+458 		}
+459 
+460 		if (new Short(exponent) != 0) {
+461 			result.append(EXPONENT + exponent);
+462 		}
+463 
+464 		return result.toString();
+465 	} // public static String roundToString(…)
+466 
+467 	/**
+468 	 * Rounds to a fixed number of significant digits.
+469 	 *
+470 	 * @param separator Language-specific decimal separator
+471 	 * @param significantDigits Requested number of significant digits
+472 	 * @param value Number to be rounded
+473 	 * @return Rounded number
+474 	 */
+475 	public static String roundToString(final char separator,
+476 										final int significantDigits,
+477 										float value) {
+478 
+479 		return roundToString((byte)significantDigits, separator,
+480 				(double)value);
+481 	}
+482 } // class MathsUtils
+ The code is tested with the following JUnit test: Code listing 3.22: MathsUtilsTest.java   1 package string;
+  2 
+  3 import static org.junit.Assert.assertEquals;
+  4 import static org.junit.Assert.assertFalse;
+  5 import static org.junit.Assert.assertTrue;
+  6 
+  7 import java.util.Vector;
+  8 
+  9 import org.junit.Test;
+ 10 
+ 11 /**
+ 12  * The JUnit test for the <code>MathsUtils</code> class.
+ 13  *
+ 14  * @since 2013-03-26
+ 15  * @version 2014-10-14
+ 16  */
+ 17 public class MathsUtilsTest {
+ 18 
+ 19 	/**
+ 20 	 * Method that adds a negative and a positive value to values.
+ 21 	 *
+ 22 	 * @param d the double value
+ 23 	 * @param values the values
+ 24 	 */
+ 25 	private static void addValue(final double d, Vector<Double> values) {
+ 26 		values.add(-d);
+ 27 		values.add(d);
+ 28 	}
+ 29 
+ 30 	// Public methods ------
+ 31 
+ 32 	/**
+ 33 	 * Tests the round method with a double parameter.
+ 34 	 */
+ 35 	@Test
+ 36 	public void testRoundToStringDoubleByteCharDouble() {
+ 37 		// Test rounding
+ 38 		final Vector<Double> values = new Vector<Double>();
+ 39 		final Vector<String> strValues = new Vector<String>();
+ 40 
+ 41 		values.add(0.0);
+ 42 		strValues.add("0.00000");
+ 43 		addValue(1.4012984643248202e-45, values);
+ 44 		strValues.add("-1.4012E-45");
+ 45 		strValues.add("1.4013E-45");
+ 46 		addValue(1.999999757e-5, values);
+ 47 		strValues.add("-1.9999E-5");
+ 48 		strValues.add("2.0000E-5");
+ 49 		addValue(1.999999757e-4, values);
+ 50 		strValues.add("-1.9999E-4");
+ 51 		strValues.add("2.0000E-4");
+ 52 		addValue(1.999999757e-3, values);
+ 53 		strValues.add("-0.0019999");
+ 54 		strValues.add("0.0020000");
+ 55 		addValue(0.000640589, values);
+ 56 		strValues.add("-6.4058E-4");
+ 57 		strValues.add("6.4059E-4");
+ 58 		addValue(0.3396899998188019, values);
+ 59 		strValues.add("-0.33968");
+ 60 		strValues.add("0.33969");
+ 61 		addValue(0.34, values);
+ 62 		strValues.add("-0.33999");
+ 63 		strValues.add("0.34000");
+ 64 		addValue(7.07, values);
+ 65 		strValues.add("-7.0699");
+ 66 		strValues.add("7.0700");
+ 67 		addValue(118.188, values);
+ 68 		strValues.add("-118.18");
+ 69 		strValues.add("118.19");
+ 70 		addValue(118.2, values);
+ 71 		strValues.add("-118.19");
+ 72 		strValues.add("118.20");
+ 73 		addValue(123.405009, values);
+ 74 		strValues.add("-123.40");
+ 75 		strValues.add("123.41");
+ 76 		addValue(30.76994323730469, values);
+ 77 		strValues.add("-30.769");
+ 78 		strValues.add("30.770");
+ 79 		addValue(130.76994323730469, values);
+ 80 		strValues.add("-130.76");
+ 81 		strValues.add("130.77");
+ 82 		addValue(540, values);
+ 83 		strValues.add("-539.99");
+ 84 		strValues.add("540.00");
+ 85 		addValue(12345, values);
+ 86 		strValues.add("-12344");
+ 87 		strValues.add("12345");
+ 88 		addValue(123456, values);
+ 89 		strValues.add("-123450");
+ 90 		strValues.add("123460");
+ 91 		addValue(540911, values);
+ 92 		strValues.add("-540900");
+ 93 		strValues.add("540910");
+ 94 		addValue(9.223372036854776e56, values);
+ 95 		strValues.add("-9.2233E56");
+ 96 		strValues.add("9.2234E56");
+ 97 
+ 98 		byte i = 0;
+ 99 		final byte significants = 5;
+100 
+101 		for (final double element : values) {
+102 			final String strValue;
+103 
+104 			try {
+105 				strValue = MathsUtils.roundToString(significants, StringUtils.PERIOD, element);
+106 
+107 				System.out.println(" MathsUtils.round(" + significants  + ", '"
+108 						+ StringUtils.PERIOD + "', " + element + ") ==> "
+109 						+ strValue + " = " + strValues.get(i));
+110 				assertEquals("Testing roundToString", strValue, strValues.get(i++));
+111 			} catch (final Exception e) {
+112 				// TODO Auto-generated catch block
+113 				e.printStackTrace();
+114 			}
+115 		}
+116 	}
+117 
+118 }	// class MathsUtilsTest
+ The output of the JUnit test follows: Output for code listing 3.22  MathsUtils.round(5, '.', 0.0) ==> 0.00000 = 0.00000
+ MathsUtils.round(5, '.', -1.4012984643248202E-45) ==> -1.4012E-45 = -1.4012E-45
+ MathsUtils.round(5, '.', 1.4012984643248202E-45) ==> 1.4013E-45 = 1.4013E-45
+ MathsUtils.round(5, '.', -1.999999757E-5) ==> -1.9999E-5 = -1.9999E-5
+ MathsUtils.round(5, '.', 1.999999757E-5) ==> 2.0000E-5 = 2.0000E-5
+ MathsUtils.round(5, '.', -1.999999757E-4) ==> -1.9999E-4 = -1.9999E-4
+ MathsUtils.round(5, '.', 1.999999757E-4) ==> 2.0000E-4 = 2.0000E-4
+ MathsUtils.round(5, '.', -0.001999999757) ==> -0.0019999 = -0.0019999
+ MathsUtils.round(5, '.', 0.001999999757) ==> 0.0020000 = 0.0020000
+ MathsUtils.round(5, '.', -6.40589E-4) ==> -6.4058E-4 = -6.4058E-4
+ MathsUtils.round(5, '.', 6.40589E-4) ==> 6.4059E-4 = 6.4059E-4
+ MathsUtils.round(5, '.', -0.3396899998188019) ==> -0.33968 = -0.33968
+ MathsUtils.round(5, '.', 0.3396899998188019) ==> 0.33969 = 0.33969
+ MathsUtils.round(5, '.', -0.34) ==> -0.33999 = -0.33999
+ MathsUtils.round(5, '.', 0.34) ==> 0.34000 = 0.34000
+ MathsUtils.round(5, '.', -7.07) ==> -7.0699 = -7.0699
+ MathsUtils.round(5, '.', 7.07) ==> 7.0700 = 7.0700
+ MathsUtils.round(5, '.', -118.188) ==> -118.18 = -118.18
+ MathsUtils.round(5, '.', 118.188) ==> 118.19 = 118.19
+ MathsUtils.round(5, '.', -118.2) ==> -118.19 = -118.19
+ MathsUtils.round(5, '.', 118.2) ==> 118.20 = 118.20
+ MathsUtils.round(5, '.', -123.405009) ==> -123.40 = -123.40
+ MathsUtils.round(5, '.', 123.405009) ==> 123.41 = 123.41
+ MathsUtils.round(5, '.', -30.76994323730469) ==> -30.769 = -30.769
+ MathsUtils.round(5, '.', 30.76994323730469) ==> 30.770 = 30.770
+ MathsUtils.round(5, '.', -130.7699432373047) ==> -130.76 = -130.76
+ MathsUtils.round(5, '.', 130.7699432373047) ==> 130.77 = 130.77
+ MathsUtils.round(5, '.', -540.0) ==> -539.99 = -539.99
+ MathsUtils.round(5, '.', 540.0) ==> 540.00 = 540.00
+ MathsUtils.round(5, '.', -12345.0) ==> -12344 = -12344
+ MathsUtils.round(5, '.', 12345.0) ==> 12345 = 12345
+ MathsUtils.round(5, '.', -123456.0) ==> -123450 = -123450
+ MathsUtils.round(5, '.', 123456.0) ==> 123460 = 123460
+ MathsUtils.round(5, '.', -540911.0) ==> -540900 = -540900
+ MathsUtils.round(5, '.', 540911.0) ==> 540910 = 540910
+ MathsUtils.round(5, '.', -9.223372036854776E56) ==> -9.2233E56 = -9.2233E56
+ MathsUtils.round(5, '.', 9.223372036854776E56) ==> 9.2234E56 = 9.2234E56
+ If you are interested in a comparison with C#, take a look at the rounding number example there. If you are interested in a comparison with C++, you can compare this code here with the same example over there. Notice that in the expression starting with if ((D == 0), I have to use OR instead of the || because of a bug in the source template. To do: Add some exercises like the ones in Variables Arrays Java Programming Mathematical functions Large numbers Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Mathematical_functions&oldid=3295231" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:42. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

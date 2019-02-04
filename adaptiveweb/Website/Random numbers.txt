@@ -1,0 +1,54 @@
+Random numbers From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Large numbers Java Programming Random numbers Unicode Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions To generate random numbers the Math.random() method can be used, which returns a double, greater than or equal to 0.0 and less than 1.0. The following code returns a random integer between n and m (where n <= randomNumber < m): Code section 3.30: A random integer. 1   int randomNumber = n + (int)(Math.random() * ( m - n ));
+ Alternatively, the java.util.Random class provides methods for generating random booleans, bytes, floats, ints, longs and 'Gaussians' (doubles from a normal distribution with mean 0.0 and standard deviation 1.0). For example, the following code is equivalent to that above: Code section 3.31: A random integer with Gaussian. 1   Random random = new Random();
+2   int randomNumber = n + random.nextInt(m - n);
+ As an example using random numbers, we can make a program that uses a Random object to simulate flipping a coin 20 times: Code listing 3.25: CoinFlipper.java  1 import java.util.Random;
+ 2 
+ 3 public class CoinFlipper {
+ 4 
+ 5   public static void main(String[] args) {
+ 6     // The number of times to flip the coin
+ 7     final int TIMES_TO_FLIP = 20;
+ 8     int heads = 0;
+ 9     int tails = 0;
+10     // Create a Random object
+11     Random random = new Random();
+12     for (int i = 0; i < TIMES_TO_FLIP; i++) {
+13       // 0 or 1
+14       int result = random.nextInt(2);
+15       if (result == 1) {
+16         System.out.println("Heads");
+17         heads++;
+18       } else {
+19         System.out.println("Tails");
+20         tails++;
+21       }
+22     }
+23     System.out.println("There were "
+24             + heads
+25             + " heads and "
+26             + tails
+27             + " tails");
+28   }
+29 }
+ Possible output for code listing 3.25 Heads
+Tails
+Tails
+Tails
+Heads
+Tails
+Heads
+Heads
+Heads
+Heads
+Heads
+Heads
+Tails
+Tails
+Tails
+Tails
+Heads
+Tails
+Tails
+Tails
+There were 9 heads and 11 tails
+ Of course, if you run the program you will probably get different results. Truly random numbers[edit] Both Math.random() and the Random class produce pseudorandom numbers. This is good enough for a lot of applications, but remember that it is not truly random. If you want a more secure random number generator, Java provides the java.security.SecureRandom package. What happens with Math.random() and the Random class is that a 'seed' is chosen from which the pseudorandom numbers are generated. SecureRandom increases the security to ensure that the seed which is used by the pseudorandom number generator is non-deterministic — that is, you cannot simply put the machine in the same state to get the same set of results. Once you have created a SecureRandom instance, you can use it in the same way as you can the Random class. If you want truly random numbers, you can get a hardware random number generator or use a randomness generation service. To do: Add some exercises like the ones in Variables Large numbers Java Programming Random numbers Unicode Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Random_numbers&oldid=3295243" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

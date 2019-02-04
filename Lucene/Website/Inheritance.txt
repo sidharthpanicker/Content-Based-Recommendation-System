@@ -1,0 +1,54 @@
+Inheritance From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Defining Classes Java Programming Inheritance Interfaces Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics Inheritance is one of the most powerful mechanisms of the Object Oriented Programming. It allows the reuse of the members of a class (called the superclass or the mother class) in another class (called subclass, child class or the derived class) that inherits from it. This way, classes can be built by successive inheritance. In Java, this mechanism is enabled by the extends keyword. Example: Code listing 4.9: Vehicle.java 1 public class Vehicle {
+2     public int speed;
+3     public int numberOfSeats;
+4 }
+ Code listing 4.10: Car.java 1 public class Car extends Vehicle {
+2     public Car() {
+3         this.speed = 90;
+4         this.numberOfSeats = 5;
+5     }
+6 }
+ In the Code listing 4.10, the class Car inherits from Vehicle, which means that the attributes speed and numberOfSeats are present in the class Car, whereas they are defined in the class Vehicle. Also, the constructor defined in the class Car allows to initialize those attributes. In Java, the inheritance mechanism allows to define a class hierarchy with all the classes. Without explicit inheritance, a class implicitly inherits from the Object class. This Object class is the root of the class hierarchy. Some classes can't be inherited. Those classes are defined with the final keyword. For instance, the Integer class can't have subclasses. It is called a final class. The Object class[edit] At the instantiating, the child class receives the features inherited from its superclass, which also has received the features inherited from its own superclass and so on to the Object class. This mechanism allows to define reusable global classes, whose user details the behavior in the derived more specific classes. In Java, a class can only inherit from one class. Java does not allow you to create a subclass from two classes, as that would require creating complicated rules to disambiguate fields and methods inherited from multiple superclasses. If there is a need for Java to inherit from multiple sources, the best option is through interfaces, described in the next chapter. The super keyword[edit] The super keyword allows access to the members of the superclass of a class, as you can use this to access the members of the current class. Example: Code listing 4.11: Plane.java 1 public class Plane extends Vehicle {
+2     public Plane() {
+3         super();
+4     }
+5 }
+ In this example, the constructor of the Plane class calls the constructor of its superclass Vehicle. You can only use super to access the members of the superclass inside the child class. If you use it from another class, it accesses the superclass of the other class. This keyword also allows you to explicitly access the members of the superclass, for instance, in the case where there is a method with the same name in your class (overriding, ...). Example : Code listing 4.12: Vehicle.java 1 public class Vehicle {
+2     // ...
+3     public void run() throws Exception {
+4         position += speed;
+5     }
+6 }
+ Code listing 4.13: Plane.java  1 public class Plane extends Vehicle {
+ 2     // ...
+ 3     public void run() throws Exception {
+ 4         if (0 < height) {
+ 5            throw new Exception("A plane can't run in flight.");
+ 6         } else {
+ 7            super.run();
+ 8         }
+ 9     }
+10 }
+ Test your knowledge Question 4.1: Consider the following classes. Question 4.1: Class1.java 1 public class Class1 {
+2     public static final int CONSTANT_OF_CLASS_1 = 9;
+3     public int myAttributeOfClass1 = 40;
+4     public void myMethodOfClass1(int i) {
+5     }
+6 }
+ Question 4.1: Class2.java 1 public class Class2 extends Class1 {
+2     public int myAttributeOfClass2 = 10;
+3     public void myMethodOfClass2(int i) {
+4     }
+5 }
+ Question 4.1: Class3.java 1 public class Class3 {
+2     public static final int CONSTANT_OF_CLASS_3 = 9;
+3     public void myMethodOfClass3(int i) {
+4     }
+5 }
+ Question 4.1: Question1.java 1 public class Question1 extends Class2 {
+2     public static final int CONSTANT = 2;
+3     public int myAttribute = 20;
+4     public void myMethod(int i) {
+5     }
+6 }
+ List all the attributes and methods that can be accessed in the class Question1. Answer CONSTANT_OF_CLASS_1 myAttributeOfClass1 myMethodOfClass1(int) myAttributeOfClass2 myMethodOfClass2(int) CONSTANT myAttribute myMethod(int) Question1 inherits from Class1 and Class2 but not from Class3. See also the Object Oriented Programming book about the inheritance concept. Defining Classes Java Programming Inheritance Interfaces Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Inheritance&oldid=3376277" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Deutsch Français Italiano Português Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 19 February 2018, at 20:05. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

@@ -1,0 +1,178 @@
+Methods From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Literals Java Programming Methods API/java.lang.String Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions Methods are how we communicate with objects. When we invoke or call a method we are asking the object to carry out a task. We can say methods implement the behaviour of objects. For each method we need to give a name, we need to define its input parameters and we need to define its return type. We also need to set its visibility (private, protected or public). If the method throws a checked exception, that needs to be declared as well. It is called a method definition. The syntax of method definition is: 1 MyClass {
+2   ...
+3   public ReturnType methodName(ParamOneType parameter1, ParamTwoType parameter2) {
+4       ...
+5       return returnType;
+6   }
+7   ...
+8 }
+ We can declare that the method does not return anything using the void Java keyword. For example: Code section 3.67: Method without returned data. 1 private void methodName(String parameter1, String parameter2) {
+2   ...
+3   return;
+4 }
+ When the method returns nothing, the return keyword at the end of the method is optional. When the execution flow reaches the return keyword, the method execution is stopped and the execution flow returns to the caller method. The return keyword can be used anywhere in the method as long as there is a way to execute the instructions below: Code section 3.68: return keyword location.  1 private void aMethod(int a, int b) {
+ 2   int c = 0;
+ 3   if (a > 0) {
+ 4     c = a;
+ 5     return;
+ 6   }
+ 7   int c = c + b;
+ 8   return;
+ 9   int c = c * 2;
+10 }
+ In the code section 3.68, the return keyword at line 5 is well placed because the instructions below can be reached when a is negative or equal to 0. However, the return keyword at line 8 is badly placed because the instructions below can't be reached. Test your knowledge Question 3.9: Consider the following code: Question 3.9: Compiler error. 1 private int myMethod(int a, int b, boolean c) {
+2   b = b + 2;
+3   if (a > 0) {
+4     a = a + b;
+5     return a;
+6   } else {
+7     a = 0;
+8   }
+9 }
+ The code above will return a compiler error. Why? Answer Answer 3.9: Compiler error. 1 private int myMethod(int a, int b, boolean c) {
+2   b = b + 2;
+3   if (a > 0) {
+4     a = a + b;
+5     return a;
+6   } else {
+7     a = 0;
+8   }
+9 }
+ The method is supposed to return a int but when a is negative or equal to 0, it returns nothing. Parameter passing[edit] We can pass any primitive data types or reference data type to a method. Primitive type parameter[edit] The primitive types are passed in by value. It means that as soon as the primitive type is passed in, there is no more link between the value inside the method and the source variable: Code section 3.69: A method modifying a variable. 1 private void modifyValue(int number) {
+2   number += 1;
+3 }
+ Code section 3.70: Passing primitive value to method. 1 int i = 0;
+2 modifyValue(i);
+3 System.out.println(i);
+ Output for Code section 3.70 0  
+ As you can see in code section 3.70, the modifyValue() method has not modified the value of i. Reference type parameter[edit] The object references are passed by value. It means that: There is no more link between the reference inside the method and the source reference, The source object itself and the object itself inside the method are still the same. You must understand the difference between the reference of an object and the object itself. A object reference is the link between a variable name and an instance of object: Object object ⇔ new Object() An object reference is a pointer, an address to the object instance. The object itself is the value of its attributes inside the object instance: object.firstName ⇒ "James" object.lastName ⇒ "Gosling" object.birthDay ⇒ "May 19" Take a look at the example above: Code section 3.71: A method modifying an object. 1 private void modifyObject(FirstClass anObject) {
+2   anObject.setName("Susan");
+3 }
+ Code section 3.72: Passing reference value to method. 1 FirstClass object = new FirstClass();
+2 object.setName("Christin");
+3 
+4 modifyObject(object);
+5 
+6 System.out.println(object.getName());
+ Output for Code section 3.72 Susan
+ The name has changed because the method has changed the object itself and not the reference. Now take a look at the other example: Code section 3.73: A method modifying an object reference. 1 private void modifyObject(FirstClass anObject) {
+2   anObject = new FirstClass();
+3   anObject.setName("Susan");
+4 }
+ Code section 3.74: Passing reference value to method. 1 FirstClass object = new FirstClass();
+2 object.setName("Christin");
+3 
+4 modifyObject(object);
+5 
+6 System.out.println(object.getName());
+ Output for Code section 3.74 Christin
+ The name has not changed because the method has changed the reference and not the object itself. The behavior is the same as if the method was in-lined and the parameters were assigned to new variable names: Code section 3.75: In-lined method.  1 FirstClass object = new FirstClass();
+ 2 object.setName("Christin");
+ 3 
+ 4 // Start of the method
+ 5 FirstClass anObject = object;
+ 6 anObject = new FirstClass();
+ 7 anObject.setName("Susan");
+ 8 // End of the method
+ 9 
+10 System.out.println(object.getName());
+ Output for Code section 3.75 Christin
+ Variable argument list[edit] Java SE 5.0 added syntactic support for methods with variable argument list, which simplifies the typesafe usage of methods requiring a variable number of arguments. Less formally, these parameters are called varargs[1]. The type of a variable parameter must be followed with ..., and Java will box all the arguments into an array: Code section 3.76: A method using vararg parameters. 1 public void drawPolygon(Point... points) {
+2   //…
+3 }
+ When calling the method, a programmer can simply separate the points by commas, without having to explicitly create an array of Point objects. Within the method, the points can be referenced as points[0], points[1], etc. If no points are passed, the array has a length of zero. A method can have both normal parameters and a variable parameter but the variable parameter must always be the last parameter. For instance, if the programmer is required to use a minimum number of parameters, those parameters can be specified before the variable argument: Code section 3.77: Variable arguments. 1 // A polygon needs at least three points.
+2 public void drawPolygon(Point p1, Point p2, Point p3, Point... otherPoints) {
+3   //…
+4 }
+ Return parameter[edit] A method may return a value (which can be a primitive type or an object reference). If the method does not return a value we use the void Java keyword. However, a method can return only one value so what if you want to return more than one value from a method? You can pass in an object reference to the method, and let the method modify the object properties so the modified values can be considered as an output value from the method. You can also create an Object array inside the method, assign the return values and return the array to the caller. However, this gives a problem if you want to mix primitive data types and object references as the output values from the method. There is a better approach, define a special return object with the needed return values. Create that object inside the method, assign the values and return the reference to this object. This special object is "bound" to this method and used only for returning values, so do not use a public class. The best way is to use a nested class, see example below: Code listing 3.12: Multiple returned variables.  1 public class MyObject {
+ 2   ...
+ 3  
+ 4   /** Nested object is for return values from getPersonInfoById method */
+ 5   private static class ReturnObject {
+ 6       private int age;
+ 7       private String name;
+ 8 
+ 9       public void setAge(int age) {
+10           this.age = age;
+11       }
+12  
+13       public int getAge() {
+14           return age;
+15       }
+16 
+17       public void setName(String name) {
+18           name = name;
+19       }
+20  
+21       public String getName() {
+22           return name;
+23       }
+24   } // End of nested class definition
+25 
+26   /** Method using the nested class to return values */
+27   public ReturnObject getPersonInfoById(int id) {
+28     int    age;
+29     String name;
+30     ...
+31     // Get the name and age based on the ID from the database
+32     ...
+33     ReturnObject result = new ReturnObject();
+34     result.setAge(age);
+35     result.setName(name);
+36 
+37     return result;
+38   }
+39 }
+ In the above example the getPersonInfoById method returns an object reference that contains both values of the name and the age. See below how you may use that object: Code section 3.78: Retrieving the values. 1 MyObject object = new MyObject();
+2 MyObject.ReturnObject person = object.getPersonInfoById(102);
+3 
+4 System.out.println("Person Name=" + person.getName());
+5 System.out.println("Person Age =" + person.getAge());
+ Test your knowledge Question 3.10: Consider the following code: Question 3.10: Compiler error. 1 private int myMethod(int a, int b, String c) {
+2   if (a > 0) {
+3     c = "";
+4     return c;
+5   }
+6   int b = b + 2;
+7   return b;
+8 }
+ The code above will return a compiler error. Why? Answer Answer 3.10: Compiler error. 1 private int myMethod(int a, int b, String c) {
+2   if (a > 0) {
+3     c = "";
+4     return c;
+5   }
+6   int b = b + 2;
+7   return b;
+8 }
+ The method is supposed to return a int but at line 4, it returns c, which is a String. Special method, the constructor[edit] The constructor is a special method called automatically when an object is created with the new keyword. Constructor does not have a return value and its name is the same as the class name. Each class must have a constructor. If we do not define one, the compiler will create a default so called empty constructor automatically. Code listing 3.13: Automatically created constructor. 1 public class MyClass {
+2   /**
+3   * MyClass Empty Constructor
+4   */
+5   public MyClass() {
+6   }
+7 }
+ Static methods[edit] A static method is a method that can be called without an object instance. It can be called on the class directly. For example, the valueOf(String) method of the Integer class is a static method: Code section 3.79: Static method. 1 Integer i = Integer.valueOf("10");
+ The static keyword makes attributes instance-agnostic. This means that you cannot reference a static attribute of a single object (because such a specific object attribute doesn't exist). Instead, only one instance of a static attribute exists, whether there is one object in the JVM or one hundred. Here is an example of using a static attribute in a static method: Code section 3.80: Static attribute. 1 private static int count = 0;
+2 
+3 public static int getNewInteger() {
+4   return count++;
+5 }
+ You can notice that when you use System.out.println(), out is a static attribute of the System class. A static attribute is related to a class, not to any object instance. This is how Java achieves one universal output stream that we can use to print output. Here is a more complex use case: Code listing 3.14: A static attribute.  1 public class MyProgram {
+ 2 
+ 3     public static int count = 0;
+ 4 
+ 5     public static void main (String[] args) {
+ 6         MyProgram.count++;
+ 7 
+ 8         MyProgram program1 = new MyProgram();
+ 9         program1.count++;
+10 
+11         MyProgram program2 = new MyProgram();
+12         program2.count++;
+13 
+14         new MyProgram().count++;
+15         System.out.println(MyProgram.count);
+16     }
+17 }
+ Output for Code listing 3.14 4
+ Test your knowledge Question 3.11: Visit the Oracle JavaDoc of the class java.lang.Integer. How many static fields does this class have? Answer 4. int MAX_VALUE, int MIN_VALUE, int SIZE and Class<Integer> TYPE. To learn how to overload and override a method, see Overloading Methods and Constructors. Literals Java Programming Methods API/java.lang.String Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Methods&oldid=3295232" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:42. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

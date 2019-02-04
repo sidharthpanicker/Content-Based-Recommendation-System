@@ -1,0 +1,120 @@
+Threads and Runnables From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Concurrent Programming Java Programming Threads and Runnables Basic Synchronization Navigate Concurrent Programming topic: ( v • d • e ) Threads and Runnables Basic Synchronization Client Server Programming Remote Method Invocation (RMI) Enterprise JavaBean Programming (EJB) Java Spaces Programming (Jini) CPUs for any computer are designed to execute one task at any given time, yet we run multiple applications side-by-side and everything works in perfect congruence. It's not just because CPUs are extremely fast in performing calculations, it's because CPUs use a clever device of dividing their time amongst various tasks. Each application or task that is invoked on a computer gets associated with the CPU in the form of a process. A CPU therefore manages various processes, and jumps back and forth amongst each process giving it a fraction of its time and processing capability. This happens so fast that to a normal computer user it presents with the illusion of processes being run simultaneously. This capability of the CPU to divide its time amongst processes is called multitasking. So, if we run a Java application on a computer, we are effectively creating a process with the CPU that gets a fraction of the CPU's time. In Java parlance, this main process gets called the daemon process or the daemon thread. But, Java goes one step further. It allows programmers to divide this daemon thread into several multiple threads which get executed simultaneously (much like a CPU) hence providing a Java application with a finer multitasking capability called multithreading. In this section, we will take a look at what threads are and how multithreading is implemented within a Java program to make it appear congruent and effectively fast to respond. Threads[edit] In light of the above discussion, a thread is the smallest unit of processing that can be scheduled by an operating system. Therefore, using threads, a programmer can effectively create two or more tasks[1] that run at the same time. The first call-to-action is to implement a set of tasks that a particular thread would execute. To do so, we require the creation of a Runnable process. Creating a Runnable process block[edit] A Runnable process block is a simple class that implements a run() method. Within the run() method is the actual task that needs to be executed by a running thread. By implementing a class with the Runnable interface, we ensure that the class holds a run() method. Consider the following program: Code listing 1: A runnable process import java.util.Random;
+public class RunnableProcess implements Runnable {
+    private String name;
+    private int time;
+    private Random rand = new Random();
+
+    public RunnableProcess(String name) {
+        this.name = name;
+        this.time = rand.nextInt(999);
+    }
+
+    public void run() {
+        try {
+            System.out.printf("%s is sleeping for %d \n", this.name, this.time);
+            Thread.sleep(this.time);
+            System.out.printf("%s is done.\n", this.name);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+ In the above code, we create a class called RunnableProcess and implement the Runnable interface to ensure that we have a run() method in the class declaration. Code section 1.1: Implementing the Runnable interface public class RunnableProcess implements Runnable {
+    ...
+    public void run() {
+        ...
+    }
+}
+ We then declare the rest of the logic for the class. For the constructor, we take a String parameter that would serve as the name of the class. Then, we initialize the class member variable time with a random number between 0 and 999. To ensure the initialization of a random number, we use the Random class in the java.util package. Code section 1.2: Including ability to generate random integers between 0 and 999 import java.util.Random;
+...
+private Random rand = new Random();
+...
+this.time = rand.nextInt(999);
+ The actual task that would be executed per this runnable block is presented within the run() method. To keep safe from exceptions occurring because of the concurrent programming, we wrap the code within this method with a try..catch block. The executing task actually consists of just three statements. The first outputs the provided name for the Runnable process, and the last reports that the thread has executed. Perhaps the most intriguing part of the code is the second statement: Thread.sleep(...). Code section 1.3: The actual runnable process task ...
+System.out.printf("%s is sleeping for %d \n", this.name, this.time);
+Thread.sleep(this.time);
+System.out.printf("%s is done \n", this.name);
+...
+ This statement allows the thread executing the current runnable block to halt its execution for the given amount of time. This time is presented in milliseconds. But for our convenience, this time would be the random number generated in the constructor and can be anywhere between 0 and 999 milliseconds. We will explore this in a later section. Creating a Runnable process block is just the beginning. No code is actually executed. To do so, we would require the creation of threads that would then individually execute this task. Creating threads[edit] Once we have a Runnable process block, we can create various threads that can then execute the logic encased within such blocks. Multithreading capabilities in Java are utilized and manipulated using the Thread class. A Thread object therefore holds all the necessary logic and devices to create truly multithreaded programs. Consider the following program: Code listing 2: Creating Thread objects public class ThreadLogic {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new RunnableProcess("Thread-1"));
+        Thread t2 = new Thread(new RunnableProcess("Thread-2"));
+        Thread t3 = new Thread(new RunnableProcess("Thread-3"));
+    }
+}
+ Creating threads is as simple as the above program suggests. You just have to create an object of the Thread class and pass a reference to a Runnable process object. In the case above, we present the Thread constructor with the class object for the RunnableProcess class that we created in code listing 1. But for each object, we give a different name (i.e., "Thread-1" and "Thread-2", etc.) to differentiate between the three Thread objects. The above example only declares Thread objects and hasn't yet started them for execution. Starting threads[edit] Now, that we know how to effectively create a Runnable process block and a Thread object that executes it, we need to understand how to start the created Thread objects. This couldn't be simpler. For this process, we will be calling the start() method on the Thread objects and voilà, our threads will begin executing their individual process tasks. Code listing 3: Starting the Thread objects public class ThreadLogic {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new RunnableProcess("Thread-1"));
+        Thread t2 = new Thread(new RunnableProcess("Thread-2"));
+        Thread t3 = new Thread(new RunnableProcess("Thread-3"));
+
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+}
+ The above code will start all three declared threads. This way, all three threads will begin their execution one-by-one. However, this being concurrent programming and us having declared random times for the halting of the execution, the outputs for every one of us would differ. Following is the output we received when we executed the above program. Output for code listing 3 Thread-1 is sleeping for 419
+Thread-3 is sleeping for 876
+Thread-2 is sleeping for 189
+Thread-2 is done
+Thread-1 is done
+Thread-3 is done
+ It should be noted that the execution of the Thread didn't occur in the desired order. Instead of the order t1–t2–t3, the threads executed in the order of t1–t3–t2. The order in which the threads are executed is completely dependent on the operating system and may change for every execution of the program, thus making output of multithreaded application difficult to predict and control. Some people suggest that this is the major reason that adds to the complexity of multithreaded programming and its debugging. However, it should be observed that once the threads were put to sleep using the Thread.sleep(...) function, the execution intervals and order can be predicted quite capably. The thread with the least amount of sleeping time was t2 ("Thread-2") with 189 milliseconds of sleep hence it got called first. Then t1 was called and finally t3 was called. Manipulating threads[edit] It can be said that the execution order of the threads was manipulated to some degree using the Thread.sleep(...) method. The Thread class has such static methods that can arguably affect the execution order and manipulation of threads. Below are some useful static methods in the Thread class. These methods when called will only affect the currently running threads. Method Description Thread.currentThread() Returns the currently executing thread at any given time. Thread.dumpStack() Prints a stack trace of the currently running thread. Thread.sleep(long millis) Halts execution of the currently running thread for the given amount of time (in milliseconds). throws InterruptedException Thread.sleep(long millis, int nanos) Halts execution of the currently running thread for the given amount of time (in milliseconds plus provided nanoseconds). throws InterruptedException Thread.yield() Temporarily pauses the execution of the currently running thread to allow other threads to execute. Synchronization[edit] The text in its current form is incomplete. Given below is an example of creating and running multiple threads that behave in a synchronous manner such that when one thread is using a particular resource, the others wait until the resource has been released. We will talk more about this in later sections. Code listing 4: Creation of the multiple Thread objects running synchronously public class MultiThreadExample {
+    public static boolean cthread;
+    public static String stuff = " printing material";
+
+    public static void main(String args[]) {
+        Thread t1 = new Thread(new RunnableProcess());
+        Thread t2 = new Thread(new RunnableProcess());
+        t1.setName("Thread-1");
+        t2.setName("Thread-2");
+        t2.start();
+        t1.start();
+    }
+    /*
+     * Prints information about the current thread and the index it is
+     * on within the RunnableProcess
+     */
+    public static void printFor(int index) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(Thread.currentThread().getName()).append(stuff);
+        sb.append(" for the ").append(index).append(" time.");
+        System.out.print(sb.toString());
+    }
+}
+class RunnableProcess implements Runnable {
+    public void run() {
+        for(int i = 0; i < 10; i++) {
+            synchronized(MultiThreadExample.stuff) {
+                MultiThreadExample.printFor(i);
+                try {
+               	    MultiThreadExample.stuff.notifyAll();
+                    MultiThreadExample.stuff.wait();
+                } catch(InterruptedException ex) {
+                   ex.printStackTrace();
+                }
+            }
+        }
+    }
+}
+ Output for code listing 4 Thread-1 printing material for the 0 time.
+Thread-2 printing material for the 0 time.
+Thread-1 printing material for the 1 time.
+Thread-2 printing material for the 1 time.
+Thread-1 printing material for the 2 time.
+Thread-2 printing material for the 2 time.
+Thread-1 printing material for the 3 time.
+Thread-2 printing material for the 3 time.
+Thread-1 printing material for the 4 time.
+Thread-2 printing material for the 4 time.
+Thread-1 printing material for the 5 time.
+Thread-2 printing material for the 5 time.
+Thread-1 printing material for the 6 time.
+Thread-2 printing material for the 6 time.
+Thread-1 printing material for the 7 time.
+Thread-2 printing material for the 7 time.
+Thread-1 printing material for the 8 time.
+Thread-2 printing material for the 8 time.
+Thread-1 printing material for the 9 time.
+Thread-2 printing material for the 9 time.
+ Where are threads used?[edit] Video games intensively use threads Threads are used intensively in applications that require a considerable amount of CPU usage. For operations that are time-consuming and intensive, it is usually advised to use threads. An example of such an application would be a typical video game. At any given time, a video game involves various characters, objects in the surroundings and other such nuances that needs to be dealt with simultaneously. Dealing with each element or object within the game requires a fair amount of threads to monitor every object. For example, take this screen-shot of a role-playing strategy game on the right. Here the game visuals depict various in-game characters moving about on the screen. Now imagine processing the movements, direction and behaviors of each of the characters visible on screen. It would certainly take a lot of time moving each character one-by-one if this were to be done one task after another. However if fundamentals of multi-threading are employed, each character would move in a synchronous manner with respect to others. Threads are not only used heavily in video games, their use is common in everything from simple browser applications to complex operating systems and networking applications. Today it often goes beyond the simple preference of the developer but into the need to maximize the usefulness of contemporaneous hardware that is predicated in heavy multitasking. References[edit] ↑ The number of tasks that can be run simultaneously for a single Java application depends on how many tasks an operating system allows to be multithreaded. Daemon thread tutorial To do: Add some exercises like the ones in Variables Concurrent Programming Java Programming Threads and Runnables Basic Synchronization Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Threads_and_Runnables&oldid=3439330" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 29 June 2018, at 06:54. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

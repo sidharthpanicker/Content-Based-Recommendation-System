@@ -1,0 +1,57 @@
+Accessing Private Features with Reflection From Wikibooks, open books for an open world < Java Programming‎ | Reflection Jump to navigation Jump to search Navigate Reflection topic: ( v • d • e ) Reflection Overview Dynamic Class Loading Dynamic Method Invocation Accessing Private Features with Reflection All features of a class can be obtained via reflection, including access to private methods & variables. But not always see [1]. Let us look at the following example: Code listing 10.3: Secret.java 1 public class Secret {
+2   private String secretCode = "It's a secret";
+3  
+4   private String getSecretCode() {
+5     return secretCode;     
+6   }
+7 }
+ Although the field and method are marked private, the following class shows that it is possible to access the private features of a class: Code listing 10.4: Hacker.java  1 import java.lang.reflect.Field;
+ 2 import java.lang.reflect.InvocationTargetException;
+ 3 import java.lang.reflect.Method;
+ 4  
+ 5 public class Hacker {
+ 6  
+ 7    private static final Object[] EMPTY = {};
+ 8  
+ 9    public void reflect() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+10      Secret instance = new Secret();
+11      Class<?> secretClass = instance.getClass();
+12  
+13      // Print all the method names & execution result
+14      Method methods[] = secretClass.getDeclaredMethods();
+15      System.out.println("Access all the methods");
+16      for (Method method : methods) {
+17         System.out.println("Method Name: " + method.getName());
+18         System.out.println("Return type: " + method.getReturnType());
+19         method.setAccessible(true);
+20         System.out.println(method.invoke(instance, EMPTY) + "\n");
+21      }
+22  
+23      // Print all the field names & values
+24      Field fields[] = secretClass.getDeclaredFields();
+25      System.out.println("Access all the fields");
+26      for (Field field : fields) {
+27         System.out.println("Field Name: " + field.getName());
+28         field.setAccessible(true);
+29         System.out.println(field.get(instance) + "\n");
+30      }
+31   }
+32  
+33   public static void main(String[] args) {
+34     Hacker newHacker = new Hacker();
+35  
+36     try {
+37       newHacker.reflect();
+38     } catch (Exception e) {
+39       e.printStackTrace();
+40     }
+41   }
+42 }
+ Console for Code listing 10.4 Access all the methods
+Method Name: getSecretCode
+Return type: class java.lang.String
+It's a secret
+Access all the fields
+Field Name: secretCode
+It's a secret
+ To do: We need to add some explanation of what is going on here. JUnit - Test Private methods[edit] JUnit's are unit test cases, used to test the Java programs. Now you know how to test a private method using Reflection in JUnit. There's a long-standing debate on whether testing private members is a good habit[1];There are cases where you want to make sure a class exhibited the right behavior while not making the fields that need checking to assert that public (as it's generally considered bad practice to create accessors to a class just for the sake of a unit test). There are also cases when you can greatly simplify a test case by using reflection to test all smaller private methods (and their various branches), then test the main function. With dp4j it is possible to test private members without directly using the Reflection API but simply accessing them as if they were accessible from the testing method; dp4j injects the needed Reflection code at compile-time[2]. ↑ What's the best way of unit testing private methods?, March 7, 2011 ↑ Reflection API injected at compile-time To do: Add some exercises like the ones in Variables Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Reflection/Accessing_Private_Features_with_Reflection&oldid=3295245" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

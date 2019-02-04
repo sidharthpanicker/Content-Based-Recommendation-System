@@ -1,0 +1,110 @@
+ArrayList From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Collection Java Programming ArrayList Map Navigate Aggregate topic: ( v • d • e ) Collection ArrayList Map Comparing Objects The ArrayList class extends AbstractList and implements the List interface. ArrayList supports dynamic arrays that can grow as needed. Standard Java arrays are of a fixed length. After arrays are created, they cannot grow or shrink, which means that you must know in advance how many elements an array will hold. Array lists are created with an initial size. When this size is exceeded, the collection is automatically enlarged. When objects are removed, the array may be shrunk. Initializing[edit] The ArrayList class supports three constructors. The first constructor builds an empty array list.: ArrayList( )
+ The following constructor builds an array list that is initialized with the elements of the collection c. ArrayList(Collection c)
+ The following constructor builds an array list that has the specified initial capacity. The capacity is the size of the underlying array that is used to store the elements. The capacity grows automatically as elements are added to an array list.  ArrayList(int capacity)
+ Methods[edit] ArrayList defines following methods: Adding Element in ArrayList[edit] Inserts the specified element at the specified position index in this list. Throws IndexOutOfBoundsException if the specified index is out of range (index < 0 || index >= size()). void add(int index, Object element)
+ Appends the specified element to the end of this list. boolean add(Object o)
+ Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator. Throws NullPointerException if the specified collection is null. boolean addAll(Collection c)
+ Inserts all of the elements in the specified collection into this list, starting at the specified position. Throws NullPointerException if the specified collection is null. boolean addAll(int index, Collection c)
+ Size of ArrayList[edit] Returns the number of elements in this list. int size()
+ Adding Element and Size of ArrayList  
+import java.util.*;
+
+public class ArrayListDemo{
+	public static void main(String[] args) {
+		// create an array list
+		ArrayList <String> al= new ArrayList <String>();
+		System.out.println("Initial ArrayList : "+al);
+		
+		 // add elements to the array list
+		al.add("A");
+		al.add("B");
+		
+		//find size of ArrayList
+		System.out.println("Size of al :"+al.size());
+		// display the array list
+		System.out.println("Contents of al :"+al);
+		al.add(1,"C");
+		System.out.println("Contents of al :"+al);
+		System.out.println("Size of al :"+al.size());
+	}
+}
+ Output for Adding Element and Size of ArrayList Initial ArrayList : []
+Size of al :2
+Contents of al :[A, B]
+Contents of al :[A, C, B]
+Size of al :3
+ Get and Set ArrayList Element[edit] Returns the element at the specified position in this list. Throws IndexOutOfBoundsException if the specified index is is out of range (index < 0 or index >= size()). Object get(int index)
+ Replaces the element at the specified position in this list with the specified element. Throws IndexOutOfBoundsException if the specified index is is out of range (index < 0 or index >= size()). Object set(int index, Object element)
+ Find Index of ArrayList Element[edit] Returns the index in this list of the first occurrence of the specified element, or -1 if the List does not contain this element. int indexOf(Object o)
+ Returns the index in this list of the last occurrence of the specified element, or -1 if the list does not contain this element. int lastIndexOf(Object o)
+ Find Element Contain in ArrayList[edit] Returns true if this list contains the specified element. More formally, returns true if and only if this list contains at least one element e such that (o==null ? e==null : o.equals(e)). boolean contains(Object o)
+ Different Method in ArrayList  
+public class ArrayListDemo {
+	public static void main(String[] args) {
+		// create an array list
+		ArrayList al = new ArrayList();
+
+		// add elements to the array list
+		al.add("A");
+		al.add("B");
+		al.add("C");
+		al.add("A");
+		al.add("D");
+		al.add("A");
+		al.add("E");
+		System.out.println("Contents of al : " + al);
+
+		// find index of element in ArrayList
+		System.out.println("Index of D : " + al.indexOf("D"));
+		System.out.println("Index of A : " + al.indexOf("A"));
+
+		// find index of element in ArrayList
+		System.out.println("Index of A : " + al.lastIndexOf("A"));
+
+		// get element at given Index
+		System.out.println("Element at Second Index : " + al.get(2));
+		System.out.println("Element at Sixth Index : " + al.get(6));
+		
+		//set element at given Index
+		al.set(3,"B"); // replacing third index element by "B"
+		System.out.println("Contents of al : " + al);
+		
+		//check ArrayList contains given element
+		System.out.println("ArrayList contain D : "+al.contains("D"));
+		System.out.println("ArrayList contain F : "+al.contains("F"));
+	}
+}
+ Output for Different Method in ArrayList Contents of al : [A, B, C, A, D, A, E]
+Index of D : 4
+Index of A : 0
+Index of A : 5
+Element at Second Index : C
+Element at Sixth Index : E
+Contents of al : [A, B, C, B, D, A, E]
+ArrayList contain D : true
+ArrayList contain F : false
+ Test your knowledge Question: Consider the following code: public class ArrayListDemo {
+		public static void main(String[] args) {
+	
+		ArrayList al = new ArrayList();
+
+		al.add("A");
+		al.add("B");
+		al.add("C");
+		al.add("E");
+		al.add("F");
+	
+		al.remove(2);
+		al.remove("F");
+		
+		al.set(1, "G");
+		al.add("H");
+		al.set(3, "I");
+		System.out.println("Size of al : " + al.size());
+		System.out.println("Contents of al : " + al);
+
+	}
+  }
+ In the example above, what is output? Answer Size of al : 4
+Contents of al : [A, G, E, I]
+ Some more ArrayList methods: Method Description Object clone() Returns a shallow copy of this ArrayList. Object[] toArray() Returns an array containing all of the elements in this list in the correct order. Throws NullPointerException if the specified array is null. void trimToSize() Trims the capacity of this ArrayList instance to be the list's current size. void ensureCapacity(int minCapacity) Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument. protected void removeRange(int fromIndex, int toIndex) Removes from this List all of the elements whose index is between fromIndex, inclusive and toIndex, exclusive. Collection Java Programming ArrayList Map Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/ArrayList&oldid=3418021" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 2 May 2018, at 20:37. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

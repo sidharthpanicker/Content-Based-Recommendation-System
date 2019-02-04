@@ -1,0 +1,39 @@
+Stack trace From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Preventing NullPointerException Java Programming Stack trace Nesting Exceptions Navigate Exceptions topic:( v • d • e ) Throwing and catching exceptions Checked exceptions Unchecked exceptions Preventing NullPointerException Stack trace Nesting exceptions (chained exceptions) Stack Trace is a list of method calls from the point when the application was started to the point where the exception was thrown. The most recent method calls are at the top. Code listing 6.3: StackTraceExample.java  1 public class StackTraceExample {
+ 2   public static void main(String[] args) {
+ 3     method1();
+ 4   }
+ 5 
+ 6   public static void method1() {
+ 7     method11();
+ 8   }
+ 9 
+10   public static void method11() {
+11     method111();
+12   }
+13 
+14   public static void method111() {
+15     throw new NullPointerException("Fictitious NullPointerException");
+16   }
+17 }
+ Output for Code listing 6.3 Exception in thread "main" java.lang.NullPointerException: Fictitious NullPointerException
+at StackTraceExample.method111(StackTraceExample.java:15)
+at StackTraceExample.method11(StackTraceExample.java:11)
+at StackTraceExample.method1(StackTraceExample.java:7)
+at StackTraceExample.main(StackTraceExample.java:3)
+ The stack trace can be printed to the standard error by calling the public void printStackTrace() method of an exception. From Java 1.4, the stack trace is encapsulated into an array of a java class called java.lang.StackTraceElement. The stack trace element array returned by Throwable.getStackTrace() method. Each element represents a single stack frame. All stack frames except for the one at the top of the stack represent a method invocation. The frame at the top of the stack represents the execution point at which the stack trace was generated. Typically, this is the point at which the throwable corresponding to the stack trace was created. A stack frame represents the following information: Code section 6.24: Stack frame. 1 public StackTraceElement(String declaringClass,
+2                          String methodName,
+3                          String fileName,
+4                          int lineNumber);
+ Creates a stack trace element representing the specified execution point. Converting the stack trace into string[edit] Many times for debugging purposes, we'd like to convert the stack trace to a String so we can log it to our log file. The following code shows how to do that: Code section 6.25: Save the stack trace.  1 import java.io.StringWriter;
+ 2 import java.io.PrintWriter;
+ 3 
+ 4 ...
+ 5 
+ 6   Exception e = new NullPointerException();
+ 7 
+ 8   StringWriter outError = new StringWriter();
+ 9   e.printStackTrace(new PrintWriter(outError));
+10   String errorString = outError.toString();
+11 
+12   // Do whatever you want with the errorString
+ To do: Add some exercises like the ones in Variables Preventing NullPointerException Java Programming Stack trace Nesting Exceptions Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Stack_trace&oldid=3295252" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

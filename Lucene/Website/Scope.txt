@@ -1,0 +1,75 @@
+Scope From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Object Lifecycle Java Programming Scope Nested Classes Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics Scope[edit] The scope of a class, a variable or a method is its visibility and its accessibility. The visibility or accessibility means that you can use the item from a given place. Scope of method parameters[edit] A method parameter is visible inside of the entire method but not visible outside the method. Code listing 3.14: Scope.java  1 public class Scope {
+ 2 
+ 3     public void method1(int i) {
+ 4         i = i++;
+ 5         method2();
+ 6         int j = i * 2;
+ 7     }
+ 8 
+ 9     public void method2() {
+10         int k = 20;
+11     }
+12 
+13     public static void main(String[] args) {
+14         method1(10);
+15     }
+16 }
+ In code listing 3.14, i is visible within the entire method1 method but not in the method2 and the main methods. Scope of local variables[edit] A local variable is visible after its declaration until the end of the block in which the local variable has been created. Code section 3.50: Local variables.  1 {
+ 2 ...
+ 3      // myNumber is NOT visible
+ 4   {
+ 5      // myNumber is NOT visible
+ 6      int myNumber;
+ 7      // myNumber is visible
+ 8     {
+ 9       ...
+10        // myNumber is visible
+11     }
+12        // myNumber is visible
+13   }
+14      // myNumber is NOT visible
+15 ...
+16 }
+ Access modifiers[edit] You surely would have noticed by now, the words public, protected and private at the beginning of class's method declarations used in this book. These keywords are called the access modifiers in the Java language syntax, and they define the scope of a given item. For a class[edit] If a class has public visibility, the class can be referenced by anywhere in the program. If a class has protected visibility, the class can be referenced only in the package where the class is defined. If a class has private visibility, (it can happen only if the class is defined nested in an other class) the class can be accessed only in the outer class. For a variable[edit] If a variable is defined in a public class and it has public visibility, the variable can be referenced anywhere in the application through the class it is defined in. If a variable has protected visibility, the variable can be referenced only in the sub-classes and in the same package through the class it is defined in. If a variable has package visibility, the variable can be referenced only in the same package through the class it is defined in. If a variable has private visibility, the variable can be accessed only in the class it is defined in. For a method[edit] If a method is defined in a public class and it has public visibility, the method can be called anywhere in the application through the class it is defined in. If a method has protected visibility, the method can be called only in the sub-classes and in the same package through the class it is defined in. If a method has package visibility, the method can be called only in the same package through the class it is defined in. If a method has private visibility, the method can be called only in the class it is defined in. For an interface[edit] The interface methods and interfaces are always public. You do not need to specify the access modifier. It will default to public. For clarity it is considered a good practice to put the public keyword. The same way all member variables defined in the Interface by default will become static final once inherited in a class. Summary[edit] Class Nested class Method, or Member variable Interface Interface method signature public visible from anywhere same as its class same as its class visible from anywhere visible from anywhere protected N/A its class and its subclass its class and its subclass, and from its package N/A N/A package only from its package only from its package only from its package N/A N/A private N/A only from its class only from its class N/A N/A The cases in bold are the default. Utility[edit] A general guideline for visibilities is to only make a member as visible as it needs to be. Don't make a member public if it only needs to be private. Doing so, you can rewrite a class and change all the private members without making compilation errors, even you don't know all the classes that will use your class as long as you do not change the signature of the public members. Field encapsulation[edit] Generally, it is best to make data private or protected. Access to the data is controlled by setter and getter methods. This lets the programmer control access to data, allowing him/her to check for and handle invalid data. Code section 3.51: Encapsulation.  1 private String name;
+ 2 
+ 3 /**
+ 4  * This is a getter method because it accesses data from the object.
+ 5  */
+ 6 public String getName() {
+ 7   return name;
+ 8 }
+ 9 
+10 /**
+11  * This is a setter method because it changes data in the object.
+12  */
+13 public boolean setName(String newName) {
+14   if (newName == null) {
+15     return false;
+16   } else {
+17     name = newName;
+18     return true;
+19   }
+20 }
+ In the code section 3.51, the setName() method will only change the value of name if the new name is not null. Because setName() is conditionally changing name, it is wise to return a boolean to let the program know if the change was successful. Test your knowledge Question 3.15: Consider the following class. Question 3.15: Question15.java  1 public class Question15 {
+ 2 
+ 3     public static final int QKQKQKQK_MULTIPLIER = 2;
+ 4 
+ 5     public int ijijijijijijijijijAwfulName = 20;
+ 6 
+ 7     private int unununununununununCrummyName = 10;
+ 8 
+ 9     private void mememememememeUglyName(int i) {
+10         i = i++;
+11         tltltltltltltltltlBadName();
+12         int j = i * QKQKQKQK_MULTIPLIER;
+13     }
+14 
+15     public void tltltltltltltltltlBadName() {
+16         int k = ijijijijijijijijijAwfulName;
+17     }
+18 
+19     public static void main(String[] args) {
+20         mememememememeUglyName(unununununununununCrummyName);
+21     }
+22 }
+ List the fields and methods of this class that can be renamed without changing or even knowing the client classes. Answer unununununununununCrummyName mememememememeUglyName() Every field or method that is public can be directly called by a client class so this class would return a compile error if the field or the method has a new name. Object Lifecycle Java Programming Scope Nested Classes Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Scope&oldid=3382212" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 9 March 2018, at 21:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

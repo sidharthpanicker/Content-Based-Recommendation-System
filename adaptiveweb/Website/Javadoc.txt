@@ -1,0 +1,39 @@
+Javadoc From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Annotations Java Programming Javadoc Annotations/Introduction Navigate Javadoc & Annotations topic: ( v • d • e ) Javadoc Introduction to Annotation Creating custom annotations Meta-annotations Helping the compiler Java allows users to document the classes and the members by using a particular syntax of comment. Syntax[edit] A documentation comment is framed by slash-star-star and star-slash (i.e. /** ... */). The documentation is in the HTML format. Code listing 8.1: Example.java 1 /**
+2  *  A class to give an <b>example</b> of HTML documentation.
+3  */
+4 public class Example {
+5     /** ...Documentation of a member with the type integer named example... */
+6     public int example;
+7 }
+ A documentation comment is placed just above the commented entity (class, constructor, method, field). In a documentation comment, the first part is a description text in the HTML format. The second part is a list of special attributes whose name starts with an at sign (@): Code section 8.1: Documentation comment. 1 /**
+2  *  Get the sum of two integers.
+3  *  @param a The first integer number.
+4  *  @param b The second integer number.
+5  *  @return The value of the sum of the two given integers.
+6  */
+7 public int sum(int a, int b) {
+8     return a + b;
+9 }
+ Get the sum of two integers. Description of the sum method. @param a The first integer number. Description attribute of the parameter a of the method. @param b The second integer number. Description attribute of the parameter b of the method. @return The value of the sum of the two given integers. Description attribute of the value returned by the method. Here is a non exhaustive list of special attributes: Attribute and syntax In a comment of ... Description @author author class Name of the author of the class. @version version class Version of the class. @deprecated description class, constructor, method, field Flags the entity as deprecated (old version), describes why and by what replace it. If the entity flagged as deprecated by this attribute is used, the compiler give a warning. @see reference class, constructor, method, field Add a link in the section "See also". @param id description constructor and method Describes the method parameter. @return description method Describes the value returned by the method. @exception type description constructor and method Describes the reason of the throw of an exception of the specified type (throws clause). See also annotations since Java 5. Documentation[edit] The JDK provides a tool named javadoc which allows to generate the documentation of the well commented classes. The javadoc command without argument give the complete syntax of the command. Example : for a class named Example defined in a package named org.wikibooks.en in the file C:\ProgJava\org\wikibooks\en\Example.java : Code listing 8.2: Example.java  1 package org.wikibooks.en;
+ 2 
+ 3 /**
+ 4  *  An example class.
+ 5  */
+ 6 public class Example {
+ 7     /**
+ 8     Get the sum of two integers.
+ 9     @param a The first integer number.
+10     @param b The second integer number.
+11     @return The value of the sum of the two given integers.
+12     */
+13     public int sum(int a, int b) {
+14         return a + b;
+15     }
+16 }
+ The documentation can be generated in a specific folder (C:\ProgDoc for example) with the following command: Command 8.1: Documentation generation $ javadoc -locale en_US -use -classpath C:\ProgJava -sourcepath C:\ProgJava -d C:\ProgDoc org.wikibooks.en
+ The options of this command are described below: -locale en_US The documentation in US English. -use Create the pages about the use of the classes and the packages. -classpath C:\ProgJava The path of the compiled classes (*.class). -sourcepath C:\ProgJava The path of the source classes (*.java). -d C:\ProgDoc The path where the documentation must be generated. org.wikibooks.en The name of the package to document. It is possible to specify several packages, or one or several class names to document only those ones. The description page of a package copy the description text from the file named package.html which should be placed in the given folder. In our example, we should document the package in the file C:\ProgJava\org\wikibooks\en\package.html. Since Java 5[1], the package.html file can be replaced by a special Java file named package-info.java containing only the package declaration preceding by a documentation comment. Code listing 8.3: C:\ProgJava\org\wikibooks\en\package-info.java 1 /**
+2  * This fake package is used to illustrate the Java wikibook.
+3  * at <i>en.wikibooks.org</i>.
+4  */
+5 package org.wikibooks.en;
+ References[edit] ↑ http://docs.oracle.com/javase/6/docs/technotes/tools/windows/javadoc.html#packagecomment To do: Add some exercises like the ones in Variables. Annotations Java Programming Javadoc Annotations/Introduction Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Javadoc&oldid=3377732" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 23 February 2018, at 15:09. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

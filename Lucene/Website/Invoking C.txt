@@ -1,0 +1,80 @@
+Invoking C From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 1 October 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Java Native Interface Java Programming Invoking C Byte Code Navigate Advanced topic: ( v • d • e ) Networking Database programming Regular Expressions Libraries, extensions and frameworks 3D programming Java Native Interface Invoking C Byte Code You can use Runtime.exec() method to invoke a program from within a running Java application. Runtime.exec() also allows you to perform operations related to the program, such as control the program's standard input and output, wait until it completes execution, and get its exit status. Here's a simple C application that illustrates these features. This C program will be called from Java: #include <stdio.h>
+
+int main() {
+    printf("testing\n");
+    return 0;
+}
+ This application writes a string "testing" to standard output, and then terminates with an exit status of 0. To execute this simple program within a Java application, compile the C application: Compilation $ cc test.c -o test
+ Then invoke the C program using this Java code: Code listing 10.2: Invoking C programs.  1 import java.io.InputStream;
+ 2 import java.io.BufferedReader;
+ 3 import java.io.InputStreamReader;
+ 4 import java.io.IOException;
+ 5 import java.io.InterruptedException;
+ 6 import java.io.Process;
+ 7 import java.io.Runtime;
+ 8 
+ 9 import java.util.ArrayList;
+10 
+11 public class ExecDemo {
+12     public static String[] runCommand(String cmd) throws IOException {
+13         // --- set up list to capture command output lines ---
+14         ArrayList list = new ArrayList();
+15 
+16         // --- start command running
+17         Process proc = Runtime.getRuntime().exec(cmd);
+18 
+19         // --- get command's output stream and
+20         // put a buffered reader input stream on it ---
+21         InputStream istr = proc.getInputStream();
+22         BufferedReader br = new BufferedReader(new InputStreamReader(istr));
+23 
+24         // --- read output lines from command
+25         String str;
+26         while ((str = br.readLine()) != null) {
+27             list.add(str);
+28         }
+29 
+30         // wait for command to terminate
+31         try {
+32             proc.waitFor();
+33         }
+34         catch (InterruptedException e) {
+35             System.err.println("process was interrupted");
+36         }
+37 
+38         // check its exit value
+39         if (proc.exitValue() != 0) {
+40             System.err.println("exit value was non-zero");
+41         }
+42 
+43         // close stream
+44         br.close();
+45 
+46         // return list of strings to caller
+47         return (String[])list.toArray(new String[0]);
+48     }
+49 
+50     public static void main(String args[]) throws IOException {
+51         try {
+52 
+53             // run a command
+54             String outlist[] = runCommand("test");
+55 
+56             // display its output
+57             for (int i = 0; i < outlist.length; i++)
+58                 System.out.println(outlist[i]);
+59         }
+60         catch (IOException e) {
+61             System.err.println(e);
+62         }
+63     }
+64 }
+ The demo calls a method runCommand to actually run the program. Code section 10.1: Running a command. 1 String outlist[] = runCommand("test");
+ This method hooks an input stream to the program's output stream, so that it can read the program's output, and save it into a list of strings. Code section 10.2: Reading the program's output. 1 InputStream istr = proc.getInputStream();
+2 BufferedReader br = new BufferedReader(new InputStreamReader(istr));
+3              
+4 String str;
+5 while ((str = br.readLine()) != null) {
+6     list.add(str);
+7 }
+ Migrating C to Java[edit] Tools exist to aid the migration of existing projects from C to Java. In general, automated translator tools fall into one of two distinct kinds: One kind converts C code to Java byte code. It is basically a compiler that creates byte code. It has the same steps as any other C compiler. See also C to Java JVM compilers. The other kind translates C code to Java source code. This type is more complicated and uses various syntax rules to create readable Java source code. This option is best for those who want to move their C code to Java and stay in Java. To do: Add some examples. Java Native Interface Java Programming Invoking C Byte Code Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Invoking_C&oldid=3306006" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 1 October 2017, at 13:25. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

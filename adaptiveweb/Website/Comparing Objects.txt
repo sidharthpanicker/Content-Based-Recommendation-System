@@ -1,0 +1,56 @@
+Comparing Objects From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Map Java Programming Comparing Objects Exceptions Navigate Aggregate topic: ( v • d • e ) Collection ArrayList Map Comparing Objects In Java, we can distinguish two kinds of equality. Object reference equality: when two object references point to the same object. Object value equality: when two separate objects happen to have the same values/state. If two objects are equal in reference, they are equal in value too. Comparing for reference equality[edit] The == operator can be used to check if two object references point to the same object. Code section 5.19: Reference equality. 1 if (objRef1 == objRef2) {
+2     // The two object references point to the same object
+3 }
+ Comparing for value equality[edit] To be able to compare two Java objects of the same class the boolean equals(Object obj) method must be overriden and implemented by the class. The implementor decides which values must be equal to consider two objects to be equal. For example in the below class, the name and the address must be equal but not the description. Code listing 5.5: Customer.java  1 public class Customer {
+ 2     private String name;
+ 3     private String address;
+ 4     private String description;
+ 5     // ...
+ 6     public boolean equals(Object obj) {
+ 7         if (this == obj) {
+ 8             return true;
+ 9         } else if (obj == null) {
+10             return false;
+11         } else if (obj instanceof Customer) {
+12             Customer cust = (Customer) obj;
+13             if ((cust.getName() == null && name == null) ||
+14                 (cust.getName().equals(name) && ((cust.getAddress() == null && address == null)
+15                 || cust.getAddress().equals(address))) {
+16                 return true;
+17             }
+18         }
+19         return false;
+20     }
+21 
+22 }
+ After the equals() method is overriden, two objects from the same class can be compared like this: Code section 5.20: Method usage. 1 Customer cust1 = new Customer();
+2 Customer cust2 = new Customer();
+3 //...
+4 if (cust1.equals(cust2)) {
+5     // Two Customers are equal, by name and address
+6 }
+ Note that equal objects must have equal hash codes. Therefore, when overriding the equals method, you must also override the hashCode method. Failure to do so violates the general contract for the hashCode method, and any classes that use the hash code, such as HashMap will not function properly. Sorting/Ordering[edit] In Java, there are several existing methods that already sort objects from any class like Collections.sort(List<T> list). However, Java needs to know the comparison rules between two objects. So when you define a new class and want the objects of your class to be sortable, you have to implement the Comparable and redefine the compareTo(Object obj) method. int compareTo(T o) Compares two objects and return an integer: A negative integer means that the current object is before the parameter object in the natural ordering. Zero means that the current object and the parameter object are equal. A positive integer means that the current object is after the parameter object in the natural ordering. Let's say that the name is more important than the address and the description is ignored. Code listing 5.6: SortableCustomer.java  1 public class SortableCustomer implements Comparable<SortableCustomer> {
+ 2     private String name;
+ 3     private String address;
+ 4     private String description;
+ 5     // ...
+ 6     public int compareTo(SortableCustomer anotherCustomer) {
+ 7         if (name.compareTo(anotherCustomer.getName()) == 0) {
+ 8             return address.compareTo(anotherCustomer.getAddress();
+ 9         } else {
+10             return name.compareTo(anotherCustomer.getName();
+11         }
+12     }
+13 
+14 }
+ Objects that implement this interface can be used as keys in a sorted map or elements in a sorted set, without the need to specify a comparator. The natural ordering for a class C is said to be consistent with equals if and only if e1.compareTo((Object) e2) == 0 has the same boolean value as e1.equals((Object) e2) for every e1 and e2 of class C. Note that null is not an instance of any class, and e.compareTo(null) should throw a NullPointerException even though e.equals(null) returns false. It is strongly recommended (though not required) that natural orderings be consistent with equals. This is because sorted sets (and sorted maps) without explicit comparators behave "strangely" when they are used with elements (or keys) whose natural ordering is inconsistent with equals. In particular, such a sorted set (or sorted map) violates the general contract for set (or map), which is defined in terms of the equals method. Change Sorting/Ordering[edit] Sometimes we may want to change the ordering of a collection of objects from the same class. We may want to order descending or ascending order. We may want to sort by name or by address. We need to create a class for each way of ordering. It has to implement the Comparator interface. Since Java 5.0, the Comparator interface is generic; that means when you implement it, you can specify what type of objects your comparator can compare. Code listing 5.7: CustomerComparator.java 1 public class CustomerComparator implements Comparator<Customer> {
+2     public int compare(Customer cust1, Customer cust2) {
+3         return cust1.getName().compareTo(cust2.getName());
+4     }
+5 }
+ The above class then can be associated with a SortedSet or other collections that support sorting. Code section 5.21: Comparator usage. 1 Collection<Customer> orderedCustomers = new TreeSet<Customer>(new CustomerComparator());
+ Using the Iterator the orderedCustomers collection can be iterated in order of sorted by name. A List can be sorted by the Collections' sort method. Code section 5.22: Customized comparison. 1 java.util.Collections.sort(custList, new CustomerComparator());
+ Sorts the specified list according to the order induced by the specified comparator. All elements in the list must be mutually comparable using the specified comparator. An array of objects can also be sorted with the help of a Comparator. Code section 5.23: Array sorting. 1 SortableCustomer[] customerArray;
+2 //...
+3 java.util.Arrays.sort(customerArray, new CustomerComparator());
+ Sorts the specified array of Customer objects (customerArray) according to the order induced by the specified comparator. All elements in the array must be mutually comparable by the specified comparator. To do: Add some exercises like the ones in Variables Map Java Programming Comparing Objects Exceptions Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Comparing_Objects&oldid=3295190" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

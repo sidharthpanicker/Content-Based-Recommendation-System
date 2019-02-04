@@ -1,0 +1,278 @@
+Object Oriented Programming From Wikibooks, open books for an open world Jump to navigation Jump to search A Wikibookian believes this page should be split into smaller pages with a narrower subtopic. You can help by splitting this big page into smaller ones. Please make sure to follow the naming policy. Dividing books into smaller sections can provide more focus and allow each one to do one thing well, which benefits everyone. You can ask for help in dividing this book in the assistance reading room. Object Oriented Programming (OOP) means any kind of programming that uses a programming language with some object oriented constructs or programming in an environment where some object oriented principles are followed. At its heart, though, object oriented programming is a mindset which respects programming as a problem-solving dilemma on a grand scale which requires careful application of abstractions and subdividing problems into manageable pieces. Compared with procedural programming, a superficial examination of code written in both styles would reveal that object oriented code tends to be broken down into vast numbers of small pieces, with the hope that each piece will be trivially verifiable. OOP was one step towards the holy grail of software-re-usability, although no new term has gained widespread acceptance, which is why "OOP" is used to mean almost any modern programming distinct from systems programming, assembly programming, functional programming, or database programming. Modern programming would be better categorized as "multi-paradigm" programming, and that term is sometimes used. This book is primarily aimed at modern, multi-paradigm programming, which has classic object oriented programming as its immediate predecessor and strongest influence. Historically, "OOP" has been one of the most influential developments in computer programming, gaining widespread use in the mid 1980s. Originally heralded for its facility for managing complexity in ever-growing software systems, OOP quickly developed its own set of difficulties. Fortunately, the ever evolving programming landscape gave us "interface" programming, design patterns, generic programming, and other improvements paving the way for more contemporary Multi-Paradigm programming. While some people will debate endlessly about whether or not a certain language implements "Pure" OOP—and bless or denounce a language accordingly—this book is not intended as an academic treatise on object oriented programming or its theory. Instead, we aim for something more pragmatic: we start with basic OO theory and then delve into a handful of real-world languages to examine how they support OO programming. Since we obviously cannot teach each language, the point is to illustrate the trade-offs inherent in different approaches to OOP. Contents 1 Introduction 1.1 Overview 1.1.1 Classic or Pure OOP 1.1.2 Modern OOP and Multi Paradigm Programming 1.1.3 Future of OOP 1.2 What is an Object? 1.2.1 State Machines 2 Classes, Types, and Classic OOP 2.1 Simple Objects vs Behavioral Entities 2.2 Encapsulation 2.2.1 Compile Time Enforced Access Restrictions 2.2.2 Runtime Enforced Access Restrictions 2.2.3 Accessors and Virtual (or Calculated) Properties 2.3 "State" is Evil! 2.4 Inheritance 2.4.1 Is-A vs Has-A Moley Baloney 2.4.2 Delegation and "Dynamic Inheritance" 2.4.3 Multiple Inheritance 2.4.4 Problems with Inheritance 2.5 Object/Relational Mappings 3 Separation of Static and Dynamic 3.1 Systems Architecture 3.1.1 (Logical) Networks 3.2 The Benefits of Static Analysis 3.2.1 Provable Correctness 3.2.2 Dealing With Hierarchies 3.2.2.1 Deep Single-Rooted Hierarchy 3.2.2.2 Shallow, Multi-Rooted Hierarchies 3.3 Traditional Neglect of Dynamic Analysis 3.3.1 Data Flow Diagrams 3.3.2 Interfaces and Components 4 Messages, Protocols and Dispatch 4.1 Synchronous vs Asynchronous 4.2 Delegation 4.2.1 Virtualization and Polymorphism 5 Interfaces 5.1 Introduction 5.2 Interfaces vs. Inheritance 5.3 The introduction of Components 5.4 Delegation 5.4.1 Inheritance vs Delegation 5.4.1.1 Dynamic Inheritance 6 Lifetime Management 6.1 Manual Lifetime Management 6.2 Factories 6.3 Reference Counting 6.4 Garbage Collection 6.5 Persistence 6.6 Serialization 7 Generic Programming 7.1 Proxies 7.2 Abstracting Classes 7.3 Abstracting Algorithms 7.4 The Significance of Uniformity 8 Abstraction Barrier 9 The Introduction of Functional Programming Ideas 9.1 Functions as "True Citizens" 9.1.1 Closures 10 See also Introduction[edit] For an overview and history of Object Oriented programming OOP, please reference the Wikipedia article. The reader is expected to have a basic familiarity with programming in general, as we will give examples in a variety of languages. We will explain any non-obvious syntax in the discussion, although this is besides the point. The point is to give some indication of the flavor of the languages and some insight into the real-world application of OO ideas. Overview[edit] We will divide up OOP into two phases— classic and modern. While this distinction is somewhat arbitrary, we believe it is instructive to consider OOP as it was practiced in the 1980s and early 1990s to demonstrate the motivation for more current practices. What is Classic OOP? Object oriented programming can be traced back to a language called Simula, and in particular Simula 67, which was popular during the 1960s. It was Simula that first instituted "classes" and "objects," leading to the term "object oriented" programming. By the early 1990s, enough experience had been gained with large OOP projects to discover some limitations. Languages such as Self, ideas like interface programming (also known as component or component-oriented programming), and methodologies such as generic programming were being developed in response to these difficulties. Although often derided by OOP purists, it was the standardization of C++ in 1998 —including generic programming facilities — that really ushered in the modern era of OOP, which we also refer to as Multi-Paradigm programming. This is largely due to the popularity of C++ and the genius of the Standard Template Library (STL) demonstrating the utility of the new methodology to such a large audience. Classic or Pure OOP[edit] By 1980, Xerox had made Smalltalk available to outsiders, appropriately named Smalltalk-80. Unlike other early programming languages, Smalltalk was a complete environment rather than just a language, a characteristic it had in common with Lisp at the time. While Lisp machines were foreshadowing IDEs to come, Smalltalk was pioneering the GUI, ultimately influencing the development of the Macintosh computer. Meanwhile, while Xerox was developing Smalltalk during the 70s, the C language was becoming popular thanks to UNIX being largely written in C. Therefore, it was C —an otherwise unlikely candidate —that Bjarne Stroustrup fused with ideas from Simula to create "C with Classes" which was renamed to C++ in 1983. In 1985, unsatisfied with Smalltalk, C++, and various object systems being tacked onto Lisp dialects, Bertrand Meyer created Eiffel. Even though much more recent, Java essentially cloned vintage C++, and so we consider Smalltalk, vintage C++, Eiffel, and Java to be Classic OOP. The object systems tacked onto Lisp (eventually standardized as CLOS in 1994) produced a very different methodology. While we don't consider CLOS to be Classic OOP, it did influence modern OOP. Modern OOP and Multi Paradigm Programming[edit] Classic OOP developed a tendency to over-rely on a technique called "inheritance," and eventually programmers realized that they were using inheritance for many things that are conceptually distinct. Modern OOP basically incorporates these concepts, sometimes as language level features, sometimes through programmer practice. The goal largely being looser coupling, easier maintenance and reuse. Historically, David Ungar and Randall Smith completed their first working Self compiler in 1987, and by 1990 Sun Microsystems had picked up the project. While Self did not survive to really become a modern OOP language, it was a second generation OOP language. Then, in the early 1990s, Alexander Stepanov and Meng Lee pioneered generic programming and wrote early drafts of C++'s STL. This began a (still ongoing) trend of incorporating functional programming ideas into more traditional OOP environments, in a kind of reverse CLOS. Additionally, the early 1990s saw the development of CORBA and Microsoft's COM, which was a natural extension of the ideas that had led to the original Windows API. This interface or component programming was a natural extension of encapsulation —a basic tenet of OOP, as we will see. All of these developments were aimed at further managing or reducing complexity. Since this was the original goal of OOP and these techniques are used in conjunction with classic OOP, we find it appropriate to consider them in a treatment on "OOP". Contemporary object oriented programming, therefore, tends to be rather distinct from classic object oriented programming. Particularly, getting used to which abstractions are the most useful for which problem types is more challenging now that there are more to choose from! In a now classic book, Gamma et. al. introduced Design Patterns which helped to synthesize a variety of OOP techniques as applied to very common problems. Future of OOP[edit] The future contains more standardization of functional programming techniques in OOP environments, particularly lambda expressions and closures, and more robust meta-programming constructs. Applying design patterns automatically through generic or meta programming techniques is an interesting area. What is an Object?[edit] Loosely, the term object is used to conjure up connections with real world objects like a chair or a guitar. Except that for software, only some simplified abstraction is used, designed specifically for the task at hand. While a real chair is composed of atoms and molecules and reacts to its environment based on the laws of physics and its atomic composition, a "chair object" will vary wildly depending on whether you're writing a game or a Point-of-Sale system for a furniture store. Approaching your problem from the perspective of the chair will not be as productive as approaching the chair from the perspective of your problem. In most of the languages used in this book, you will find that technically speaking (something akin to whistling 9600 baud, I understand), an object is "an instance of a class". Great, so what does that mean? Well, we can trace this idea all the way back to Plato and his Platonic Ideal. If you spent more time watching Bill and Ted's Excellent Adventure than reading Plato, the idea is that the concept of a chair is a separate entity from any particular chair. In other words, you can conceive of a chair in the abstract without thinking of any particular chair. In most OOP languages, this abstracted idea of a chair is called a class (from classification) and is a prototype or blueprint for actually making chairs. The act of making something from the blueprint is often called instantiating, and the made thing is both an object and an instance of the class that served as a blueprint. As humans, we normally tend to do this in reverse —we categorize objects we encounter. We can easily identify chair-like things we run into as being chairs; this classification is where we got the term class in the first place. It is easy to drift off into abstruse philosophical debates over objectness; in some areas like knowledge representation and computational ontology they are very relevant. However, for a computer programmer, it is only necessary to figure out what your application needs to know about and do with chairs. This can be a sufficiently difficult problem, it's usually not necessary to make it harder! If you're still fuzzy on the whole idea, consider a more technical explanation. Structs (structures), records, tables, and other ways of organizing related information predated object oriented programming. You may be familiar with something like the following Pascal code:  TYPE chair = RECORD
+                model  : integer;
+                weight : integer;
+                height : integer;
+                color  : COLOR;
+              END;
+ This doesn't actually create a chair variable, but defines what a chair variable will look like when you create one. You could proceed to create arrays of chairs and so forth, and as we hope you've discovered for yourself, this kind of thing is quite indispensable for keeping your programs understandable. Object oriented programming wants to push this advantage and milk it for every ounce of understandability, correctness, and simplicity it can. A fundamental problem solving technique is divide and conquer —you just have to figure out how to partition your problem into sub-problems. OOP innovators realized that we already had figured out ways to partition the problem, and it was reflected in the way we organized our data, like above. If you looked at an application that had that chair RECORD in it, you would surely find lots of code for doing things with chairs. Why else would you bother to define it? So, if you were to extract all of that code from all over the application and put it together with the chair definition, the reasoning goes, you should have an easier time ensuring that: all chair code is correct all chair code is consistent with each other there's no duplicated chair code overall, you have less spaghetti because chair code is no longer tangled up with sofa code etc So you take that chair definition and that code extracted from all over the application, and call that a class. Take a chair variable and call it an object, and you're off to the races. Since this is supposed to be a pragmatic book, let's look at our first example code, this time in Python code:  class Chair:
+    model = None
+    height = None
+    weight = None
+    color = None
+    def has_arms(self):
+        return self.model % 2 # odd-numbered models have armrests
+ This doesn't look terribly different from the Pascal example. The only difference is that class Chair now contains a has_arms method. Methods are functions that live within a class, and are usually used to process certain class specific data. Hopefully the purpose is fairly clear, so let me point out the important part: has_arms is a calculated or inferred property—this information is not stored directly. In Python, you would use this class like so:  c = Chair()
+ c.model = 15
+ c.height = 40
+ c.weight = 10
+ c.color  = 7
+
+ if c.has_arms():
+      do_something
+ else:
+      do_other_thing
+ Here, the "c" variable is an instance of the 'chair' Class, also known as a chair object. We initialize the properties like you would in Pascal (this will change later!) and do one thing if the chair has arms and something else if it doesn't. But we never initialized a "has_arms" property or anything of the like. Since part of the goal is for you to become syntax agnostic, we present this same example again in C++:  class Chair
+ {
+ public:
+     int model;
+     int weight;
+     int height;
+     int color;
+     bool has_arms()
+     {
+         return model % 2 ? true : false;
+     }
+ };
+  Chair c;
+ c.model = 15;
+ c.height = 40;
+ c.weight = 10;
+ c.color  = 7;
+
+ if (c.has_arms())
+      do_something();
+ else
+      do_other_thing();
+ Now, we would just like to mention that this is just the tip of the iceberg and this example is not representative of good style (in either language). There may seem like little purpose to making objects with so little functionality, and you could easily generate equivalent code that requires no new class: struct Chair
+{
+    int model;
+    int weight;
+    int height;
+    int color;
+} c;
+
+Chair c = {15, 40, 10, 7 };
+
+if (c.model % 2)
+     do_something();
+else
+     do_other_thing();
+ The purpose of this section is to help you understand the terms; we will delve more into the benefits in the sections on encapsulation, polymorphism, inheritance, and on and on. However, let us say that while the "low-level" way might seem shorter and simpler, the object oriented benefits accrue with program size and complexity. This is not surprising, as that's what OOP was designed for, but it does make simple examples hard to come by. So bear with us. State Machines[edit] If you are unfamiliar with state machines, we won't delve too deep into them, but we highly recommend you look into them more. It's good for your clarity of thought process. Pedantically speaking, state machines are somewhat complicated mathematical constructs, and there are many interesting results that can be derived using the mathematical notation. But that's not our interest. Our interest is two-fold: For one, state machines provide a clear graphical way to illustrate potentially complicated application logic. First, you identify what your possible states are. For example, a server might be IDLE, CONNECTED, BUSY, ERROR, etc. Then, you define all the possible inputs, i.e. messages that the client might send, and for each state diagram the server's response to each input. This helps promote thoroughness as you think about reactions to unanticipated messages in various states. Secondly, state machines are a standard tool with a relatively standard notation. There are tools and libraries that will automatically make code given some canonical state machine format as input. This is effectively what regular expression processors do. In object oriented programming, "objects" are sometimes implementations of state machines. State machines are a better conceptual underpinning for behavioral entities —servers, regular expression processors, graphics engine, and virtual machines are all good examples of behavioral entities. A basic distinction between simple objects and behavioral entities is that simple objects do not change their behavior based on their value. In fact, we tend to refer to their value rather than state. Simple objects tend to be kept in collections and searched through, passed to and returned from functions, and in general act like values. String and Rectangle are classic examples. Later on, we'll discuss message passing as an abstraction of method invocation, and it may seem a little strange in the context of simple objects. If you are still having trouble with the concept of objects, download and play with BlueJ, Most people "get it" within hours of using that IDE. Classes, Types, and Classic OOP[edit] There are some books on OOP that will tell you that the cornerstones of object oriented programming are encapsulation, inheritance, and polymorphism, or something along those lines. This is fairly typical of the classic OOP view, and there's nothing wrong with it per-se, it's just that we've generalized some ideas and decoupled things here and there since then. Simple Objects vs Behavioral Entities[edit] There are two fundamentally different types of objects, created and designed with different purposes in mind, using different techniques. We label these two types "Simple Objects" and "Behavioral Entities," although these labels are our own. Simple objects tend to represent values, like colors, coordinates, vectors, strings, etc, while behavioral entities tend to represent system components like services, message queues, engines, application logic, etc. Simple objects, if they own anything, are just wrapping what they own (like a system level handle). Usually, however, simple objects are untied to anything else, have no complicated startup or shutdown, and have little overhead. Simple objects tend to demand high performance, guaranteed correctness, discourage incorrect usage, are put in collections, searched, passed around, and generally manipulated by the rest of the program. Writing good simple objects, combined with good collection libraries provided by your language of choice, can easily reduce the complexity of basic operations by as much as 80%. Simple objects tend to focus on the encapsulation side of OOP rather than fancy message passing, as it's usually not a helpful abstraction to think of simple objects sending or receiving messages. Behavioral entities tend to maintain their state in various collections of simple objects, like a server keeping a list of logged in users. Behavioral entities tend to focus on behavior (to state the obvious), and configuring or tailoring that behavior in various circumstances. Message passing mechanisms, including polymorphism, tend to be central to the construction of behavioral entities. As a result, you tend to get whole families of similar entities, for example, an FTP server, an ssh server, an HTTP server, etc. that all have common functionality (like accepting connections). One of the primary forces behind OOP is separating out all of the common elements from these families and writing it once. This has obvious advantages in debugging and maintenance: you only have to fix bugs in common code once. Obviously, this is just abstraction at work but OOP gives you a well understood set of tools to do it with. Some languages features are tailored for one or the other. For example, operator overloading is truly important for simple objects, but mostly irrelevant for behavioral entities. Encapsulation[edit] Encapsulation is about risk management, reducing your maintenance burden, and limiting your exposure to vulnerabilities —especially those caused by bypassed/forgotten sanity checks or initialization procedures, or various issues that may arise due to the simple fact of the code changing in different ways over time. Technically, encapsulation is hiding internal details behind an opaque barrier so as to force external entities to interact through publicly available access points. Think about it in the context of an OS kernel, like the Linux kernel. In general, you don't want a common user level application modifying any internal kernel data structures directly —you want applications to work through the API (Application Programming Interface). Hence encapsulation is the general term we use for giving varied levels of separation between any core system elements and any common application elements. Otherwise, "unencapsulated code" would be bad for a number of obvious reasons: Applications could easily set invalid or nonsensical values, causing the whole system to crash. Forcing the application to use the API ensures that sanity checks get run on all parameters and all data structures maintain a consistent state. Internal data structures could be updated and change (even drastically so) between seemingly minor kernel updates. Sticking to the API insulates application developers from having to rewrite their code all the time. Applications could be used to "snoop" on each other, elevate their privileges, hog system resources, and violate any number of security protocols if they could directly manipulate kernel data structures. Application developers need little or no understanding of the Linux kernel to access kernel data. The random number engine illustrates this well. It can be accessed through /dev/random instead of wading through kernel structures, and you still get the same data. There are more, surely you can think of some. You may be thinking, "This is supposed to be about object oriented programming. I don't want to be a kernel developer!" Yes, we know, but the software kernel is the perfect example for discussing encapsulation, even though the kernel possesses no object oriented code itself. Encapsulation does not strictly apply to OOP, but it is used most within it. All the kernel's internal data —its message queues, its process lists, its filehandles, etc. —are all encapsulated inside the kernel, and cannot be seen outside the kernel. To work with the kernel, you must use its public interface, the API. For all the same reasons, writing your code in this way pertains the same benefits, even for writing a small app like a text editor or a mail client. Since the entire purpose of encapsulation is to hide details and restrict access, it makes us consider exactly how access is restricted. It also makes us consider what exactly is a detail that needs to be protected, and what exactly should be exposed to the outside world. Figuring out what to expose, and especially at what granularity, is something of an art and we'll talk about it more in the section on interfaces. We'll move on to access restrictions, which come in two basic kinds: compile time and run time. Encapsulation is nothing but a combining of code and data as a single unit. It is achieved using the class concept, e.g.:  class addition
+ {
+   int a,b;
+   public:
+   void read()
+   {
+     cout<<"\n Enter two numbers";
+     cin>>a>>b;
+   }
+   void print()
+   {
+     cout<<"\n first number:"<<a;
+     cout<<"\n Second number:"<<b;
+   }
+   int cal()
+   {
+     return a+b;
+   }
+ }
+ In the above example we are combining data (a and b) and the methods (read(), print(), cal()) in to a single unit called by addition. Now we can access those methods by using objects. Compile Time Enforced Access Restrictions[edit] Many OOP languages have keywords along the lines of "public", "private" and "protected". These three were used by C++ in particular and have been oft copied since. They are used to group class members into three different levels of access: Public: Part of the public interface, anybody can access this member. Private: An internal detail, only members of this class may access this member. Protected: An internal detail also available to descendants of this class. As you can see, this is not the most flexible framework for controlling access. C++ also has a "friend" keyword to allow certain exceptions to access restrictions, but other problems persist. One common problem results from single classes that grow very large: sometimes you want access restricted to a subset of a classes functions. Alternatively, many generic frameworks like serialization or persistence need access to "private" data members. Unfortunately, there is no way to differentiate between "implementation detail" and "secret information". These kinds of language-level keywords only serve to prevent programs that violate these restrictions from compiling (and most scripting languages are compiled to some intermediate form these days). If somebody used a modified compiler that ignored these access restrictions (or in some languages just used some casting tricks), there is generally nothing to prevent a determined programmer from getting around these barriers. Runtime Enforced Access Restrictions[edit] Depending on the chip architecture in use, or possibly on the virtual machine running the byte code, it is sometimes possible to put "protected" information into areas of memory that will generate exceptions if read from, written to, or both. This allows for a program to abort or take other action if encapsulation is violated. Accessors and Virtual (or Calculated) Properties[edit] Accessors are just functions that set or return properties of an object. All too often, you'll see this kind of code in Java: class Dummy {
+  private int val;
+ 
+  public int getVal() { return val; }
+  public void setVal(int val) { this.val = val; }
+}
+ In this case, getVal and setVal are accessors, or accessor functions. Java promotes lots of gratuitous accessors, and it often looks like unnecessary bloat. Sometimes it is. But often, people miss the point of encapsulation. If Dummy is well thought out, then Val is conceptually a property of Dummy. The fact that in this case that property is kept as a couple of bytes in memory is besides the point for anybody using a "Dummy". Even more importantly, users of Dummies are protected from any changes to how Val is calculated. All too often, the writer of a Dummy class is one himself, and Val has no logical or conceptual significance, and the accessors just get in the way. "State" is Evil![edit] Something that we don't see reiterated enough: State (as opposed to change) is evil! Or, (perhaps better said) maintaining unnecessary state is the root of all (er... many) bugs. Let's look at an example, now in Ruby: # We're displaying something over time, so we're dealing
+# with both pixels and seconds.  Based on the zoom level,
+# there is a correlation between them: pixels per second,
+# or PPS.
+
+class Timeline
+ {
+  PPS;
+  current_position_in_seconds;
+  current_position_in_pixels;
+ public:
+
+  GetPosInSeconds() {current_position_in_seconds;}
+  SetPosInSeconds(s) {current_position_in_seconds = s;} # oops, we're out of sync
+
+  GetPosInPixels() {current_position_in_pixels;}
+  SetPosInPixels(p) {current_position_in_pixels = p;} #oops, we're out of sync
+}
+ In this example, we're maintaining gratuitous state — which is to say, we're holding the position in both seconds AND pixels. This is convenient, and important for users of this class, but we've messed up the encapsulation here. Whenever you set the value in one unit, you've destroyed the correctness for the other unit. Okay, you say, here's a simple fix: # We're displaying something over time, so we're dealing
+# with both pixels and seconds.  Based on the zoom level,
+# there is a correlation between them: pixels per second,
+# or PPS.
+
+class Timeline
+{
+  PPS;
+  current_position_in_seconds;
+  current_position_in_pixels;
+public:
+
+  GetPosInSeconds() {current_position_in_seconds;}
+  SetPosInSeconds(s)
+       {
+          current_position_in_seconds = s;
+          current_position_in_pixels = s*PPS;
+        }
+
+  GetPosInPixels() {current_position_in_pixels;}
+  SetPosInPixels(p)
+       {
+          current_position_in_pixels = p;
+          current_position_in_seconds = p/PPS;
+       }
+}
+ This fixes the obvious error with the previous example, but you've created a lot of work for yourself. Now you have to keep every calculation in every method in the Timeline class duplicated to maintain consistency. There could be dozens more where this came from (trust me). And what about when you add in other units, say inches? You have to duplicate all of that again. Presumably, you see where this is heading: calculated properties, logical properties, virtual properties, whatever you like to call them. Let's see this example again: class Timeline
+{
+  PPS; # Pixels Per Second
+  IPS; # Inches Per Second
+  current_position_in_seconds;
+public:
+
+  GetPosInSeconds() {current_position_in_seconds;}
+  SetPosInSeconds(s) {current_position_in_seconds = s;}
+ 
+  GetPosInPixels() {current_position_in_seconds*PPS;}
+  SetPosInPixels(p) {current_position_in_seconds = p/PPS; }
+ 
+  GetPosInInches() {current_position_in_seconds*IPS;}
+  SetPosInInches(i) {current_position_in_seconds = i/IPS; }
+}
+ Now, we're presuming that the conversion factors of PPS and IPS are set correctly for simplicity, but otherwise we've vastly simplified our problem. In twenty other functions we now write, we only have to worry about seconds, there's no consistency problems to worry about. Additionally, if we need to change our base units from seconds to pixels, the Timeline users need never know. Inheritance[edit] In many books, inheritance and OOP are made to seem synonymous, so it may seem strange that we deferred this discussion so far. This is a reflection of the diminished role of inheritance over time. In fact, one of the primary distinctions between Classic and Modern OOP lies in the usage of inheritance. As the old adage goes, if all you have is a hammer, then everything looks like a nail. And so it happened that often times, inheritance was the only tool available to the erstwhile OOP programmer, and so every concept under the sun (or at least the ghostly glow of a CRT) was crammed into inheritance. This lack of conceptual integrity and separation of concerns led to over-intimate dependencies and many difficulties. In some languages, programmer technique evolved to make the concepts clearer using the same limited language functions, while other languages explicitly developed features to address these concerns. Because you are almost certain to be exposed to some of this misguided advice at some point in your OOP learning, we'll try and explain some of the problems to you. However, much of the discussion will go in the sections where they properly belong! First off, though, what is inheritance? Well, just like when your grandma dies and you inherit that gawd-awful ugly lamp, inheritance in OOP grants the child-class (or derived-class) all of the attributes of the parent (or super) class. So, for example (in C++): class Parent
+{
+public:
+   int f() {return 10;}
+};
+ class Child : public Parent
+{
+// see, nothing here!  But wait, we inherited the function f()!
+};
+ Child c;
+int result = c.f();  // huh?  Oh, f() was inherited from the parent!
+ Is-A vs Has-A Moley Baloney[edit] The most over-used and rather worthless discussion on inheritance that you will see revolves around the "Is-A vs Has-A" discussion. For example, a car is-a vehicle but has-a steering wheel. The idea these authors are chasing is that your car class should inherit your vehicle class and have a steering wheel as a member. You might also run across examples with shapes, where a Rectangle is-a Shape. The point is, once again, abstraction. The goal is to identify operations that operate only on the abstract notion of vehicle or shape and then write that code only once. Then, through the magic of inheritance, you can pass in cars or rectangles or what-have-you to the generic code, and it will work, since the derived classes are everything the parent classes are, "plus more". The problem here is that inheritance is mixing together several things: you inherit "typeness", interface, and implementation all at the same time. However, all of the examples focus on interface while talking about "typeness". The abstract code doesn't care that a car "is-a" vehicle, just that the objects respond to a certain set of functions, or interface. In fact, if you want to give your chair class accelerate(), brake(), turn_left() and turn_right() methods, shouldn't the abstract code be able to work on chairs then? Well, of course, but that doesn't make chairs vehicles. The kinds of solutions proposed in these "is-a" discussions have thus been mostly replaced by so-called interface programming and template programming. Since template programming offers the loosest coupling, it focused some attention on the syntactic-semantic confusion. Just because you have functions with the proper names, does that mean that they do what you think they do? If a chair class has accelerate(), brake() and other vehicle type methods, does it make sense to have generic vehicle code work on this chair? This led to more codifying of the assumptions of generic code: say, brake(INFINITY) ==> STOPPED. This implies that brake(x) != accelerate(-x). So chair may make a better vehicle than the Starship Enterprise! Delegation and "Dynamic Inheritance"[edit] You will see more about delegation later in the section on message passing, but we wanted to mention that many problems solved by delegation are often tackled by inheritance in languages that don't offer a delegation feature. It's easier to show an example than explain, so in short, here's what delegation looks like: interface I
+{
+   int f();
+}
+ class A implements I
+{
+   // A member variable that actually services all requests for
+   //  calls to the I interface.
+   delegate I private_i;
+
+   A(I target)
+   {
+       private_i = target;
+   }
+}
+ class B implements I
+{
+   int f() { return 1; }
+}
+ B b;  // create a B object to be the target of A's delegation
+A a(b);  // Create an A object, passing in b
+
+int foo = a.f();  // This call to f() is delegated to b.f(), causing 1 to be returned.
+ Inheritance accomplishes a similar feat class B
+{
+   int f() { return 1; }
+}
+ class A inherits B
+{
+}
+ A a;
+
+int foo = a.f();  // returns 1 just like in the delegation example.
+ However, the delegate can change over time, whereas base classes cannot. As a result, sometimes delegation is referred to as "dynamic inheritance". Multiple Inheritance[edit] Multiple inheritance is where an object inherits its properties from many different classes. For example, a house is both a "building" and a "place to sleep in". In multiple inheritance, an object inherits its properties from many objects (its parents or base classes). Therefore, we need to set up some classes, which we will use C++ for: class Building
+{
+  int size;
+  int purpose;
+  int price;
+};
+ class PlaceToSleepIn
+{
+  int type; // tent, house, dorm, etc.
+  bool pleasant_to_live_in; // true or false
+};
+ In C++, to inherit all the types, one uses the : operator, like so: class House : public Building, public PlaceToSleepIn
+{
+  // all of the Building and PlaceToSleepIn variables are here!
+  int rooms; // the number of rooms
+};
+ Problems with Inheritance[edit] One problem of Inheritance is that users of predefined classes may not know the location of the abstracted data. Therefore, it may not be easy for them to obtain it. Most of the problems with inheritance is due to design fragility or issues with the way a programming language implements it. A normal issue in dealing with inheritance in large programs is called Fragile Base Class. It arises when subclasses of the base class make assumptions about the property (the definition of the attribute) that are outside the contract provided by the base class. An example could be of an attribute that was declared in the base class as byte but later turns out to need the range of word. Changing this to word will necessitate at least recompiling all sub-classes but that might well not be enough because the sub-classes might have relied on the type of this attribute so that the source code also will need to be changed. This intrinsic knowledge of the implementor about a given implementation is a problem in general programming but one that OOP/OOD does attempt to solve by offering greater opportunities for better programming practices. But as anything else with code it is up for the programmer to make use of it as to be as transparent as possible as to enable other to take full advantage of its code and so of the property of inheritance. Object/Relational Mappings[edit] Separation of Static and Dynamic[edit] Systems Architecture[edit] (Logical) Networks[edit] The Benefits of Static Analysis[edit] Provable Correctness[edit] Dealing With Hierarchies[edit] Deep Single-Rooted Hierarchy[edit] Shallow, Multi-Rooted Hierarchies[edit] Traditional Neglect of Dynamic Analysis[edit] Data Flow Diagrams[edit] Interfaces and Components[edit] Messages, Protocols and Dispatch[edit] Synchronous vs Asynchronous[edit] Delegation[edit] Virtualization and Polymorphism[edit] Polymorphism means the ability to take more than one form, that is one name,multiple forms. In oops,an operation may exhibit different behaviour in different instances. The concept of polymorphism is implemented using function overloading and operator overloading. Interfaces[edit] Introduction[edit] An Interface allows a class to expose a different set of properties and methods depending on context. For example, say that you were writing a Visual Basic 2005 application that manages clients. A client could be an individual person, or an organization. Part of the program generates address labels for clients. You might define a person like this: Class Person
+    Public LastName As String
+    Public FirstName As String
+    Public Address As String
+End Class
+ You might also define an Organization like this: Class Organization
+    Public Name As String
+    Public MailingAddress As String
+    Public BuildingAddress As String
+End Class
+ As you can see, the main differences between a Person and an Organization are: a Person has both a first name and a last name, while an organization has only a single name an Organization has a separate mailing address, while a Person only has one address So that you can have the one routine to print address labels, you create an interface called "IAddressLabel" (by convention, the name of an interfaces should start with a capital I). Interface IAddressLabel
+    ReadOnly Property Name() As String
+    ReadOnly Property Address() As String
+End Interface
+ You now change the Person class to implement this interface. The main thing to notice is that the Person's first and last names are combined on the label. Class Person
+    Implements IAddressLabel
+    Public LastName As String
+    Public FirstName As String
+    Public Address As String
+    Public ReadOnly Property Address1() As String Implements IAddressLabel.Address
+        Get
+            Return Address
+        End Get
+    End Property
+    Public ReadOnly Property Name() As String Implements IAddressLabel.Name
+        Get
+            Return FirstName & " " & LastName 'combine the first and last names for the address label
+        End Get
+    End Property
+End Class
+ You now change the Organization class to implement the IAddressLabel interface. Notice that the address for the label is the mailing address, not the building address. Class Organization
+    Implements IAddressLabel
+    Public Name As String
+    Public MailingAddress As String
+    Public BuildingAddress As String
+    Public ReadOnly Property Address() As String Implements IAddressLabel.Address
+        Get
+            Return MailingAddress 'Use the mailing address for the address label
+        End Get
+    End Property
+    Public ReadOnly Property Name1() As String Implements IAddressLabel.Name
+        Get
+            Return Name
+        End Get
+    End Property
+End Class
+ Now you can group the disparate objects together as a collection of address labels! Sub Main()
+    'create a person object
+    Dim Bill As New Person
+    Bill.FirstName = "William"
+    Bill.LastName = "Jones"
+    Bill.Address = "123 Test Rd Testville 9123"
+    'create another person object
+    Dim Sally As New Person
+    Sally.FirstName = "Sally"
+    Sally.LastName = "Smith"
+    Sally.Address = "999 Sample Ave Testburg 9222"
+    'create an Organization object
+    Dim WidgetsInc As New Organization
+    WidgetsInc.Name = "Widgets Incorporated"
+    WidgetsInc.BuildingAddress = "9123 Avenue Rd Sampletown 9876"
+    WidgetsInc.MailingAddress = "P.O. Box 123 Sampletown 9876"
+    'Because all three objects implement the IAddressLabel interface, we can put them in the same array
+    Dim MailingList(2) As IAddressLabel
+    MailingList(0) = Bill
+    MailingList(1) = Sally
+    MailingList(2) = WidgetsInc
+    'loop through, displaying the address label for each object
+    Dim i As Integer
+    For i = 0 To 2
+        MsgBox(MailingList(i).Name & vbCrLf & MailingList(i).Address)
+    Next i
+End Sub
+ Interfaces vs. Inheritance[edit] Interfaces and Inheritance can both be used to solve the problem of treating dissimilar objects collectively. For example, if you have a Cat class and a Dog class, but have some routine that needs to process them together, you could either: Create an Animal base class, which contains procedures common to both Cats and Dogs, and have Cat and Dog inherit from Animal, or Create an IAnimal interface, and have both Cat and Dog implement the interface. Which approach to use depends on several factors. In general: If you are extending an existing class, then use inheritance. For example, if you already have an Animal class, and then discover a need to distinguish between Cats and Dogs If you are simply wanting to treat different objects as the same, then use Interfaces. For example, you already have Cat and Dog classes, and then discover a need to manipulate them in a similar fashion The introduction of Components[edit] Delegation[edit] Inheritance vs Delegation[edit] Dynamic Inheritance[edit] Lifetime Management[edit] Manual Lifetime Management[edit] Factories[edit] In the real world, factories are used to make stuff (e.g. automobiles). In OO programming, factories also make stuff; specifically, OO factories "make" (instantiate) objects. At least in Java, a constructor is unable to return a reference to an existing object—it MUST return a brand-new object. This can cause two problems—too many object instances, and identical objects that are duplicates—not the exact same object. Factories are generally implemented as a public static method inside a class that has only private constructors. In this way, only the factory can create instances "Guaranteeing[1]" that all instances of the object have been created by the factory. The factory most often has an internal "Cache" of objects. Whenever a user asks the factory for a new object, the cache is consulted first and one of the cached objects are returned if it is identical—otherwise a new instance is created, added to the cache and returned. Factories can also be used to inject user code into an "Unmodifiable" library. It is possible to save and restore a user object that implements some important functions of a library object. The library then uses that factory to get instances of the users object, and doesn't even know that the user has replaced a core component with completely new code. As an example... Say the library uses Library objects all over the place. The library user can create a class (let's call it User) that extends Library. The user then calls LibraryFactory.set(User.class), and the factory stores it. Inside the library, whenever the library wishes to use a Library object, it calls the LibraryFactory.Factory() function to get a new instance. Without changing any code, the user can now completely change the way the library functions by overriding one or more methods in his User class. This is used in various places inside the Java SDK to allow you to change how chunks of the SDK works without rewriting any of the code. ↑ In Java, just having private constructors does not truly guarantee that all your objects came from the factory. Serialization and reflection can still create new instances without going through the constructor. Reference Counting[edit] Garbage Collection[edit] Garbage collection refers to freeing of heap-allocated memory. The heap memory must be freed eventually. Either the programmers code must explicitly free it, or some automatic system mechanism is required. The most common mechanism is mark and sweep. This is where the system knows of certain top-level classes (Threads and windows mostly). It follows all the references from these "Known" classes to every class that can be reached and marks each class. When it's done, it "sweeps" (gets rid of) every unmarked class. Garbage Collection is a huge enabler of Object Oriented development—it completely changes the way you design. With code-based memory management it is necessary to have some way to track an object. If it is created on the stack, it will be deleted when the method exits (so instances passed outside your method will become invalid). If it is created on the heap, some object must delete it manually—so if your method is going to create an object and pass it to two other objects that both retain the object, you have a problem. Who deletes the object? The original method can't because it will have exited before the two objects are finished with it, and the two objects shouldn't know anything about each other. This type of problem is often solved with "Reference counting" which is another form of garbage collection, but a manual one. It also leads to fewer long-lived, free-roaming classes being created since they have to be tracked. GC solves problem, that of ownership. If you are programming in a language with Garbage Collection, you may create classes on the fly, pass them off, retain a copy or forget about it... You really can't go wrong. When all instances have been "Forgotten", the class disappears. The drawback is that GC tends to take a solid chunk of time. This is less true lately as at least Java has threaded GC and the ability to limit the amount of time GC will run. There are actually dozens of tuning and reporting options and the ability to select from multiple GC systems to fit your need. GC Implementations run from trivial (instance counting) to amazingly complex. The current default Java VM uses a multi-tiered system with different mechanisms for new, middle-aged and old objects. For instance, since almost all new objects tend to die almost instantly, the first section (Eden) is divided in half. When one half becomes full, the currently referenced objects are copied to the other side. The system switches to using the "new" side and completely forgets about the old half. There is no explicit code invoked to delete objects that are already gone. This means that GC can actually be more efficient than traditional allocation/free since there is no free operation for nearly all objects. Garbage collection should be considered essential to OO Design. Persistence[edit] Persistence is simply the act of having objects that "Stick around" between invocations of your program. This can be trivial (Just serializing an object out when exiting, serializing it back in when loading) to a full OO-database implementation. Hibernate is a good program that sits between your application and a database and ensures that your objects are properly persisted. Serialization[edit] Serialization is converting an object to a stream of bytes that can then be saved to a file or transmitted over a network. Generic Programming[edit] Proxies[edit] Abstracting Classes[edit] In this article along with the demo project I will discuss Interfaces versus Abstract classes. The concept of Abstract classes and Interfaces is a bit confusing for beginners of Object Oriented programming. Therefore, I am trying to discuss the theoretical aspects of both the concepts and compare their usage. And finally I will demonstrate how to use them with C#. Abstracting Algorithms[edit] The Significance of Uniformity[edit] Abstraction Barrier[edit] The Introduction of Functional Programming Ideas[edit] Functions as "True Citizens"[edit] Closures[edit] See also[edit] Computer Science Design Patterns Retrieved from "https://en.wikibooks.org/w/index.php?title=Object_Oriented_Programming&oldid=3471098" Subjects: Book:Object Oriented Programming Shelf:Computer programming concepts Hidden categories: Books to be broken into subpages Subject:Computer programming concepts Subject:Computer programming concepts/all books Subject:Computer programming/all books Subject:Computer science/all books Subject:Computing/all books Subject:Books by subject/all books Book:Wikibooks Stacks/Books Shelf:Computer programming concepts/all books Shelf:Computer programming/all books Shelf:Computer science/all books Department:Computing/all books Alphabetical/O Freshly started books Books by completion status/all books Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Français Galego 日本語 Polski Português Русский தமிழ் Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version In other projects Wikimedia Commons Wikipedia Wikiversity This page was last edited on 25 September 2018, at 09:11. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

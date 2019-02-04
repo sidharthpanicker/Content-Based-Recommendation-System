@@ -1,0 +1,29 @@
+Regular Expressions From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Database Programming Java Programming Regular Expressions Libraries, extensions and frameworks Navigate Advanced topic: ( v • d • e ) Networking Database programming Regular Expressions Libraries, extensions and frameworks 3D programming Java Native Interface Invoking C Byte Code The regular expressions (regex) are provided by the package java.util.regex. Researches[edit] The Pattern class offers the function matches which returns true if an expression is found into a string. For example, this script returns the unknown word preceding a known word: import java.util.regex.Pattern;
+public class Regex {
+	public static void main(String[] args) {
+		String s = "Test Java regex for Wikibooks.";
+		System.out.println(Pattern.matches("[a-z]* Wikibooks",s));
+    }
+}
+// Displays: "for Wikibooks"
+ The Matcher class allows to get all matches for a given expression, with different methods: find(): find the next result. group(): displays the result. For example, this script displays the HTML b tags contents: import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class Regex {
+	public static void main(String[] args) {
+		String s = "Test <i>Java</i> <b>regex</b> for <b>Wikibooks</b>.";
+		Pattern p = Pattern.compile("<b>([^<]+)</b>");
+		Matcher m = p.matcher(s);
+		while(m.find()) {
+			System.out.println(m.group());
+			System.out.println(m.group(1));
+		}
+	}
+}
+/* Displays:
+ <b>regex</b>
+ regex
+ <b>Wikibooks</b>
+ Wikibooks
+*/
+ Replacements[edit] This section is a stub. You can help Wikibooks by expanding it. Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Regular_Expressions&oldid=3295249" Categories: Book:Java Programming Section stubs Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

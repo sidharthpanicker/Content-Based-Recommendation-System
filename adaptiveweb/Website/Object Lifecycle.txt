@@ -1,0 +1,66 @@
+Object Lifecycle From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Overloading Methods and Constructors Java Programming Object Lifecycle Scope Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics Before a Java object can be created the class byte code must be loaded from the file system (with .class extension) to memory. This process of locating the byte code for a given class name and converting that code into a Java class instance is known as class loading. There is one class created for each type of Java class. All objects in Java programs are created on heap memory. An object is created based on its class. You can consider a class as a blueprint, template, or a description how to create an object. When an object is created, memory is allocated to hold the object properties. An object reference pointing to that memory location is also created. To use the object in the future, that object reference has to be stored as a local variable or as an object member variable. The Java Virtual Machine (JVM) keeps track of the usage of object references. If there are no more reference to the object, the object can not be used any more and becomes garbage. After a while the heap memory will be full of unused objects. The JVM collects those garbage objects and frees the memory they allocated, so the memory can be reused again when a new object is created. See below a simple example: Code section 4.30: Object creation. 1 {
+2   // Create an object
+3   MyObject obj = new MyObject();
+4 
+5   // Use the object
+6   obj.printMyValues();
+7 }
+ The obj variable contains the object reference pointing to an object created from the MyObject class. The obj object reference is in scope inside the { }. After the } the object becomes garbage. Object references can be passed in to methods and can be returned from methods. Creating object with the new keyword[edit] 99% of new objects are created using the new keyword. Code listing 4.13: MyProgram.java 1 public class MyProgram {
+2 
+3   public static void main(String[] args) {
+4     // Create an 'MyObject' for the first time the application started
+5     MyObject obj = new MyObject();
+6   }
+7 }
+ When an object from the MyObject class is created for the first time, the JVM searches the file system for the definition of the class, that is the Java byte code. The file has the extension of *.class. The CLASSPATH environment variable contains locations where Java classes are stored. The JVM is looking for the MyObject.class file. Depending on which package the class belongs to, the package name will be translated to a directory path. When the MyObject.class file is found, the JVM's class loader loads the class in memory, and creates a java.lang.Class object. The JVM stores the code in memory, allocates memory for the static variables, and executes any static initialize block. Memory is not allocated for the object member variables at this point, memory will be allocated for them when an instance of the class, an object, is created. There is no limit on how many objects from the same class can be created. Code and static variables are stored only once, no matter how many objects are created. Memory is allocated for the object member variables when the object is created. Thus, the size of an object is determined not by its code's size but by the memory it needs for its member variables to be stored. Creating object by cloning an object[edit] Cloning is not automatically available to classes. There is some help though, as all Java objects inherit the protected Object clone() method. This base method would allocate the memory and do the bit by bit copying of the object's states. You may ask why we need this clone method. Can't we create a constructor, pass in the same object and do the copying variable by variable? An example would be (note that accessing the private memberVar variable of obj is legal as this is in the same class): Code listing 4.14: MyObject.java 1 public class MyObject {
+2    private int memberVar;
+3 ...
+4    MyObject(MyObject obj) {
+5       this.memberVar = obj.memberVar;
+6     ...
+7    }
+8 ...
+9 }
+ This method works but object creation with the new keyword is time-consuming. The clone() method copies the whole object's memory in one operation and this is much faster than using the new keyword and copying each variable so if you need to create lots of objects with the same type, performance will be better if you create one object and clone new ones from it. See below a factory method that will return a new object using cloning. Code section 4.31: Object cloning.  1 HashTable cacheTemplate = new HashTable();
+ 2 ...
+ 3 /** Clone Customer object for performance reason */
+ 4 public Customer createCustomerObject() {
+ 5    // See if a template object exists in our cache
+ 6    Customer template = cacheTemplate.get("Customer");
+ 7    if (template == null) {
+ 8       // Create template
+ 9       template = new Customer();
+10       cacheTemplate.put("Customer", template);
+11    }
+12    return template.clone();
+13 }
+ Now, let's see how to make the Customer object cloneable. First the Customer class needs to implement the Cloneable Interface. Override and make the clone() method public, as that is protected in the Object class. Call the super.clone()method at the beginning of your clone method. Override the clone() method in all the subclasses of Customer. Code listing 4.15: Customer.java 1 public class Customer implements Cloneable {
+2  ...
+3     public Object clone() throws CloneNotSupportedException {
+4        Object obj = super.clone();
+5 
+6        return obj;
+7     }
+8 }
+ In the code listing 4.15 we used cloning for speed up object creation. Another use of cloning could be to take a snapshot of an object that can change in time. Let's say we want to store Customer objects in a collection, but we want to disassociate them from the 'live' objects. So before adding the object, we clone them, so if the original object changes from that point forward, the added object won't. Also let's say that the Customer object has a reference to an Activity object that contains the customer activities. Now we are facing a problem, it is not enough to clone the Customer object, we also need to clone the referenced objects. The solution: Make the Activity class also cloneable Make sure that if the Activity class has other 'changeable' object references, those have to be cloned as well, as seen below Change the Customer class clone() method as follows: Code listing 4.16: Customer.java  1 public class Customer implements Cloneable {
+ 2   Activity activity;
+ 3   ...
+ 4     public Customer clone() throws CloneNotSupportedException {
+ 5       Customer clonedCustomer = (Customer) super.clone();
+ 6 
+ 7       // Clone the object referenced objects
+ 8       if (activity != null) {
+ 9          clonedCustomer.setActivity((Activity) activity.clone());
+10       }
+11       return clonedCustomer;
+12    }
+13 }
+ Note that only mutable objects need to be cloned. References to unchangeable objects such as a String can be used in the cloned object without worry. Re-creating an object received from a remote source[edit] When an object is sent through a network, the object needs to be re-created at the receiving host. Object Serialization The term Object Serialization refers to the act of converting the object to a byte stream. The byte stream can be stored on the file system or can be sent through a network. At a later time the object can be re-created from that stream of bytes. The only requirement is that the same class has to be available both times, when the object is serialized and also when the object is re-created. If that happens on different servers, then the same class must be available on both servers. Same class means that exactly the same version of the class must be available, otherwise the object won't be able to be re-created. This is a maintenance problem for those applications where java serialization is used to make objects persistent or to sent the object through the network. When a class is modified, there could be a problem re-creating those objects that were serialized using an earlier version of the class. Java has built-in support for serialization, using the Serializable interface; however, a class must first implement the Serializable interface. By default, a class will have all of its fields serialized when converted into a data stream (with transient fields being skipped). If additional handling is required beyond the default of writing all fields, you need to provide an implementation for the following three methods: private void writeObject(java.io.ObjectOutputStream out) throws IOException; private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException; private void readObjectNoData() throws ObjectStreamException; If the object needs to write or provide a replacement object during serialization, it needs to implement the following two methods, with any access specifier: Object writeReplace() throws ObjectStreamException; Object readResolve() throws ObjectStreamException; Normally, a minor change to the class can cause the serialization to fail. You can still allow the class to be loaded by defining the serialization version id: Code section 4.32: Serialization version id. 1 private static final long serialVersionUID = 42L;
+ Destroying objects[edit] Unlike in many other object-oriented programming languages, Java performs automatic garbage collection — any unreferenced objects are automatically erased from memory — and prohibits the user from manually destroying objects. finalize()[edit] When an object is garbage-collected, the programmer may want to manually perform cleanup, such as closing any open input/output streams. To accomplish this, the finalize() method is used. Note that finalize() should never be manually called, except to call a super class' finalize method from a derived class' finalize method. Also, we can not rely on when the finalize() method will be called. If the java application exits before the object is garbage-collected, the finalize() method may never be called. Code section 4.33: Finalization. 1 protected void finalize() throws Throwable {
+2   try {
+3     doCleanup();        // Perform some cleanup.  If it fails for some reason, it is ignored.
+4   } finally {
+5     super.finalize(); // Call finalize on the parent object
+6   }
+7 }
+ The garbage-collector thread runs in a lower priority than the other threads. If the application creates objects faster than the garbage-collector can claim back memory, the program can run out of memory. The finalize method is required only if there are resources beyond the direct control of the Java Virtual Machine that needs to be cleaned up. In particular, there is no need to explicitly close an OutputStream, since the OutputStream will close itself when it gets finalized. Instead, the finalize method is used to release either native or remote resources controlled by the class. Class loading[edit] One of the main concerns of a developer writing hot re-deployable applications is to understand how class loading works. Within the internals of the class loading mechanism lies the answer to questions like: What happens if I pack a newer version of an utility library with my application, while an older version of the same library lingers somewhere in the server's lib directory? How can I use two different versions of the same utility library, simultaneously, within the same instance of the application server? What version of an utility class I am currently using? Why do I need to mess with all this class loading stuff anyway? To do: Add some exercises like the ones in Variables Overloading Methods and Constructors Java Programming Object Lifecycle Scope Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Object_Lifecycle&oldid=3439008" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 27 June 2018, at 17:13. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

@@ -1,0 +1,21 @@
+Coding conventions From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Keywords Java Programming Coding conventions Classes and Objects Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions The Java code conventions are defined by Oracle in the coding conventions document. In short, these conventions ask the user to use camel case when defining classes, methods, or variables. Classes start with a capital letter and should be nouns, like CalendarDialogView. For methods, the names should be verbs in imperative form, like getBrakeSystemType, and should start with a lowercase letter. It is important to get used to and follow coding conventions, so that code written by multiple programmers will appear the same. Projects may re-define the standard code conventions to better fit their needs. Examples include a list of allowed abbreviations, as these can often make the code difficult to understand for other designers. Documentation should always accompany code. One example from the coding conventions is how to define a constant. Constants should be written with capital letters in Java, where the words are separated by an underscore ('_') character. In the Java coding conventions, a constant is a static final field in a class. The reason for this diversion is that Java is not 100% object-oriented and discerns between "simple" and "complex" types. These will be handled in detail in the following sections. An example for a simple type is the byte type. An example for a complex type is a class. A subset of the complex types are classes that cannot be modified after creation, like a String, which is a concatenation of characters. For instance, consider the following "constants":  1 public class MotorVehicle {
+ 2   /** Number of motors */
+ 3   private static final int MOTORS = 1;
+ 4 
+ 5   /** Name of a motor */
+ 6   private static final String MOTOR_NAME = "Mercedes V8";
+ 7 
+ 8   /** The motor object */
+ 9   private static final Motor THE_MOTOR = new MercedesMotor();
+10 
+11   /**
+12    * Constructor
+13    */
+14   public MotorVehicle() {
+15     MOTORS = 2;                     // Gives a syntax error as MOTORS has already been assigned a value.
+16     THE_MOTOR = new ToshibaMotor(); // Gives a syntax error as THE_MOTOR has already been assigned a value.
+17     MOTOR_NAME.toLowercase();       // Does not give a syntax error, because it returns a new String rather than editing the MOTOR_NAME variable.
+18     THE_MOTOR.fillFuel(20.5);       // Does not give a syntax error, as it changes a variable in the motor object, not the variable itself.
+19   }
+20 }
+ Keywords Java Programming Coding conventions Classes and Objects Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Coding_conventions&oldid=3295187" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

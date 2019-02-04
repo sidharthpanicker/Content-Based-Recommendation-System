@@ -1,0 +1,35 @@
+Canvas From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search JavaBeans Java Programming Canvas Graphics Navigate User Interface topic:( v • d • e ) Basic I/O Streams Event handling JavaBeans Canvas Graphics Drawing basic shapes Drawing complex shapes Drawing text Understanding gradients Applets Overview User Interface Event Listeners Graphics and Media An essential part of programming in Java requires you to build exciting new user interfaces for yourselves. Components that come built into the Java framework are regular UI elements, however for a more rich experience, you need controls of your own. Take, for instance, a charting application. No charting tool comes built into a Java API. You need to manually draw the chart yourself. Coding drawing, to begin with, is pretty daunting but once you know the basics of Graphics programming in Java, you can create elegant graphics and art in no time. But the question that arises in one's mind is what to draw on. The answer to this question is simpler than it seems. You can start drawing on any component in the Java framework. Whether it be a panel, window or even a button. Let me break it down for you. A component in the Java language is a class that has been derived from the Component class. Each component has a method with a signature paint(Graphics) which can be overridden to manually draw something atop it. Overriding the paint(Graphics) method[edit] Below is an example on how you need to override the above method. For this very example, the component class that we would be using would be the Canvas class. For more information about the Canvas class, see the section on Understanding the Canvas class Code listing 9.1: Initializing a Canvas class import java.awt.*;
+
+public class MyCanvas extends Canvas {
+
+    public MyCanvas() {
+        //...
+    }
+
+    public void paint(Graphics graphics) {
+        /* We override the method here. The graphics
+         * code comes here within the method body. */
+    }
+}
+ Understanding the Canvas class[edit] Code listing 9.1 shows the simplicity and power of the syntax for enabling the graphics functions within Java. Lets begin by understanding what a Canvas class does. A Canvas class is a derivative or a sub-class of the Component class and when placed over a Frame, displays as a blank area. For the purpose of drawing graphics, you may use any other class derived from the Component class, for instance, JPanel or even JTextField or JButton. Why we use the Canvas class is purely to grasp the idea of drawing in Java. Note: Notice the J before the names of each class. This suggests that the classes are part of the Java Swing library. Swing enables more freedom in drawing expressions in Java than AWT. Let us refine the above code for the class to be executable and the Canvas to be displayed. For this we will add an entry-point method namely the main(String[]) method in its body and calling a JFrame class to load the canvas on. Code listing 9.2: Displaying a Canvas class atop a JFrame import java.awt.*;
+import javax.swing.*;
+
+public class MyCanvas extends Canvas {
+    public MyCanvas() {
+    }
+
+    public void paint(Graphics graphics) {
+    }
+
+    public static void main(String[] args) {
+        // We initialize our class here
+        MyCanvas canvas = new MyCanvas();
+        JFrame frame = new JFrame();
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Here we add it to the frame
+        frame.getContentPane().add(canvas);
+        frame.setVisible(true);
+    }
+}
+ The following code now helps our class to be executable and displays the canvas on top of the frame as it displays. Running this class would result in an empty frame, however it should be clear that the canvas is sitting atop it and is merely not displaying any drawings yet. Figure 9.1: A blank canvas atop a JFrame Get, set, draw![edit] Now that the basic structure of our program has been laid out, we need to explore how drawing is actually done by writing Java code. Move to the next section and try your hand at drawing basic shapes and lines. But whilst you are still fresh to the concept of a Canvas, why not test your knowledge. Try answering these questions below. Question 9.1: What classes are used to draw in Java? Any class that is derived from the Object class. Any class that is derived from the Component class. None of the above. Answer 2 A class derived from the Object class is not viable as a visible component, whereas a class derived from a Component class is a visible entity atop a Container hence a likely candidate for displaying drawings. Question 9.2: What is the method that needs to be overridden in order to enable drawing? The main(String[]) method. The MyCanvas() method. The paint(Graphics) method. None of the above. Answer 3 As discussed earlier the paint(Graphics) method is the correct option. The name says it all. JavaBeans Java Programming Canvas Graphics Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Canvas&oldid=3295182" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

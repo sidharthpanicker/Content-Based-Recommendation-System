@@ -1,0 +1,159 @@
+Collection From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Aggregate Java Programming Collection ArrayList Navigate Aggregate topic: ( v • d • e ) Collection ArrayList Map Comparing Objects The most basic collection interface is called Collection. This interface gives the user the generic usage of a collection. All collections need to have the same basic operations. Those are: Adding element(s) to the collection Removing element(s) from the collection Obtaining the number of elements in the collection Listing the contents of the collection, (Iterating through the collection) Code listing 5.1: CollectionProgram.java  1 import java.util.Collection;   // Interface
+ 2 import java.util.ArrayList;    // Implementation
+ 3 
+ 4 public class CollectionProgram {
+ 5 
+ 6   public static void main(String[] args) {
+ 7     Collection myCollection = new ArrayList();
+ 8     myCollection.add("1");
+ 9     myCollection.add("2");
+10     myCollection.add("3");
+11     System.out.println("The collection contains " + myCollection.size() + " item(s).");
+12 
+13     myCollection.clear();
+14     if (myCollection.isEmpty()) {
+15       System.out.println("The collection is empty.");
+16     } else {
+17       System.out.println("The collection is not empty.");
+18     }
+19   }
+20 }
+ Console for Code listing 5.1 The collection contains 3 item(s).
+The collection is empty.
+ When you put an object in a collection, this object is not actually in the collection. Only its object reference is added to the collection. This means that if an object is changed after it was put in an collection, the object in the collection also changes. The code listing 5.2 computes the seven next days from tomorrow and stores each date in a list to read it afterwards. See what happens: Code listing 5.2: SevenNextDays.java  1 import java.util.ArrayList;
+ 2 import java.util.Calendar;
+ 3 import java.util.Collection;
+ 4 import java.util.Date;
+ 5 import java.util.GregorianCalendar;
+ 6 
+ 7 public class SevenNextDays {
+ 8 
+ 9   public static void main(String[] args) {
+10    
+11     // The calendar is set at the current date: today
+12     Calendar calendar = new GregorianCalendar();
+13 
+14     Collection collectionOfDays = new ArrayList();
+15     Date currentDate = new Date();
+16     for (int i = 0; i < 7; ++i) {
+17       // The calendar is now set to the next day
+18       calendar.add(Calendar.DATE, 1);
+19       currentDate.setTime(calendar.getTimeInMillis());
+20 
+21       collectionOfDays.add(currentDate);
+22     }
+23 
+24     for (Object oneDay : collectionOfDays) {
+25       System.out.println("The next day is: " + oneDay);
+26     }
+27   }
+28 }
+ Console for Code listing 5.2 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 All collection items were meant to be updated to a different date but they all have been updated to the last one. This means that each update has updated all the collection items. The currentDate has been used to fill all the collection items. The collection didn't keep trace of the added values (one of the seven dates) but the added object references (currentDate). So the collection contains the same object seven times! To avoid this issue, we should have coded it this way: Code listing 5.3: ActualSevenNextDays.java  1 import java.util.ArrayList;
+ 2 import java.util.Calendar;
+ 3 import java.util.Collection;
+ 4 import java.util.Date;
+ 5 import java.util.GregorianCalendar;
+ 6 
+ 7 public class ActualSevenNextDays {
+ 8 
+ 9   public static void main(String[] args) {
+10    
+11     // The calendar is set at the current date: today
+12     Calendar calendar = new GregorianCalendar();
+13 
+14     Collection collectionOfDays = new ArrayList();
+15     for (int i = 0; i < 7; ++i) {
+16       Date currentDate = new Date();
+17       // The calendar is now set to the next day
+18       calendar.add(Calendar.DATE, 1);
+19       currentDate.setTime(calendar.getTimeInMillis());
+20 
+21       collectionOfDays.add(currentDate);
+22     }
+23 
+24     for (Object oneDay : collectionOfDays) {
+25       System.out.println("The next day is: " + oneDay);
+26     }
+27   }
+28 }
+ Console for Code listing 5.3 The next day is: Thu Oct 11 22:55:44 UTC 2018 The next day is: Fri Oct 12 22:55:44 UTC 2018 The next day is: Sat Oct 13 22:55:44 UTC 2018 The next day is: Sun Oct 14 22:55:44 UTC 2018 The next day is: Mon Oct 15 22:55:44 UTC 2018 The next day is: Tue Oct 16 22:55:44 UTC 2018 The next day is: Wed Oct 17 22:55:44 UTC 2018 Now each time we add an item to the collection, it is a different instance. All the items evolve separately. To add an object in a collection and avoid this item being changed each time the source object is changed, you have to copy or clone the object before you add it to the collection. Generics[edit] Objects put into a collection are upcasted to the Object class. This means that you need to cast the object reference back when you get an element out of the collection. It also means that you need to know the type of the object when you take it out. If a collection contains different types of objects, we will have difficulty finding out the type of the objects obtained from a collection at run time. For example. let's use this collection with two objects in it: Code section 5.1: Collection feeding. 1 Collection ageList = new ArrayList();
+2 ageList.add(new Integer(46));
+3 ageList.add("50");
+ Code section 5.2: Collection reading. 1 Integer sum = new Integer(0);
+2 for (Object age : ageList) {
+3     sum = sum.add((Integer) age);
+4 }
+5 
+6 if (!ageList.isEmpty()) {
+7     System.out.println("The average age is " + sum / ageList.size());
+8 }
+ Console for Code section 5.2 ClassCastException.
+ This error could have been found earlier, at compile time, by using generic types. The Generics have been added since JDK version 1.5. It is an enhancement to the type system of the Java language. All collection implementations since 1.5 now have a parameterized type <E>. The E refers to an Element type. When a collection is created, the actual Element type will replace the E. In the collection, the objects are now upcasted to E class. Code section 5.3: Collection with generics. 1 Collection<Integer> ageList = new ArrayList<Integer>();
+2 ageList.add(new Integer(46));     // Integer can be added
+3 ageList.add("50");                // Compilation error, ageList can have only Integers inside
+ ageList is a collection that can contain only Integer objects as elements. No casting is required when we take out an element. Code section 5.4: Item reading. 1 Integer age = ageList.get(0);
+ Generics are not mandatory but are is often used with the collection classes. Collection classes[edit] There is no direct implementation for the java.util.Collection interface. The Collection interface has five sub interfaces. Figure 1: The five sub interfaces of the java.util.Collection interface. Set[edit] A set collection contains unique elements, so duplicates are not allowed. It is similar to a mathematical Set. When adding a new item to a set, the set calls the method int hashCode() of the item and compares its result to the hash code of all the already inserted items. If the hash code is not found, the item is added. If the hash code is found, the set calls the boolean equals(Object obj); method for all the set items with the same hashcode as the new item. If all equal-calls return false, the new item is inserted in the set. If an equal-call returns true, the new item is not inserted in the set. Figure 2: Set class diagram. java.util.HashSet<E> This is the basic implementation of the Set interface. Not synchronized. Allows the null elements java.util.TreeSet<E> Elements are sorted, not synchronized. null not allowed java.util.CopyOnWriteArraySet<E> Thread safe, a fresh copy is created during modification operation. Add, update, delete are expensive. java.util.EnumSet<E extends Enum<E>> All of the elements in an enum set must come from a single enum type that is specified, explicitly or implicitly, when the set is created. Enum sets are represented internally as bit vectors. java.util.LinkedHashSet<E> Same as HashSet, plus defines the iteration ordering, which is the order in which elements were inserted into the set. Detecting duplicate objects in Sets[edit] Set cannot have duplicates in it. You may wonder how duplicates are detected when we are adding an object to the Set. We have to see if that object exists in the Set or not. It is not enough to check the object references, the objects' values have to be checked as well. To do that, fortunately, each java object has the boolean equals(Object obj), method available inherited from Object. You need to override it. That method will be called by the Set implementation to compare the two objects to see if they are equal or not. There is a problem, though. What if I put two different type of objects to the Set. I put an Apple and an Orange. They can not be compared. Calling the equals() method would cause a ClassCastException. There are two solutions to this: Solution one : Override the int hashCode() method and return the same values for the same type of objects and return different values for different type of objects. The equals() method is used to compare objects only with the same value of hashCode. So before an object is added, the Set implementation needs to: find all the objects in the Set that have the same hashCode as the candidate object hashCode and for those, call the equals() methods passing in the candidate object if any of them returns true, the object is not added to the Set. Solution two : Create a super class for the Apple and Orange, let's call it Fruit class. Put Fruits in the Set. You need to do the following: Do not override the equals() and hashCode() methods in the Apple and Orange classes Create appleEquals() method in the Apple class, and create orangeEquals() method in the Orange class Override the hashCode() method in the Fruit class and return the same value, so the equals() is called by the Set implementation Override the equals() method in the Fruit class for something like this. Code section 5.5: equals method implementation.  1 public boolean equals(Object obj) {
+ 2     boolean ret = false;
+ 3     if (this instanceof Apple &&
+ 4           obj instanceof Apple) {
+ 5         ret = this.appleEquals(obj);
+ 6     } else if (this instanceof Orange &&
+ 7               obj  instanceof Orange) {
+ 8         ret = this.orangeEquals(obj);  
+ 9     } else {
+10         // Can not compare Orange to Apple
+11        ret = false;
+12     }
+13     return ret;
+14 }
+ Note: Only the objects that have the same hashCode will be compared. You are responsible to override the equals() and hashCode() methods. The default implementations in Object won't work. Only override the hashCode() method if you want to eliminate value duplicates. Do not override the hashCode() method if you know that the values of your objects are different, or if you only want to prevent adding the exactly same object. Beware that the hashCode() may be used in other collection implementations, like in a Hashtable to find an object fast. Overriding the default hashCode() method may affect performance there. The default hashCodes are unique for each object created, so if you decide not to override the hashCode() method, there is no point overriding the equals() method, as it won't be called. SortedSet[edit] The SortedSet interface is the same as the Set interface plus the elements in the SortedSet are sorted. It extends the Set Interface. All elements in the SortedSet must implement the Comparable Interface, furthermore all elements must be mutually comparable. Note that the ordering maintained by a sorted set must be consistent with equals if the sorted set is to correctly implement the Set interface. This is so because the Set interface is defined in terms of the equals operation, but a sorted set performs all element comparisons using its compare method, so two elements that are deemed equal by this method are, from the standpoint of the sorted set, equal. The SortedSet interface has additional methods due to the sorted nature of the 'Set'. Those are: E first(); returns the first element E last(); returns the last element SortedSet headSet(E toElement); returns from the first, to the exclusive toElement SortedSet tailSet(E fromElement); returns from the inclusive fromElement to the end SortedSet subSet(E fromElement, E toElement); returns elements range from fromElement, inclusive, to toElement, exclusive. (If fromElement and toElement are equal, the returned sorted set is empty.) List[edit] In a list collection, the elements are put in a certain order, and can be accessed by an index. Duplicates are allowed, the same element can be added twice to a list. It has the following implementations: Figure 3: List class diagram. java.util.Vector<E> Synchronized, use in multiple thread access, otherwise use ArrayList. java.util.Stack<E> It extends class Vector with five operations that allow a vector to be treated as a stack. It represents a last-in-first-out (LIFO) stack of objects. java.util.ArrayList<E> The basic implementation of the List interface is the ArrayList. The ArrayList is not synchronized, not thread safe. Vector is synchronized, and thread safe. Vector is slower, because of the extra overhead to make it thread safe. When only one thread is accessing the list, use the ArrayList. Whenever you insert or remove an element from the list, there are extra overhead to reindex the list. When you have a large list, and you have lots of insert and remove, consider using the LinkedList. java.util.LinkedList<E> Non-synchronized, update operation is faster than other lists, easy to use for stacks, queues, double-ended queues. The name LinkedList implies a special data structure where the elements/nodes are connected by pointers.  Head               Node 1                   Node 2                     Node n
+  ______
+ | Size |          _________________        _______________            _____________
+ |______|         |      | point   |       |      | point  |          |      |      |  
+ | First|-------->| Data | to next |------>| Data | to next|-- ... -->| Data | null |
+ | elem |         |______|_________|       |______|________|          |______|______|
+ |______|                                                                 ^
+ | Last |                                                                 |
+ | elem |-----------------------------------------------------------------
+ |______|
+ Each node is related to an item of the linked list. To remove an element from the linked list the pointers need to be rearranged. After removing Node 2:  Head               Node 1                   Node 2                     Node n
+  ______                                 _____________________
+ | Size |          _________________    |   _______________   |       ______________
+ |_- 1__|         |      | point   |    |  |      | point  |  |       |      |      |  
+ | First|-------->| Data | to next |----   | Data | to next|   -...-->| Data | null |
+ | elem |         |______|_________|       |______|________|          |______|______|
+ |______|                                                                 ^
+ | Last |                                                                 |
+ | elem |-----------------------------------------------------------------
+ |______|
+ javax.management.AtributeList<E> Represents a list of values for attributes of an MBean. The methods used for the insertion of Attribute objects in the AttributeList overrides the corresponding methods in the superclass ArrayList. This is needed in order to insure that the objects contained in the AttributeList are only Attribute objects. javax.management.relation.RoleList<E> A RoleList represents a list of roles (Role objects). It is used as parameter when creating a relation, and when trying to set several roles in a relation (via 'setRoles()' method). It is returned as part of a RoleResult, to provide roles successfully retrieved. javax.management.relation.RoleUnresolvedList<E> A RoleUnresolvedList represents a list of RoleUnresolved objects, representing roles not retrieved from a relation due to a problem encountered when trying to access (read or write to roles). Queue[edit] The Queue interface provides additional insertion, extraction, and inspection operations. There are FIFO (first in, first out) and LIFO (last in, first out) queues. This interface adds the following operations to the Collection interface: E element() Retrieves, but does not remove, the head of this queue. This method differs from the peek method only in that it throws an exception if this queue is empty boolean offer(E o) Inserts the specified element into this queue, if possible. E peek() Retrieves, but does not remove, the head of this queue, returning null if this queue is empty E poll() Retrieves and removes the head of this queue, or null if this queue is empty E remove() Retrieves and removes the head of this queue. This method differs from the poll method in that it throws an exception if this queue is empty. Figure 4: Queue class diagram. java.util.BlockingQueue<E> waits for the queue to become non-empty when retrieving an element, and waits for space to become available in the queue when storing an element. Best used for producer-consumer queues. java.util.PriorityQueue<E> orders elements according to an order/priority specified at construction time, null element is not allowed. java.util.concurrent.ArrayBlockingQueue<E> orders elements FIFO; synchronized, thread safe. java.util.concurrent.SynchronousQueue<E> each put must wait for a take, and vice versa, does not have any internal capacity, not even a capacity of one, an element is only present when you try to take it; you cannot add an element (using any method) unless another thread is trying to remove it. Complete UML class diagram[edit] Figure 5: UML class diagram of the Collection interfaces and their implementations. Synchronization[edit] Synchronization is important when you are running several threads. Beware, synchronization does not mean that your collection is thread-safe. A thread-safe collection is also called a concurrent collection. Most of the popular collection classes have implementations for both single thread and multiple thread environments. The non-synchronized implementations are always faster. You can use the non-synchronized implementations in multiple thread environments, when you make sure that only one thread updates the collection at any given time. A new Java JDK package was introduced at Java 1.5, that is java.util.concurrent. This package supplies a few Collection implementations designed for use in multi-threaded environments. The following table lists all the synchronized collection classes: synchronized non-synchronized List java.util.Vector java.util.ArrayList java.util.Stack java.util.LinkedList java.util.concurrent.CopyOnWriteArrayList Set java.util.TreeSet java.util.HashSet java.util.LinkHashSet java.util.concurrent.CopyOnWriteArraySet Custom collection[edit] The Java JDK collection implementations are quite powerful and good, so it is unlikely that you will need to write your own. The usage of the different collections are the same but the implementations are different. If the existing collection implementations do not meet your needs, you can write your version of the implementation. Your version of the implementation just needs to implement the same java.util.Collection interface, then you can switch to using your implementation and the code that is using the collection does not need to be changed. Use the Collection interface if you need to keep related (usually the same type of) objects together in a collection where you can: Search for a particular element List the elements Maintain and/or change the order of the elements by using the collection basic operations (Add, Remove, Update,..) Access the elements by an index number The advantages of using the Collection interface are: Gives a generic usage, as we talked about above, it is easy to switch implementation It makes it easy to convert one type of collection to another. The Collection interface defines the following basic operations: boolean add(E o); Using Element type E boolean addAll(Collection c); boolean remove(Object o); boolean removeAll(Collection c); boolean retainAll(Collection c); Return true if the collection has changed due to the operation. Note that in addAll() we can add any type of collection. This is the beauty of using the Collection interface. You can have a LinkedList and just call the addAll(list) method, passing in a list. You can pass in a Vector, an ArrayList, a HashSet, a TreeSet, a YourImpOfCollection, ... All those different types of collection will be magically converted to a LinkedList. Let's have a closer look at this magic. The conversion is easy because the Collection interface defines a standard way of looping through the elements. The following code is a possible implementation of addAll() method of the LinkedList. Code section 5.6: Collection transfer.  1 import java.util.Collection
+ 2 import java.util.Iterator
+ 3 ...
+ 4 public boolean addAll(Collection coll) {
+ 5    int sizeBefore = this.size();
+ 6    Iterator iter = coll.iterator();
+ 7    while(iter.hasNext()) {
+ 8       this.add(iter.next());
+ 9    }
+10    if (sizeBefore > this.size()) {
+11       return true;
+12    } else {
+13       return false;
+14    }
+15 }
+ The above code just iterates through the passed in collection and adds the elements to the linked list. You do not have to do that, since that is already defined. What you might need to code for is to loop through a Customer collection: Code section 5.7: Iteration on a collection.  1 import java.util.Collection
+ 2 import java.util.Iterator
+ 3 import java.yourcompany.Customer
+ 4 ...
+ 5 public String printCustomerNames(Collection customerColl) {
+ 6    StringBuffer buf = new StringBuffer();
+ 7 
+ 8    Iterator iter = customerColl.iterator();
+ 9    while(iter.hasNext()) {
+10       Customer cust = (Customer) iter.next();
+11       buf.append(cust.getName());
+12       buf.append( "\n" );
+13    }
+14   return buf.toString();
+15 }
+ Notice two things: The above code will work for all type of collections. We have to know the type of objects inside the collection, because we call a method on it. To do: Add some exercises like the ones in Variables Aggregate Java Programming Collection ArrayList Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Collection&oldid=3295188" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Deutsch Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version In other projects Wikimedia Commons Wikipedia This page was last edited on 17 September 2017, at 14:41. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

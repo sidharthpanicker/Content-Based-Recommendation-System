@@ -1,0 +1,73 @@
+Arrays From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Packages Java Programming Arrays Mathematical functions Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions An array is similar to a table of objects or primitive types, keyed by index. You may have noticed the strange parameter of the default main() method (String[] args) since the beginning of the book. It is an array. Let's handle this parameter: Code listing 3.15: The default array parameter. 1 public class ArrayExample {
+2   public static void main(String[] args) {
+3     for (int i = 0; i < args.length; ++i) {
+4       System.out.println("Argument #" + (i + 1) + ": " + args[i]);
+5     }
+6   }
+7 }
+ Console for Code listing 3.15 $ java ArrayExample This is a test
+Argument #1 This
+Argument #2 is
+Argument #3 a
+Argument #4 test
+ In the code listing 3.15, the array is args. It is an array of String objects (here those objects are the words that have been typed by the user at the program launching). At line 4, One contained object is accessed using its index in the array. You can see that its value is printed on the standard output. Note that the strings have been put in the array with the right order. Fundamentals[edit] In Java, an array is an object. This object has a given type for the contained primitive types or objects (int, char, String, ...). An array can be declared in several ways: Code section 3.52: Array declarations. 1 int[] array1 = null;
+2 int array2[] = null;
+ Those syntaxes are identical but the first one is recommended. It can also be instantiated in several ways: Code section 3.53: Array instantiations. 1 array1 = new int[10];
+2 int[] array0 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; //this only works in the declaration
+3 array1 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+ At line 1, we instantiate an array of 10 items that get the default value (which is 0 for int). At lines 2 and 3, we instantiate arrays of 10 given items. It will each be given an index according to its order. We can know the size of the array using the length attribute: Code section 3.54: The array size. 1 int nbItems = 10;
+2 Object[] array3 = new Object[nbItems];
+3 System.out.println(array3.length);
+ Output for Code section 3.54 10
+ Arrays are allocated at runtime, so the specified size in an array creation expression may be a variable (rather than a constant expression as in C). However, the size of an instantiated array never changes. If you need to change the size, you have to create a new instance. Items can be accessed by their index. Beware! The first index is 0: Code section 3.55: The array indexes. 1 char[] array4 = {'a', 'b', 'c', 'd', 'e'};
+2 System.out.println(array4[2]);
+3 array4[4] = 'z';
+4 System.out.println(array4[4]);
+ Output for Code section 3.55 c
+z
+ If you attempt to access to a too high index or negative index, you will get an ArrayIndexOutOfBoundsException. Test your knowledge Question 3.20: Consider the following code: Question 3.20: Question20.java 1 public class Question20 {
+2   public static void main(String[] args) {
+3     String[] listOfWord = {"beggars", "can't", "be", "choosers"};
+4     System.out.println(listOfWord[1]);
+5     System.out.println(listOfWord[listOfWord.length-1]);
+6   }
+7 }
+ What will be printed in the standard output? Answer Output for Question 3.20 can't
+choosers
+ Indexes start at 0. So the index 1 point at the second string (can't). There are 4 items so the size of the array is 4. Hence the item pointed by the index 3 is the last one (choosers). Two-Dimensional Arrays[edit] Actually, there are no two-dimensional arrays in Java. However, an array can contain any class of object, including an array: Code section 3.56: Two-dimensional arrays. 1 String[][] twoDimArray = {{"a", "b", "c", "d", "e"},
+2                           {"f", "g", "h", "i", "j"},
+3                           {"k", "l", "m", "n", "o"}};
+4 
+5 int[][] twoDimIntArray = {{ 0,  1,  2,  3,  4},
+6                           {10, 11, 12, 13, 14},
+7                           {20, 21, 22, 23, 24}};
+ It's not exactly equivalent to two-dimensional arrays because the size of the sub-arrays may vary. The sub-array reference can even be null. Consider: Code section 3.57: Weird two-dimensional array. 1 String[][] weirdTwoDimArray = {{"10", "11", "12"},
+2                                null,
+3                                {"20", "21", "22", "23", "24"}};
+ Note that the length of a two-dimensional array is the number of one-dimensional arrays it contains. In the above example, weirdTwoDimArray.length is 3, whereas weirdTwoDimArray[2].length is 5. In the code section 3.58, we defined an array that has three elements, each element contains an array having 5 elements. We could create the array having the 5 elements first and use that one in the initialize block. Code section 3.58: Included array. 1 String[] oneDimArray = {"00", "01", "02", "03", "04"};
+2 String[][] twoDimArray = {oneDimArray,
+3                           {"10", "11", "12", "13", "14"},
+4                           {"20", "21", "22", "23", "24"}};
+ Test your knowledge Question 3.21: Consider the following code: Question 3.21: The alphabet. 1 String[][] alphabet = {{"a", "b", "c", "d", "e"},
+2                           {"f", "g", "h", "i", "j"},
+3                           {"k", "l", "m", "n", "o"},
+4                           {"p", "q", "r", "s", "t"},
+5                           {"u", "v", "w", "x", "y"},
+6                           {"z"}};
+ Print the whole alphabet in the standard output. Answer Question 3.21: Answer21.java  1 public class Answer21 {
+ 2   public static void main(String[] args) {
+ 3     String[][] alphabet = {{"a", "b", "c", "d", "e"},
+ 4                           {"f", "g", "h", "i", "j"},
+ 5                           {"k", "l", "m", "n", "o"},
+ 6                           {"p", "q", "r", "s", "t"},
+ 7                           {"u", "v", "w", "x", "y"},
+ 8                           {"z"}};
+ 9 
+10     for (int i = 0; i < alphabet.length; i++) {
+11       for (int j = 0; j < alphabet[i].length; j++) {
+12         System.out.println(alphabet[i][j]);
+13       }
+14     }
+15   }
+16 }
+ i will be the indexes of the main array and j will be the indexes of all the sub-arrays. We have to first iterate on the main array. We have to read the size of the array. Then we iterate on each sub-array. We have to read the size of each array as it may vary. Doing so, we iterate on all the sub-array items using the indexes. All the items will be read in the right order. Multidimensional Array[edit] Going further any number of dimensional array can be defined. elementType[][]...[] arrayName or elementType arrayName[][]...[] Packages Java Programming Arrays Mathematical functions Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Arrays&oldid=3295177" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Deutsch Español Français Nederlands Português Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version In other projects Wikiversity This page was last edited on 17 September 2017, at 14:40. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

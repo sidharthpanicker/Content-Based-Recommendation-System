@@ -1,0 +1,142 @@
+Arithmetic expressions From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Primitive Types Java Programming Arithmetic expressions Literals Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions In order to do arithmetic in Java, one must first declare at least one variable. Typically one declares a variable and assigns it a value before any arithmetic is done. Here's an example of declaring an integer variable: Code section 3.59: Variable assignation. 1 int x = 5;
+ After creating a variable, one can manipulate its value by using Java's operators: + (addition), - (subtraction), * (multiplication), / (integer division), % (modulo or remainder), ++ (pre- & postincrement by one), -- (pre- & postdecrement by one). Code listing 3.10: Operators.java  1 public class Operators {
+ 2   public static void main(String[] args) {
+ 3     int x = 5;
+ 4     System.out.println("x = " + x);
+ 5     System.out.println();
+ 6    
+ 7     System.out.println("--- Addition             ---");
+ 8     x = 5;
+ 9     System.out.println("x + 2 = " + (x + 2));
+10     System.out.println("x = " + x);
+11     System.out.println();
+12    
+13     System.out.println("--- Subtraction          ---");
+14     x = 5;
+15     System.out.println("x - 4 = " + (x - 4));
+16     System.out.println("x = " + x);
+17     System.out.println();
+18    
+19     System.out.println("--- Multiplication       ---");
+20     x = 5;
+21     System.out.println("x * 3 = " + (x * 3));
+22     System.out.println("x = " + x);
+23     System.out.println();
+24    
+25     System.out.println("--- (Integer) Division   ---");
+26     x = 5;
+27     System.out.println("x / 2 = " + (x / 2));
+28     System.out.println("x = " + x);
+29     System.out.println();
+30    
+31     System.out.println("--- Modulo (Remainder)   ---");
+32     x = 5;
+33     System.out.println("x % 2 = " + (x % 2));
+34     System.out.println("x = " + x);
+35     System.out.println();
+36    
+37     System.out.println("--- Preincrement by one  ---");
+38     x = 5;
+39     System.out.println("++x   = " + (++x  ));
+40     System.out.println("x = " + x);
+41     System.out.println();
+42    
+43     System.out.println("--- Predecrement by one  ---");
+44     x = 5;
+45     System.out.println("--x   = " + (--x  ));
+46     System.out.println("x = " + x);
+47     System.out.println();
+48    
+49     System.out.println("--- Postincrement by one ---");
+50     x = 5;
+51     System.out.println("x++   = " + (x++  ));
+52     System.out.println("x = " + x);
+53     System.out.println();
+54    
+55     System.out.println("--- Postdecrement by one ---");
+56     x = 5;
+57     System.out.println("x--   = " + (x--  ));
+58     System.out.println("x = " + x);
+59     System.out.println();
+60   }
+61 }
+ Console for Code listing 3.10 
+x = 5
+
+--- Addition             ---
+x + 2 = 7
+x = 5
+
+--- Subtraction          ---
+x - 4 = 1
+x = 5
+
+--- Multiplication       ---
+x * 3 = 15
+x = 5
+
+--- (Integer) Division   ---
+x / 2 = 2
+x = 5
+
+--- Modulo (Remainder)   ---
+x % 2 = 1
+x = 5
+
+--- Preincrement by one  ---
+++x   = 6
+x = 6
+
+--- Predecrement by one  ---
+--x   = 4
+x = 4
+
+--- Postincrement by one ---
+x++   = 5
+x = 6
+
+--- Postdecrement by one ---
+x--   = 5
+x = 4
+ The division operator rounds towards zero: 5/2 is 2, and -5/2 is -2. The remainder operator has the same sign as the left operand; it is defined such that ((a/b)*b) + (a%b) is always equal to a. The preincrement, predecrement, postincrement, and postdecrement operators are special: they also change the value of the variable, by adding or subtracting one. The only difference is that preincrement/decrement returns the new value of the variable; postincrement returns the original value of the variable. Test your knowledge Question 3.8: Consider the following code: Question 3.8: Question8.java  1 public class Question8 {
+ 2   public static void main(String[] args) {
+ 3     int x = 10;
+ 4     x = x + 10;
+ 5     x = 2 * x;
+ 6     x = x - 19;
+ 7     x = x / 3;
+ 8     System.out.println(x);
+ 9   }
+10 }
+ What will be printed in the standard output? Answer Output for Question 3.8 7
+ int x = 10; => 10 x = x + 10; => 20 x = 2 * x; => 40 x = x - 19; => 21 x = x / 3; => 7 When using several operators in the same expression, one must consider Java's order of precedence. Java uses the standard PEMDAS (Parenthesis, Exponents, Multiplication and Division, Addition and Subtraction) order. When there are multiple instances of the same precedence, Java reads from left to right. Consider what the output of the following code would be: Code section 3.60: Several operators. 1 System.out.println(10*5 + 100/10 - 5 + 7%2);
+ Console for Code section 3.60 56
+ The following chart shows how Java would compute this expression: Figure 3.1: Computation of an arithmetic expression in the Java programming language Besides performing mathematical functions, there are also operators to assign numbers to variables (each example again uses the variable initialized as x = 5): Code listing 3.11: Assignments.java  1 public class Assignments {
+ 2   public static void main(String[] args) {
+ 3     int x = 5;
+ 4     x = 3;
+ 5     System.out.println("Assignment                                       (x = 3) : " + x);
+ 6 
+ 7     x = 5;
+ 8     x += 5;
+ 9     System.out.println("Assign x plus another integer to itself          (x += 5): " + x);
+10 
+11     x = 5;
+12     x -= 4;
+13     System.out.println("Assign x minus another integer to itself         (x -= 4): " + x);
+14 
+15     x = 5;
+16     x *= 6;
+17     System.out.println("Assign x multiplied by another integer to itself (x *= 6): " + x);
+18 
+19     x = 5;
+20     x /= 5;
+21     System.out.println("Assign x divided by another integer to itself    (x /= 5): " + x);
+22   }
+23 }
+ Console for Code listing 3.11 Assignment                                       (x = 3) : 3
+Assign x plus another integer to itself          (x += 5): 10
+Assign x minus another integer to itself         (x -= 4): 1
+Assign x multiplied by another integer to itself (x *= 6): 30
+Assign x divided by another integer to itself    (x /= 5): 1
+ Using bitwise operators within Java[edit] Java has besides arithmetic operators a set of bit operators to manipulate the bits in a number, and a set of logical operators. The bitwise logical operators are Operator Function Value of x before Example input Example output Value of x after & Bitwise AND 7 x&27 3 7 | Bitwise OR 7 x|27 31 7 ^ Bitwise XOR 7 x^27 28 7 ~ Bitwise inversion 7 ~x -8 7 Besides these logical bitwise functions, there are also operators to assign numbers to variables (x = -5): Operator Function Example input Example output &= Assign x bitwisely ANDed with another value to itself x &= 3 3 |= Assign x bitwisely ORed with another value to itself x |= 3 -5 ^= Assign x bitwisely XORed with another value to itself x ^= 3 -8 <<= Assign x divided by another integer to itself x <<= 1 -10 >>= Assign x bitwisely negated with another value to itself x >>= 1 -3 >>>= Assign x bitwisely negated with another value to itself x >>>= 1 2,305,843,009,213,693,949 (64 bit) The shift operators are used to shift the bits to the left or right, which is also a quick way to multiply/divide by two: Operator Function Value of x before Example input Example output Value of x after << Logical shift left -15 x << 2 -60 -15 >> Arithmetic shift right -15 x >> 3 -2 -15 >>> Logical shift right -15 x >>> 3 2,305,843,009,213,693,937 (64 bit) -15 Primitive Types Java Programming Arithmetic expressions Literals Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Arithmetic_expressions&oldid=3295175" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:40. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

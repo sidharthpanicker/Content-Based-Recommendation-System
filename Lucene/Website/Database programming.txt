@@ -1,0 +1,36 @@
+Java Programming/Database Programming From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Networking Java Programming Database Programming Regular Expressions Navigate Advanced topic: ( v • d • e ) Networking Database programming Regular Expressions Libraries, extensions and frameworks 3D programming Java Native Interface Invoking C Byte Code Java uses JDBC, an API that defines how a client may access a database. Its drivers may be installed first. [1][2] Connecting to Microsoft Access databases[edit] The following is used to open an ODBC connection to an Access database. Note that the username (and password, if applicable) are given in the DSN rather than the getConnection call. This is a MS Windows-only example, due to the requirement for the Microsoft Access Driver. Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+String path = "C:/example.mdb";
+String dsn = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + path + ";UID=admin";
+accessConn = DriverManager.getConnection(dsn, "", "");
+ Connecting to MySQL[edit] try {
+   Class.forName("com.mysql.jdbc.Driver");
+   Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/MySite?user=MyAccount&password=MyPassword");
+   conn.close();
+} catch(SQLException e) { e.printStackTrace(); }
+ Connecting to Oracle Database[edit] This script returns the database size: import java.sql.*; 
+import java.io.*; 
+import oracle.jdbc.*; 
+import oracle.sql.*; 
+
+public class OracleDatabase {
+  public static void main(String[] args) {
+    try {
+      DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+      Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:MyDatabase", "MyAccount", "MyPassword"); 	
+      conn.setAutoCommit(true);
+      String sql = "SELECT sum(bytes) from dba_segments;";
+      Statement stmt = conn.createStatement();
+      stmt.execute(sql); 
+      stmt.close();
+      conn.close();   
+    } catch(SQLException e) { e.printStackTrace(); }
+  }
+}
+ Connecting to PostgreSQL[edit] try {
+   Class.forName("org.postgresql.Driver");
+   Connection conn = DriverManager.getConnection("jdbc:postgresql:MyDatabase", "MyAccount", "MyPassword");
+   conn.close();
+} catch(SQLException e) { e.printStackTrace(); }
+ Known errors[edit] package oracle.jdbc does not exist[edit] If you have Oracle Database on your PC, just add to the classpath its following files[3]: C:\oracle12\app\oracle\product\12.1.0\dbhome_1\jdbc\lib\ojdbc7.jar C:\oracle12\app\oracle\product\12.1.0\dbhome_1\sqlj\lib\runtime12.jar Otherwise, ojdbc7.jar can be downloaded from http://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html, and add it to the compilation. Eg: javac MyClass.java -classpath ojdbc7.jar
+ ORA-28009: connection as SYS should be as SYSDBA or SYSOPER[edit] Just add " as sysdba" after your Oracle account name, eg: Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:MyDatabase", "MyAccount as sysdba",
+ References[edit] ↑ http://www.cloudera.com/documentation/archive/cdh/4-x/4-7-0/CDH4-Installation-Guide/cdh4ig_topic_13_7.html ↑ http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html ↑ http://docs.oracle.com/database/121/IMURG/ch_appdev.htm#IMURG11551 Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Database_Programming&oldid=3371471" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Wikidata item Cite this page In other languages Deutsch Français Edit links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version In other projects Wikimedia Commons Wikipedia This page was last edited on 5 February 2018, at 11:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

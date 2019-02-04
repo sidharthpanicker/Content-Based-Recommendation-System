@@ -1,0 +1,54 @@
+Preventing NullPointerException From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Unchecked Exceptions Java Programming Preventing NullPointerException Stack trace Navigate Exceptions topic:( v • d • e ) Throwing and catching exceptions Checked exceptions Unchecked exceptions Preventing NullPointerException Stack trace Nesting exceptions (chained exceptions) NullPointerException is a RuntimeException. In Java, a special null value can be assigned to an object reference. NullPointerException is thrown when an application attempts to use an object reference that has the null value. These include: Calling an instance method on the object referred by a null reference. Accessing or modifying an instance field of the object referred by a null reference. If the reference type is an array type, taking the length of a null reference. If the reference type is an array type, accessing or modifying the slots of a null reference. If the reference type is a subtype of Throwable, throwing a null reference. Applications should throw instances of this class to indicate other illegal uses of the null object. Code section 6.13: Null pointer. 1 Object obj = null;
+2 obj.toString();  // This statement will throw a NullPointerException
+ The above code shows one of the pitfalls of Java and the most common source of bugs. No object is created and the compiler does not detect it. NullPointerException is one of the most common exceptions thrown in Java. Why do we need null?[edit] The reason we need it is because many times we need to create an object reference before the object itself is created. Object references cannot exist without a value, so we assign the null value to it. Code section 6.14: Non-instantiated declared object. 1 public Person getPerson(boolean isWoman) {
+2   Person person = null;
+3   if (isWoman) {
+4     person = createWoman();
+5   } else {
+6     person = createMan();
+7   }
+8   return person;
+9 }
+ In code section 6.14 we want to create the Person inside the if-else, but we also want to return the object reference to the caller, so we need to create the object reference outside of the if-else, because of the scoping rule in Java. Incorrect error-handling and poor contract design can be a pitfall with any programming language. This is also true for Java. Now we will describe how to prevent NullPointerException. We do not describe general techniques for how you should program Java, we just hope to make you more aware of null values, and to be more careful about generating them yourself. This list is not complete — there are no rules for preventing NullPointerException entirely in Java, because the standard libraries have to be used, and they can cause NullPointerExceptions. Also, it is possible to observe an uninitialized final field in Java, so you can't even treat a final field as being completely trusted during the object's creation. A good approach is to learn how to deal with NullPointerExceptions first, and become competent with that. These suggestions will help you to cause less NullPointerExceptions, but they don't replace the need to know about NullPointerExceptions. Comparing string variable with a string literal[edit] When you compare a variable with a string literal, most of people would do that this way: Code section 6.15: Bad comparison. 1 if (state.equals("OK")) {
+2   ...
+3 }
+ Always put the string literal first: Code section 6.16: Better comparison. 1 if ("OK".equals(state)) {
+2   ...
+3 }
+ If the state variable is null, you get a NullPointerException in the first example, but not in the second one. Minimize the use of the keyword 'null' in assignment statements[edit] This means not doing things like: Code section 6.17: Declaring an exception.  1 String s = null;
+ 2 while (something) {
+ 3     if (something2) {
+ 4         s = "yep";
+ 5     }
+ 6 }
+ 7 
+ 8 if (s != null) {
+ 9     something3(s);
+10 }
+ You can replace this with: Code section 6.18: Declaring an exception. 1 boolean done = false;
+2 
+3 while (!done && something) {
+4     if (something2) {
+5        done = true;
+6        something3("yep");
+7     }
+8 }
+ You might also consider replacing null with "" in the first example, but default values bring about bugs caused by default values being left in place. A NullPointerException is actually better, as it allows the runtime to tell you about the bug, rather than just continue with a default value. Minimize the use of the new Type[int] syntax for creating arrays of objects[edit] An array created using new Object[10] has 10 null pointers. That's 10 more than we want, so use collections instead, or explicitly fill the array at initialization with: Code section 6.19: Declaring an exception. 1 Object[] objects = {"blah", 5, new File("/usr/bin")};
+ or: Code section 6.20: Declaring an exception. 1 Object[] objects;
+2 objects = new Object[]{"blah", 5, new File("/usr/bin")};
+ Check all references obtained from 'untrusted' methods[edit] Many methods that can return a reference null reference. Make sure you check these. For example: Code section 6.21: Declaring an exception. 1 File file = new File("/etc");
+2 File[] files = file.listFiles();
+3 if (files != null) {
+4     stuff
+5 }
+ File.listFiles() can return null if /etc is not a directory. You can decide to trust some methods not to return null, if you like, but that's an assumption you're making. Some methods that don't specify that they might return null, actually do, instead of throwing an exception. For each loop trap[edit] Beware if you loop on an array or a collection in a for each loop. Code section 6.22: Visit a collection. 1 Collection<Integer> myNumbers = buildNumbers();
+2 for (Integer myNumber : myNumbers) {
+3   System.out.println(myNumber);
+4 }
+ If the object is null, it does not just do zero loops, it throws a null pointer exception. So don't forget this case. Add an if statement or return empty collections: Code section 6.23: Visit a collection safety. 1 Collection<Integer> myNumbers = buildNumbers();
+2 if (myNumbers != null) {
+3   for (Integer myNumber : myNumbers) {
+4     System.out.println(myNumber);
+5   }
+6 }
+ External tools[edit] There are tools like FindBugs that parse your code and warn you about potential bugs. Most of the time, these tools detect possible null pointers. To do: Add some exercises like the ones in Variables Unchecked Exceptions Java Programming Preventing NullPointerException Stack trace Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Preventing_NullPointerException&oldid=3423056" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 10 May 2018, at 13:56. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

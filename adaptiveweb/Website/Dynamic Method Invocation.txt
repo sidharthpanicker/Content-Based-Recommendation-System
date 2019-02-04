@@ -1,0 +1,88 @@
+Dynamic Invocation From Wikibooks, open books for an open world < Java Programming‎ | Reflection Jump to navigation Jump to search Navigate Reflection topic: ( v • d • e ) Reflection Overview Dynamic Class Loading Dynamic Method Invocation Accessing Private Features with Reflection We start with basic transfer object: Code listing 10.1: DummyTo.java  1 package com.test;
+ 2  
+ 3 public class DummyTo {
+ 4     private String name;
+ 5     private String address;
+ 6  
+ 7     public String getName() {
+ 8         return name;
+ 9     }
+10  
+11     public void setName(String name) {
+12         this.name = name;
+13     }
+14  
+15     public String getAddress() {
+16         return address;
+17     }
+18  
+19     public void setAddress(String address) {
+20         this.address = address;
+21     }
+22  
+23     public DummyTo(String name, String address) {
+24         this.name = name;
+25         this.address = address;
+26     }
+27  
+28     public DummyTo() {
+29         this.name = new String();
+30         this.address = new String();
+31     }
+32  
+33     public String toString(String appendBefore) {
+34         return appendBefore + " " + name + ", " + address;
+35     }
+36 }
+ Following is the example for invoking method from the above mentioned to dynamically. Code is self explanatory. Code listing 10.2: ReflectTest.java  1 package com.test;
+ 2  
+ 3 import java.lang.reflect.Constructor;
+ 4 import java.lang.reflect.InvocationTargetException;
+ 5 import java.lang.reflect.Method;
+ 6  
+ 7 public class ReflectTest {
+ 8     public static void main(String[] args) {
+ 9         try {
+10             Class<?> dummyClass = Class.forName("com.test.DummyTo");
+11  
+12             // parameter types for methods
+13             Class<?>[] partypes = new Class[]{String.class};
+14  
+15             // Create method object. methodname and parameter types
+16             Method meth = dummyClass.getMethod("toString", partypes);
+17  
+18             // parameter types for constructor
+19             Class<?>[] constrpartypes = new Class[]{String.class, String.class};
+20  
+21             //Create constructor object. parameter types
+22             Constructor<?> constr = dummyClass.getConstructor(constrpartypes);
+23  
+24             // create instance
+25             Object dummyto = constr.newInstance(new Object[]{"Java Programmer", "India"});
+26  
+27             // Arguments to be passed into method
+28             Object[] arglist = new Object[]{"I am"};
+29  
+30             // invoke method!!
+31             String output = (String) meth.invoke(dummyto, arglist);
+32             System.out.println(output);
+33  
+34         } catch (ClassNotFoundException e) {
+35             e.printStackTrace();
+36         } catch (SecurityException e) {
+37             e.printStackTrace();
+38         } catch (NoSuchMethodException e) {
+39             e.printStackTrace();
+40         } catch (IllegalArgumentException e) {
+41             e.printStackTrace();
+42         } catch (IllegalAccessException e) {
+43             e.printStackTrace();
+44         } catch (InvocationTargetException e) {
+45             e.printStackTrace();
+46         } catch (InstantiationException e) {
+47             e.printStackTrace();
+48         }
+49     }
+50 }
+ Console for Code listing 10.2 I am Java Programmer, India
+ Conclusion: Above examples demonstrate the invocation of method dynamically using reflection. To do: Add some exercises like the ones in Variables Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Reflection/Dynamic_Invocation&oldid=3295247" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:43. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

@@ -1,0 +1,363 @@
+Client Server From Wikibooks, open books for an open world < Java Programming Jump to navigation Jump to search Basic Synchronization Java Programming Client Server Remote Method Invocation Navigate Concurrent Programming topic: ( v • d • e ) Threads and Runnables Basic Synchronization Client Server Programming Remote Method Invocation (RMI) Enterprise JavaBean Programming (EJB) Java Spaces Programming (Jini) In 1990s, the trend was moving away from Mainframe computing to Client/Server as the price of Unix servers dropped. The database access and some business logic were centralized on the back-end server, collecting data from the user program was installed on the front-end users' "client" computers. In the Java world there are three main ways the front-end and the back-end can communicate. The client application uses JDBC (Java DataBase Connectivity API) to connect to the data base server, (Limited business logic on the back-end, unless using Stored procedures). The client application uses RMI (Remote Method Invocation) to communicate with the back-end. The client application uses a socket connection to communicate with the back-end. Socket Connection Example[edit] Figure 1:Simple Client Server Implementation This page shows an example of a socket connection. Create a Server[edit] The Java language was developed having network computing in mind. For this reason it is very easy to create a server program. A server is a piece of code that runs all the time listening on a particular port on the computer for incoming requests. When a request arrives, it starts a new thread to service the request. See the following example: Listening on a port[edit] ComServer class is for listening on a port for a client. Code listing 1.1: ComServer import java.net.ServerSocket;
+/**
+ * -- Main Server Class; Listening on a port for client; If there is a client,
+ * starts a new Thread and goes back to listening for further clients. --
+ */
+public class ComServer 
+{
+static boolean  GL_listening = true;
+   /**
+    * -- Main program to start the Server --
+    */
+   public static void main(String[] args) throws IOException
+   {
+      ComServer srv = new ComServer();
+      srv.listen(); 
+   } // --- End of Main Method ---
+
+   /**
+    * -- Server method; Listen for client --
+    */
+   public int listen() throws IOException
+   {
+    ServerSocket serverSocket = null;
+    int iPortNumber = 9090;
+
+       // --- Open the Server Socket where this should listen ---
+       try {
+           System.out.println( "*** Open the listening socket; at:"+ iPortNumber + " ***" );
+           serverSocket = new ServerSocket( iPortNumber );
+       } catch (IOException e) {
+           System.err.println("Could not listen on port:"+iPortNumber );
+           System.exit(1);
+       }
+       while ( GL_listening )
+       {
+        ComServerThread clientServ; 
+           // --- Listening for client; If there is a client start a Thread -
+           System.out.println( "*** Listen for a Client; at:"+ iPortNumber + " ***" );
+           clientServ = new ComServerThread( serverSocket.accept() );
+           // --- Service a Client ---
+           System.out.println( "*** A Client came; Service it ***" );
+           clientServ.start();   /* --- Use for multy Threaded --- */
+      //     clientServ.run();    /* --- Use for Single Threaded --- */
+       }
+
+       // --- Close the Server socket;  Server exiting ---
+       serverSocket.close();
+    return 0;
+   } // --- End of listen Method --- 
+}  // --- End of ComServer Class ---
+ ServerSocket( iPortNumber ) Creates a server socket, bound to the specified port. serverSocket.accept() Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. It returns a new Socket. Service One Client[edit] ComServerThread This class extended from a Thread is responsible to service one client. The Socket connection will be open between the client and server. A simple protocol has to be defined between the client and server, the server has to understand what the client wants from the server. The client will send a terminate command, for which the server will terminate the socket connection. The ComServerThread class is responsible to handle all client requests, until the client sends a terminate command. Code listing 1.2: ComServerThread  /**
+  * -- A class extended from a Thread; Responsible to service one client --
+  */
+ class '''ComServerThread''' extends Thread
+ {
+    private Socket clientSocket = null;
+    COM_DATA tDataFromClient;
+    COM_DATA tDataToClient; 
+    ObjectInputStream oIn;
+    ObjectOutputStream oOut;
+    /**
+     * -- Constructor --
+     */
+    public ComServerThread( Socket socket )
+    {
+       super( "ComServerThread" );
+       this.clientSocket = socket;
+    } // -- End of ComServerThread() constructor --
+    /**
+     * -- Overrun from the Thread (super) class --
+     */
+    public void run()
+    {
+       try {
+          // --- Create the Writer; will be used to send data to client ---
+          oOut = new ObjectOutputStream( clientSocket.getOutputStream() );
+          // --- Create the Reader; will be used to get data from client ---
+          oIn  = new ObjectInputStream( clientSocket.getInputStream() );
+          // --- Create a new protocol object ---
+          ComProtocol comp = new ComProtocol();
+          // --- Send something to client to indicate that server is ready ---
+          tDataToClient  = '''comp.processInput( null );'''
+          '''sendDataToClient'''( tDataToClient, oOut );
+          // --- Get the data from the client ---
+          while ( true )
+          {
+             try {
+                tDataFromClient = '''getDataFromClient( oIn )''';
+                // --- Parse the request and get the reply ---
+                tDataToClient = '''comp.processInput( tDataFromClient );'''
+                // --- Send data to the Client ---
+                '''sendDataToClient'''( tDataToClient, oOut );
+             }
+             catch ( EOFException e ) {
+                System.out.println( "Client Disconnected, Bye, Bye" );
+                break;
+             }
+             // --- See if the Client wanted to terminate the connection ---
+             if ( tDataToClient.bExit )
+             {
+                System.out.println( "Client said Bye. Bye" );
+                break;
+             }
+          }
+          // --- Close resources;  This client is gone ---
+          comp.Final();
+          oOut.close();
+          oIn.close();
+          clientSocket.close();
+       } catch ( IOException e ) {
+        e.printStackTrace();
+       }
+    } // -- End of run() Method --
+    /**
+     * Get data from Client 
+     */
+    private static COM_DATA '''getDataFromClient'''( ObjectInputStream oIn ) throws IOException                                                                         
+    {
+        COM_DATA  tDataFromClient = null;         
+        // --- Initialize variables ---
+        //   tDataFromClient = new COM_DATA();
+        while ( tDataFromClient == null )
+        {
+           try {
+              // --- Read Line Number first --
+              tDataFromClient = (COM_DATA) oIn.readObject();
+           } catch ( ClassNotFoundException e ) {
+               System.out.println( "ClassNotFound" );
+           }
+        }
+        System.out.println( "Get: " + tDataFromClient.comData );
+     return tDataFromClient;
+    } // --- getDataFromClient() Method --- 
+    /**
+     * Send data to Client 
+     */
+    private static void '''sendDataToClient'''( COM_DATA tDataToClient,
+                                           ObjectOutputStream  oOut ) throws IOException
+    {         
+        System.out.println( "Sent: " + tDataToClient.comData );
+        oOut.writeObject( tDataToClient );
+      return;
+    } // -- End of sendDataToClient() Method --
+ } // --- End of ComServerThread class ---
+ COM_DATA tDataFromClient This variable will contain the data object from the client. COM_DATA tDataToClient This variable will contain the data object to be sent to the client. sendDataToClient This method sends the data object to the client. getDataFromClient This method gets the data object from the client. processInput( tDataFromClient ) This method of the class ComProtocol interprets the client commands and returns the data object that will be sent back to the client. Handling the request; implements the communication protocol[edit] ComProtocol This class implements, and encapsulates the communication logic (protocol). The protocol is the following: The client initiate the connection. The server accepts it and sends an acknowledgment notifying that it's ready The client sends a request The server response based on the request ... The client sends a BYE request The server acknowledge the BYE request and disconnects the socket connection The client gets the acknowledgment to the BYE ... The client sends a SHUTDOWN request The server acknowledge the SHUTDOWN request and disconnects and also stops listening of other clients. The client gets the acknowledgment to the SHUTDOWN Code listing 1.3: ComProtocol  class '''ComProtocol'''
+ {
+  private static final int COM_STATUS_WAITING    = 0; 
+  private static final int COM_STATUS_READY_SENT = 1;
+  private static final int COM_STATUS_DATA_SENT  = 2;
+  private static final int COM_STATUS_WAITING_FOR_TERMINALID = 3;
+  private int state = COM_STATUS_WAITING;
+  
+  // --- Reference to 'BACK-END' module ---  
+  private MqTeAccess mqTe;
+  ...
+    /**
+     * Create a protokol object; CAll MQ INI function
+     */
+    public ComProtocol()
+    {
+     int    iRet = 0;
+        // --- Initialize 'BACK-END' modules  ---
+        mqTe. ...
+ ...
+    }
+    /**
+     * --- Process the Input and Create the output to the Client ---
+     */
+    public COM_DATA processInput( COM_DATA theInput )
+    {
+     COM_DATA theOutput;
+        // --- Initialize Variables ---
+        theOutput = new COM_DATA();
+        // --- Check if the Clients want to disconnect ---
+        if ( theInput != null ) 
+        {
+            if ( theInput.comData.equals('''"!BYE.@"''') )
+            {
+                // --- The Client wants to terminate; Echo data back to client
+                theOutput.comData = "BYE.";
+                // --- Mark the communication to be terminated ---
+                theOutput.bExit = true;
+                // --- Set the internal state to wait for a new client ---
+                state = COM_STATUS_WAITING;
+                // --- Return Data object to be sent to the client ---
+                return theOutput;
+            }
+            if ( theInput.comData.equals('''"!SHUTDOWN.@"''') )
+            {
+                // --- The Client wants to terminate; Echo data back to client
+                theOutput.comData = "BYE.";
+                // --- Mark the communication to be terminated ---
+                theOutput.bExit = true;
+                // --- Tell the server to stop listening for new clients ---
+                ComServer.GL_listening = false;
+                // --- Set the internal state to wait for a new client ---
+                state = COM_STATUS_WAITING;
+                // --- Return Data object to be sent to the client ---
+                return theOutput;
+            }
+        }
+        if ( state == COM_STATUS_WAITING )
+        {
+            // --- Send ready Message to the Client ---
+            theOutput.comData = "Ready:";
+            // --- Set the internal state ready; and wait for TerminalId ---
+            state = COM_STATUS_WAITING_FOR_TERMINALID;
+        }
+        else if ( state == COM_STATUS_WAITING_FOR_TERMINALID )
+        {
+         int iRet;
+            // --- Get the Terminal ID ---
+            sTermId = theInput.comData; 
+            // --- Call 'BACK-END' modules ...  ---
+            mqTe. ...
+ ...
+            // --- Send ready Message with the Server Version to the Client ---
+            theOutput.comData = "Ready;Server Version 1.0:";
+            // --- Set the internal state raedy; and wait for TerminalId ---
+            state = COM_STATUS_READY_SENT;
+        }
+        else if ( state == COM_STATUS_READY_SENT )
+        {
+         int iRet;
+            String sCommand = theInput.comData;
+            // --- Call 'BACK-END' modules ...
+ ...
+            /*
+            ** --- Check if we should get Response data ---
+            */
+            if ( theInput.iRet == COM_DATA.NOWAIT_FOR_RESPONSE ) {
+                // -- Set the Output Value ---
+                theOutput.iRet = iRet;
+                theOutput.comData = "";
+            }
+            else {
+                // --- Call 'BACK-END' modules ---
+                mqTe. ...
+                // --- Set the Output Value ---
+                theOutput.comData    = mqTe.sResponseBuffer; 
+                theOutput.iRet       = iRet;
+            }
+        }
+     return theOutput;
+    }  // --- End of Method processInput() ---
+ } // --- End of ComProtocol Class Definition ---
+
+----
+ The Data object that goes through the network[edit] COM_DATA is data structure class that is transmitted through the network. The class contains only data. Code listing 1.4: COM_DATA  /**
+  * COM_DATA data structure 
+  */
+ public class COM_DATA implements Serializable
+ {
+  public String  comData;
+  public boolean bExit;
+  public int     iRet;
+    /**
+     * --- Constants values can be passed in in iRet to the Server ---
+     */
+    static final int WAIT_FOR_RESPONSE    = 0;
+    static final int NOWAIT_FOR_RESPONSE  = 1;
+   /**
+    * Initialize the data structure
+    */
+   public COM_DATA()
+   {
+      comData     = "";
+      bExit       = false;
+      iRet        = 0;
+   } // -- End of COM_DATA() Constructor --   
+   /**
+    * Copy over it contents 
+    */
+   public void copy( COM_DATA tSrc )
+   {
+      this.comData     = tSrc.comData;
+      this.bExit       = tSrc.bExit;
+      this.iRet        = tSrc.iRet;
+    return;
+   } 
+ } // -- End of COM_DATA class --
+ Create the Client[edit] A client code for a server/service is usually an API that a user application uses to interface to the server. With the help of a client API the user application does not have to know how to connect to the server to get services. ComClient This class is the client API. The application is using this class to communicate with the server. The following is the client class for the above server: Code listing 1.5: ComClient  public class ComClient
+ {
+  private Socket         comSocket;
+  private ObjectOutputStream oOut;
+  private ObjectInputStream  oIn;
+  private boolean         IsItOpen = false;       
+    /**
+     * --- Open Socket ---
+     */
+    public void openCom( String sServerName,
+                         int    iPortNumber ) throws UnknownHostException,
+                                                              IOException  
+    {
+       try {
+          // --- Open Socket for communication ---
+          comSocket = new Socket( sServerName, iPortNumber );     
+          // --- Get Stream to write request to the Server ---
+          oOut = new ObjectOutputStream( comSocket.getOutputStream() );     
+          // --- Get Stream// to read from the Server
+          oIn = new ObjectInputStream( comSocket.getInputStream());
+          // --- Set internal Member variable that the Communication opened ---
+          IsItOpen = true;
+       } catch ( java.net.UnknownHostException e ) {
+          System.err.println( "(openCom:)Don't know about host: "+sServerName );
+          IsItOpen = false;
+          throw( e );                                         
+       } catch ( java.io.IOException e ) {
+          System.err.println("(openCom:)Couldn't get I/O for the connection to: "+ sServerName );
+          IsItOpen = false;
+          throw( e );         
+       }               
+    }
+    /**
+     * --- Check if Socket is open ---
+     */
+    public boolean isItOpen()
+    {
+      return IsItOpen;
+    }     
+    /**
+     * --- Get data string from the Server ---
+     */
+    public void getServerData( COM_DATA tServData ) throws IOException
+    {
+        // --- Initialize Variables ---
+        tServData.comData = "";
+        // --- Get the Response from the Server ---              
+        try {
+           tServData.copy( (COM_DATA) oIn.readObject() );
+        }   
+        catch ( ClassNotFoundException e ) {
+            System.out.println( "Class Not Found" );
+        } 
+        System.out.println( "Server: " + tServData.comData );
+        if ( tServData.comData.equals("BYE.") )
+        {
+            tServData.bExit = true;
+        }        
+     return;
+    }
+    /**
+     * --- Send data to the Server ---
+     */
+    public void sendDataToServer( COM_DATA tServData ) throws IOException
+    {
+        // --- Send the data string ---
+        System.out.println( "Send: " + tServData.comData );
+        oOut.writeObject( tServData );
+     return;
+    } 
+    /**
+     * --- Close Socket --- 
+     */
+    public void closeCom() throws IOException
+    {
+        oOut.close();
+        oIn.close();
+        comSocket.close();
+        IsItOpen = false;
+    }    
+ }
+ getServerData( COM_DATA tServData ) This method reads the data from the server and copies the values to tServData object. sendDataToServer( COM_DATA tServData ) This method sends the tServData object through the network to the server. oIn.readObject() This method returns the data object sent by the server. oOut.writeObject( tServData ) This method sends the data object to the server. To do: Add some exercises like the ones in Variables Basic Synchronization Java Programming Client Server Remote Method Invocation Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Client_Server&oldid=3478903" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 20 October 2018, at 15:29. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

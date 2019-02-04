@@ -1,0 +1,55 @@
+Boolean expressions From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Loop blocks Java Programming Boolean expressions Variables Navigate Language Fundamentals topic: ( v • d • e ) Statements Conditional blocks Loop blocks Boolean expressions Variables Primitive Types Arithmetic expressions Literals Methods String Objects Packages Arrays Mathematical functions Large numbers Random numbers Unicode Comments Keywords Coding conventions Lambda expressions Boolean values are values that evaluate to either true or false, and are represented by the boolean data type. Boolean expressions are very similar to mathematical expressions, but instead of using mathematical operators such as "+" or "-", you use comparative or boolean operators such as "==" or "!". Comparative operators[edit] Java has several operators that can be used to compare variables. For example, how would you tell if one variable has a greater value than another? The answer: use the "greater-than" operator. Here is a list of the comparative operators in Java: > : Greater than < : Less than >= : Greater than or equal to <= : Less than or equal to == : Equal to != : Not equal to To see how these operators are used, look at this example: Code section 3.37: Comparisons. 1 int a = 5, b = 3;
+2 System.out.println(a > b); // Value is true because a is greater than b
+3 System.out.println(a == b); // Value is false because a does not equal b
+4 System.out.println(a != b); // Value is true because a does not equal b
+5 System.out.println(b <= a); // Value is true because b is less than a
+ Output for code section 3.37 true
+false
+true
+true
+ Comparative operators can be used on any primitive types (except boolean), but only the "equals" and "does not equal" operators work on objects. This is because the less-than/greater-than operators cannot be applied to objects, but the equivalency operators can. Specifically, the == and != operators test whether both variables point to the same object. Objects will be covered later in the tutorial, in the "Classes, Objects, and Types" module. Boolean operators[edit] The Java boolean operators are based on the operations of the boolean algebra. The boolean operators operate directly on boolean values. Here is a list of four common boolean operators in Java: ! : Boolean NOT && : Boolean AND || : Boolean inclusive OR ^ : Boolean exclusive XOR The boolean NOT operator ("!") inverts the value of a boolean expression. The boolean AND operator ("&&") will result in true if and only if the values on both sides of the operator are true. The boolean inclusive OR operator ("||") will result in true if either or both of the values on the sides of the operator is true. The boolean exclusive XOR operator ("^") will result in true if one and only of the values on the sides of the operator is true. To show how these operators are used, here is an example: Code section 3.38: Operands.  1 boolean iMTrue = true;
+ 2 boolean iMTrueToo = true;
+ 3 boolean iMFalse = false;
+ 4 boolean iMFalseToo = false;
+ 5 
+ 6 System.out.println("NOT operand:");
+ 7 System.out.println(!iMTrue);
+ 8 System.out.println(!iMFalse);
+ 9 System.out.println(!(4 < 5));
+10 System.out.println("AND operand:");
+11 System.out.println(iMTrue && iMTrueToo);
+12 System.out.println(iMFalse && iMFalseToo);
+13 System.out.println(iMTrue && iMFalse);
+14 System.out.println(iMTrue && !iMFalse);
+15 System.out.println("OR operand:");
+16 System.out.println(iMTrue || iMTrueToo);
+17 System.out.println(iMFalse || iMFalseToo);
+18 System.out.println(iMTrue || iMFalse);
+19 System.out.println(iMFalse || !iMTrue);
+20 System.out.println("XOR operand:");
+21 System.out.println(iMTrue ^ iMTrueToo);
+22 System.out.println(iMFalse ^ iMFalseToo);
+23 System.out.println(iMTrue ^ iMFalse);
+24 System.out.println(iMFalse ^ !iMTrue);
+ Output for code section 3.38 NOT operand:
+false
+true
+false
+AND operand:
+true
+false
+false
+true
+OR operand:
+true
+false
+true
+false
+XOR operand:
+false
+false
+true
+false
+ Here are the truth tables for the boolean operators: a !a true false false true a b a && b a || b a ^ b true true true true false true false false true true false true false true true false false false false false For help on simplifying complex logic, see De Morgan's laws. In Java, boolean logic has a useful property called short circuiting. This means that expressions will only be evaluated as far as necessary. In the expression (a && b), if a is false, then b will not be evaluated because the expression will be false no matter what. Here is an example that shows that the second expression is not automatically checked: Code section 3.39: Short circuiting. 1 System.out.println((4 < 5) || ((10 / 0) == 2));
+ Output for code section 3.39 true
+ To disable this property, you can use & instead of && and | instead of || but it's not recommended. For the bitwise operations on & and |, see Arithmetic expressions. Loop blocks Java Programming Boolean expressions Variables Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Boolean_expressions&oldid=3295180" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:40. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

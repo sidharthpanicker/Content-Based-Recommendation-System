@@ -1,0 +1,66 @@
+Nested Classes From Wikibooks, open books for an open world < Java Programming The latest reviewed version was checked on 17 September 2017. There are template/file changes awaiting review. Jump to navigation Jump to search Scope Java Programming Nested Classes Generics Navigate Classes and Objects topic: ( v • d • e ) Defining classes Inheritance Interfaces Overloading methods and constructors Object Lifecycle Scope Nested classes Generics In Java you can define a class inside an other class. A class can be nested inside another class or inside a method. A class that is not nested is called a top-level class and a class defining a nested class is an outer class. Inner classes[edit] Nesting a class inside a class[edit] When a class is declared inside another class, the nested class' access modifier can be public, private, protected or package(default). Code listing 4.10: OuterClass.java 1 public class OuterClass {
+2    private String outerInstanceVar;
+3 
+4    public class InnerClass {
+5       public void printVars() {
+6          System.out.println("Print Outer Class Instance Var.:" + outerInstanceVar);
+7       }
+8    }
+9 }
+ The inner class has access to the enclosing class instance's variables and methods, even private ones, as seen above. This makes it very different from the nested class in C++, which are equivalent to the "static" inner classes, see below. An inner object has a reference to the outer object. In other words, all inner objects are tied to the outer object. The inner object can only be created through a reference to the 'outer' object. See below. Code section 4.20: Outer class call. 1 public void testInner() {
+2     ...
+3     OuterClass outer = new OuterClass();
+4     OuterClass.InnerClass inner = outer.new InnerClass();  
+5     ...
+6 }
+ Note that inner objects, because they are tied to the outer object, cannot contain static variables or methods. When in a non-static method of the outer class, you can directly use new InnerClass(), since the class instance is implied to be this. You can directly access the reference to the outer object from within an inner class with the syntax OuterClass.this; although this is usually unnecessary because you already have access to its fields and methods. Inner classes compile to separate ".class" bytecode files, with the name of the enclosing class, followed by a "$", followed by the name of the inner class. So for example, the above inner class would be compiled to a file named "OuterClass$InnerClass.class". Static nested classes[edit] A nested class can be declared static. These classes are not bound to an instance of the outer defining class. A static nested class has no enclosing instance, and therefore cannot access instance variables and methods of the outer class. You do not specify an instance when creating a static inner class. This is equivalent to the inner classes in C++. Nesting a class inside a method[edit] These inner classes, also called local classes, cannot have access modifiers, like local variables, since the class is 'private' to the method. The inner class can be only abstract or final. Code listing 4.11: OuterClass.java 1 public class OuterClass {
+2    public void method() {
+3       class InnerClass {
+4  
+5       }
+6    }
+7 }
+ In addition to instance variables of the enclosing class, local classes can also access local variables of the enclosing method, but only ones that are declared final. This is because the local class instance might outlive the invocation of the method, and so needs its own copy of the variable. To avoid problems with having two different copies of a mutable variable with the same name in the same scope, it is required to be final, so it cannot be changed. Anonymous Classes[edit] In Java, a class definition and its instantiation can be combined into a single step. By doing that the class does not require a name. Those classes are called anonymous classes. An anonymous class can be defined and instantiated in contexts where a reference can be used, and it is a nested class to an existing class. Anonymous class is a special case of a class local to a method; hence they also can access final local variables of the enclosing method. Anonymous classes are most useful to create an instance of an interface or adapter class without needing a brand new class. Code listing 4.12: ActionListener.java 1 public interface ActionListener {
+2     public void actionPerformed();
+3 }
+ Code section 4.21: Anonymous class. 1 ActionListener listener = new ActionListener() {
+2         public void actionPerformed() {
+3             // Implementation of the action event
+4             ...
+5             return;
+6         }
+7     };
+ In the above example the class that implements the ActionListener is anonymous. The class is defined where it is instantiated. The above code is harder to read than if the class is explicitly defined, so why use it? If many implementations are needed for an interface, those classes are used only in one particular place, and it would be hard to come up with names for them, using an anonymous inner class makes sense. The following example uses an anonymous inner class to implement an action listener. Code listing 4.13: MyApp.java  1 import java.awt.Button;
+ 2 import java.awt.event.ActionEvent;
+ 3 import java.awt.event.ActionListener;
+ 4 
+ 5 class MyApp {
+ 6    Button aButton = new Button();
+ 7 
+ 8    MyApp() {
+ 9        aButton.addActionListener(new ActionListener() {
+10                public void actionPerformed(ActionEvent e) {
+11                    System.out.println("Hello There");
+12                }
+13            }
+14        );
+15    }
+16 }
+ The following example does the same thing, but it names the class that implements the action listener. Code listing 4.14: MyApp.java  1 import java.awt.Button;
+ 2 import java.awt.event.ActionEvent;
+ 3 import java.awt.event.ActionListener;
+ 4 
+ 5 class MyApp {
+ 6    Button aButton = new Button();
+ 7 
+ 8    // Nested class to implement the action listener
+ 9    class MyActionListener implements ActionListener {
+10        public void actionPerformed(ActionEvent e) {
+11            System.out.println("Hello There");
+12        }
+13    }
+14    MyApp() {
+15        aButton.addActionListener(new MyActionListener());
+16    }
+17 }
+ Using anonymous classes is especially preferable when you intend to use many different classes that each implement the same interface. Scope Java Programming Nested Classes Generics Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Nested_Classes&oldid=3295233" Category: Book:Java Programming Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Latest draft Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:42. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view

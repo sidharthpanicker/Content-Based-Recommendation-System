@@ -1,0 +1,8 @@
+NullPointerException is a RuntimeException. In Java, a special null can be assigned to an object reference. NullPointerException is thrown when an application attempts to use an object reference, having the null value. These include:
+
+Calling an instance method on the object referred by a null reference.
+Accessing or modifying an instance field of the object referred by a null reference.
+If the reference type is an array type, taking the length of a null reference.
+If the reference type is an array type, accessing or modifying the slots of a null reference.
+If the reference type is a subtype of Throwable, throwing a null reference.
+Applications should throw instances of this class to indicate other illegal uses of the null object.

@@ -1,0 +1,48 @@
+Event Listeners From Wikibooks, open books for an open world < Java Programming‎ | Applets Jump to navigation Jump to search Navigate User Interface topic:( v • d • e ) Basic I/O Streams Event handling JavaBeans Canvas Graphics Drawing basic shapes Drawing complex shapes Drawing text Understanding gradients Applets Overview User Interface Event Listeners Graphics and Media An Event Listener, once set to an applet object, waits for some action to be performed on it, be it mouse click, mouse hover, pressing of keys, click of button, etc. The class you are using (e.g. JButton, etc.) reports the activity to a class set by the class using it. That method then decides on how to react because of that action, usually with a series of if statements to determine which action it was performed on. source.getSource() will return the name of the object that the event was performed on, while the source is the object passed to the function when the action is performed. Every single time the action is performed, it calls the method. ActionListener[edit] ActionListener is an interface that could be implemented in order to determine how a certain event should be handled. When implementing an interface, all methods in that interface should be implemented, ActionListener interface has one method to implement named actionPerformed(). The code listing 9.6 shows how to implement ActionListener: Code listing 9.6: EventApplet.java  1 import java.applet.Applet;
+ 2 import java.awt.Button;
+ 3 import java.awt.Container;
+ 4 import java.awt.Dialog;
+ 5 import java.awt.FlowLayout;
+ 6 import java.awt.Frame;
+ 7 import java.awt.Label;
+ 8 import java.awt.event.ActionEvent;
+ 9 import java.awt.event.ActionListener;
+10 
+11 public class EventApplet extends Applet {
+12 
+13     /**
+14      * Init.
+15      */
+16     public void init() {
+17         Button clickMeButton = new Button("Click me");
+18 
+19         final Applet eventApplet = this;
+20 
+21         ActionListener specificClassToPerformButtonAction = new ActionListener() {
+22 
+23             public void actionPerformed(ActionEvent event) {
+24                 Dialog dialog = new Dialog(getParentFrame(eventApplet), false);
+25                 dialog.setLayout(new FlowLayout());
+26                 dialog.add(new Label("Hi!!!"));
+27                 dialog.pack();
+28                 dialog.setLocation(100, 100);
+29                 dialog.setVisible(true);
+30             }
+31 
+32             private Frame getParentFrame(Container container) {
+33                 if (container == null) {
+34                     return null;
+35                 } else if (container instanceof Frame) {
+36                     return (Frame) container;
+37                 } else {
+38                     return getParentFrame(container.getParent());
+39                 }
+40 
+41             }
+42         };
+43         clickMeButton.addActionListener(specificClassToPerformButtonAction);
+44 
+45         add(clickMeButton);
+46     }
+47 }
+ When you compile and run the above code, the message "Hi!!!" will appear when you click on the button. MouseListener[edit] Applet mouse listener does not differ from the AWT mouse listener in general. When the mouse is in the applet area, the listener receives notifications about the mouse clicks and drags (if MouseListener is registered) and mouse movements (if MouseMotionListener is registered). As applets are often small, it is a common practice to let applet itself to implement the mouse listeners. To do: Add some exercises like the ones in Variables Retrieved from "https://en.wikibooks.org/w/index.php?title=Java_Programming/Applets/Event_Listeners&oldid=3295170" Categories: Book:Java Programming Book:Java Programming/Applets Hidden category: Pages with deep filing Navigation menu Personal tools Not logged in Discussion for this IP address Contributions Create account Log in Namespaces Book Discussion Variants Views Read Edit View history More Search Navigation Main Page Help Browse Cookbook Wikijunior Featured books Recent changes Donations Random book Using Wikibooks Community Reading room Community portal Bulletin Board Help out! Policies and guidelines Contact us Tools What links here Related changes Upload file Special pages Permanent link Page information Cite this page In other languages Add links Sister projects Wikipedia Wikiversity Wiktionary Wikiquote Wikisource Wikinews Wikivoyage Commons Wikidata Print/export Create a collection Download as PDF Printable version This page was last edited on 17 September 2017, at 14:40. Text is available under the Creative Commons Attribution-ShareAlike License.; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Privacy policy About Wikibooks Disclaimers Developers Cookie statement Mobile view
